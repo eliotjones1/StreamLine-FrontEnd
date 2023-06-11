@@ -209,7 +209,7 @@ def runOptimization(request):
     return Response([realOutput])
 
 
-api_view(['POST'])
+@api_view(['POST'])
 def runOptimization(request):
     data = request.data
     # remove "budget" from data
@@ -219,35 +219,19 @@ def runOptimization(request):
 
     providers, prices, services = modify_input(data)
 
-    # insert dummy data to help find higher value bundles
-    # dummy_outputs = []
-    # dummy_services = ['HBO Max']
-    # for dumy_service in dummy_services:
-    #     output = {}
-    #     output["Title"] = "Value Bundle"
-    #     output["Subheader"] = "StreamLine Recommended"
-    #     output["Movies_and_TV_Shows"] = []
-    #     output["Streaming_Services"] = stream_opt
-    #     output["Total_Cost"] = 0
-    #     output["Movies_and_TV_Shows"] = watch_opt
-
-    # extra_services = ['HBO Max', 'Freeform', 'c', 'd', 'e', 'f', 'g']
-    # extra_prices = [3, 7, 9, 14, 15, 22, 43]
     extra_services_to_movies = {'Hulu': "White Men Can't Jump", 'Netflix': "Squid Game", "HBO Max": "Game of Thrones", "Amazon Prime Video": "Ticket to Paradise", "Disney Plus": "Marvel's Avengers", "fuboTV": "Yellowstone", "Funimation Now": "Mass Effect: Paragon Lost", "Peacock Premium": "Bupkis", "Apple TV Plus": "Ted Lasso", "DIRECTV": "Star Wars"} #, "Globo Play", "Acorn TV": , "VIX": , "YouTube Premium": , "DIRECTV": , "Paramount Plus,4.99": }
-    stupid_fucking_dict = {"White Men Can't Jump" : "Movie", "Squid Game" : "TV Series", "Game of Thrones": "TV Series", "Ticket to Paradise": "Movie", "Marvel's Avengers": "TV Series", "Yellowstone": "TV Series", "Mass Effect: Paragon Lost": "Movie", "Bupkis": "TV Series", "Ted Lasso": "TV Series", "Star Wars": "Movie"}
-    # extra_services_to_movies = {'Hulu': "White Men Can't Jump", 'Netflix': "Squid Game"}
-    # Possible ones: AsianCrush: Aachi and Ssipak, .00000001, Hoopla: Penguin Highway, .000000001
+    types_dict = {"White Men Can't Jump" : "Movie", "Squid Game" : "TV Series", "Game of Thrones": "TV Series", "Ticket to Paradise": "Movie", "Marvel's Avengers": "TV Series", "Yellowstone": "TV Series", "Mass Effect: Paragon Lost": "Movie", "Bupkis": "TV Series", "Ted Lasso": "TV Series", "Star Wars": "Movie"}
+
 
     extra_services = list(extra_services_to_movies)
-    extra_prices = [7.99, 6.99, 9.99, 8.99, 8.00, 74.99, 7.99, 4.99, 6.99, 64.99] #, 13.99, 6.99, 6.99, 11.99, 4.99]
-    # extra_prices = [7.99, 6.99]
+    extra_prices = [7.99, 6.99, 9.99, 8.99, 8.00, 74.99, 7.99, 4.99, 6.99, 64.99] 
+
     for i in range(len(extra_services)):
         if extra_services[i] not in services:
             prices[extra_services[i]] = extra_prices[i]
             services.append(extra_services[i])
     
 
-    # print("///////////////////////////////////////////////////////////////////////////////////////////////", providers, prices, services)
 
 
     def helper(providers, prices, services, budget):
@@ -264,7 +248,6 @@ def runOptimization(request):
 
         objective = cp.sum(1 - cp.vstack([x[m] for m in watchlist]))
 
-        # print("##################################################################################################", providers, "\n", prices, "\n", services )
 
 
         constraints = [
@@ -315,44 +298,31 @@ def runOptimization(request):
     services_copy = services_orig.copy()
     prices_copy = prices_orig.copy()
     
-    # Run the first iteration of the algorithm. If it returns 0, then there are no bundles, and return the empty dict
-    # output, stream_opt, w = helper(providers, prices, services, budget)
-    # if output == 0:
-    #     return Response([{}])
+
     all_outputs = []
-    # all_outputs.append(output)
 
     budget_rounded_down = int(budget//1)
     for i in range(0, budget_rounded_down):
         output = helper(providers, prices, services, budget - i)
+        progress = (i + 1) / budget_rounded_down * 100
+        cache.set('progress', progress, 300)
         if output != 0 and (output not in all_outputs): 
             if output["Movies_and_TV_Shows"] != []:
                 if output["Total_Cost"] == 0: 
                     output["Total_Cost"] = 0.00000001
                 all_outputs.append(output)
+                
+    # For some reason there were bundles produced with no services but with movies
+    to_remove = []
+    for i in range(len(all_outputs)):
+        if all_outputs[i]["Streaming_Services"] == []:
+            to_remove.append(all_outputs[i])
+    for output in to_remove:
+        all_outputs.remove(output)
+                
     if len(all_outputs) == 0:
         return Response(["No Bundles"])
 
-
-    # sorted_outputs = sorted(all_outputs, key=lambda d: (-len(d["Movies_and_TV_Shows"]), d["Total_Cost"])) 
-
-    # print("#############################################################################################################", all_outputs, len(all_outputs))
-    # x = 5 + 's'
-
-    
-    # sorted_outputs_efficiency = sorted(all_outputs, key=lambda d: (-(len(d["Movies_and_TV_Shows"]) / d["Total_Cost"]), -len(d["Movies_and_TV_Shows"]))) 
-    # for i in range(len(all_outputs)):
-    #     all_outputs[i]["Type"] = []
-    #     for media in all_outputs[i]["Movies_and_TV_Shows"]:
-    #         print(media)
-    #         found = 0
-    #         for object in data:
-    #             if media == object["title"]:
-    #                 all_outputs[i]["Type"].append(object["type"])
-    #                 found = 1
-    #                 print(found)
-    #         if media in stupid_fucking_dict.keys() and found == 0:
-    #             all_outputs[i]["Type"].append(stupid_fucking_dict[media])
 
 
     realOutputs = []
@@ -368,9 +338,17 @@ def runOptimization(request):
                     all_outputs[0]["Type"].append(object["type"])
                     found = 1
                     #print(found)
-            if media in stupid_fucking_dict.keys() and found == 0:
-                all_outputs[0]["Type"].append(stupid_fucking_dict[media])
+            if media in types_dict.keys() and found == 0:
+                all_outputs[0]["Type"].append(types_dict[media])
+        a = all_outputs[0].copy()
+        a["Title"] = ""
+        a["Images"] = []
+        a["Total_Cost"] = 0
+        a["Movies_and_TV_Shows"] = []
+        realOutputs.append(getServiceImages(a))
         realOutputs.append(getServiceImages(all_outputs[0]))
+        realOutputs.append(getServiceImages(a))
+
         return Response(realOutputs)
     if len(all_outputs) == 2:
         #print("#############################################################################################################all2outputs", all_outputs)
@@ -397,8 +375,8 @@ def runOptimization(request):
                         o["Type"].append(object["type"])
                         found = 1
                         #print(found)
-                if media in stupid_fucking_dict.keys() and found == 0:
-                    o["Type"].append(stupid_fucking_dict[media])
+                if media in types_dict.keys() and found == 0:
+                    o["Type"].append(types_dict[media])
 
             realOutputs.append(getServiceImages(o))
             for movie_or_tv_show in to_be_removed:
@@ -407,12 +385,20 @@ def runOptimization(request):
         basic = sorted(realOutputs, key=lambda d: (-len(d["Movies_and_TV_Shows"]), d["Total_Cost"], ))[0]
         realOutputs.remove(basic)
         most_money = realOutputs[0]
-        most_money["Title"] = "Closest to Your Budget"
-        most_money["Subheader"] = "Don't mind spending a litte extra?"
+        most_money["Title"] = "Maximize Your Budget"
+        del most_money["Subheader"]
 
+        
         VeryRealOutputs = []
-        VeryRealOutputs.append(most_money)
+        a = basic.copy()
+        a["Title"] = ""
+        a["Images"] = []
+        a["Total_Cost"] = 0
+        a["Movies_and_TV_Shows"] = []
+        VeryRealOutputs.append(a)
         VeryRealOutputs.append(basic)
+        VeryRealOutputs.append(most_money)
+        
 
         return Response(VeryRealOutputs)
     
@@ -444,14 +430,14 @@ def runOptimization(request):
             
             o["Type"] = []
             for media in o["Movies_and_TV_Shows"]:
-                print(media)
+                #print(media)
                 found = 0
                 for object in data:
                     if media == object["title"]:
                         o["Type"].append(object["type"])
                         found = 1
-                if media in stupid_fucking_dict.keys() and found == 0:
-                    o["Type"].append(stupid_fucking_dict[media])
+                if media in types_dict.keys() and found == 0:
+                    o["Type"].append(types_dict[media])
 
 
 
@@ -464,10 +450,10 @@ def runOptimization(request):
         realOutputs.remove(basic)
         most_efficient = sorted(realOutputs, key=lambda d: (d["Total_Cost"], len(d["Movies_and_TV_Shows"])))[0]
         most_efficient["Title"] = "Efficiency Bundle"
-        most_efficient["Subheader"] = "Most bang for your buck"
+        del most_efficient["Subheader"]
         most_money = sorted(realOutputs, key=lambda d: (-d["Total_Cost"], -len(d["Movies_and_TV_Shows"])))[0]
-        most_money["Title"] = "Closest to Your Budget"
-        most_money["Subheader"] = "Don't mind spending a litte extra?"
+        most_money["Title"] = "Maximize Your Budget"
+        del most_money["Subheader"]
 
         VeryRealOutputs = []
         
