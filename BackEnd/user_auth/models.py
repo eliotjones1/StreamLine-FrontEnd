@@ -25,6 +25,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.email} - {self.first_name} {self.last_name}"
+    def to_json(self):
+        user_data = {
+            'id': self.id,
+        }
+        return json.dumps(user_data)
     
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
@@ -57,3 +62,6 @@ class UserData(models.Model):
     budget = models.CharField(max_length=10)
     bundle = models.JSONField()
     media = models.JSONField()
+
+
+

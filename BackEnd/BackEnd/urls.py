@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('api.urls')),
     path('api/', include('user_auth.urls')),
     path('api/password_reset/', include('django_rest_passwordreset.urls', namespace = 'password_reset')),
+    path('api/recommendations/', include('recommendations.urls')),
 ]

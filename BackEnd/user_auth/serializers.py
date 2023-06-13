@@ -66,3 +66,5 @@ class UserDataSerializer(serializers.ModelSerializer):
     model = UserData
     fields = '__all__'
 
+
+
