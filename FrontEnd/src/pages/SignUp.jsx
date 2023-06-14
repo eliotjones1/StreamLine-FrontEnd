@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
 import Header from '../partials/Header';
@@ -19,10 +20,10 @@ function SignUp() {
       document.getElementById('confirm-password').value = '';
     } else {
       let data = {
-        "email": document.getElementById('email').value,
-        "password": document.getElementById('password').value,
-        "first_name": document.getElementById('first-name').value,
-        "last_name": document.getElementById('last-name').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        first_name: document.getElementById('first-name').value,
+        last_name: document.getElementById('last-name').value,
       };
       axios.post('http://127.0.0.1:8000/api/auth/register', data).then(response => {
         Cookies.set('session', JSON.stringify(response.data), {
@@ -35,7 +36,7 @@ function SignUp() {
         // Add Error Modal
       });
     }
-  }
+  };
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Header />
@@ -76,13 +77,13 @@ function SignUp() {
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <label className="block text-slate-800 dark:text-gray-300 text-sm font-medium mb-1" htmlFor="password">Password <span className="text-red-600">*</span></label>
-                      <input id="password" type="password" className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900" placeholder="Password" minlength="8" required />
+                      <input id="password" type="password" className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900" placeholder="Password" minLength="8" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <label className="block text-slate-800 dark:text-gray-300 text-sm font-medium mb-1" htmlFor="confirmpswd">Confirm Password <span className="text-red-600">*</span></label>
-                      <input id="confirm-password" type="password" className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900" placeholder="Password" minlength="8" required />
+                      <input id="confirm-password" type="password" className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900" placeholder="Password" minLength="8" required />
                     </div>
                   </div>
                   <div className="text-sm text-slate-700 dark:text-gray-500 text-center">

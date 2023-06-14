@@ -47,22 +47,24 @@ function DisplaySelected({items, onRemoveItem}) {
                   </Typography>
                   <div>
                   {
-                    item.release_date !== null &&
+                    item.release_date !== null && (
                     <Typography variant="caption">
                       Release Date: {item.release_date}
                     </Typography>
-                  }
+                  )
+}
                   </div>
                   {
-                    item.type !== null &&
+                    item.type !== null && (
                     <Typography variant="caption">
                       Type: {item.type}
                     </Typography>
-                  }
+                  )
+}
                 </div>
               </div>
               {
-                onRemoveItem !== undefined &&
+                onRemoveItem !== undefined && (
                 <div>
                   <IconButton
                     size="small"
@@ -73,7 +75,8 @@ function DisplaySelected({items, onRemoveItem}) {
                     <CheckCircleOutlineIcon />
                   </IconButton>
                 </div>
-              }
+              )
+}
             </Box>
           ))}
         </Stack>

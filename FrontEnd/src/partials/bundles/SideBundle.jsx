@@ -39,7 +39,7 @@ function SideBundle({ bundle, userData, dashPin, isLeft }) {
               <>
                 <span className="text-3xl">$</span>
                 {
-                  isNaN(bundle.Total_Cost)
+                  Number.isNaN(bundle.Total_Cost)
                   ? <span className="font-bold">0.00</span>
                   : <span className="font-bold">{parseFloat(bundle.Total_Cost).toFixed(2)}</span>
                 }

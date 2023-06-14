@@ -12,7 +12,7 @@ function FeaturesZigzag() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
             <div className="inline-flex text-sm font-semibold py-1 px-3 m-2 text-sky-900 bg-sky-300 rounded-full mb-4">Trademark Service</div>
-            <h1 className="h2 mb-4">Save Time and Money with StreamLine's Optimization Algorithm</h1>
+            <h1 className="h2 mb-4">Save Time and Money with StreamLine&apos;s Optimization Algorithm</h1>
             <p className="text-xl text-slate-600 dark:text-gray-400">Identify opportunities for subscription consolidating, realignment, upgrading or cancelling to better align with your budget and preferences.</p>
           </div>
 
@@ -30,7 +30,7 @@ function FeaturesZigzag() {
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
                   <div className="font-architects-daughter text-xl text-sky-600 mb-2">More content. Less spending.</div>
                   <h3 className="h3 mb-3">Subscription Optimization</h3>
-                  <p className="text-xl text-slate-600 dark:text-gray-400 mb-4">Optimize your subscriptions with StreamLine's algorithm-based bundle suggestions. Simply provide your budget and preferences, and let us handle the rest.</p>
+                  <p className="text-xl text-slate-600 dark:text-gray-400 mb-4">Optimize your subscriptions with StreamLine&apos;s algorithm-based bundle suggestions. Simply provide your budget and preferences, and let us handle the rest.</p>
                   <ul className="text-lg text-slate-600 dark:text-gray-400 -mb-2">
                     <li className="flex items-center mb-2">
                       <svg className="w-3 h-3 fill-current text-green-500 mr-2 shrink-0" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">

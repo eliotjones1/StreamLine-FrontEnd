@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import DefaultMovieImg from '../../images/StreamLine.jpeg';
 import axios from 'axios';
+import DefaultMovieImg from '../../images/StreamLine.jpeg';
 
 function ContentSearch({ onAddItem }) {
   const [dropdownOptions, setDropdownOptions] = useState([]);
@@ -8,6 +8,22 @@ function ContentSearch({ onAddItem }) {
   const [hoveredItemIndex, setHoveredItemIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResultsCache, setSearchResultsCache] = useState(new Map());
+
+  const handleInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };  
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (showDropdown && dropdownOptions.length > 0) {
+      const selectedOption = dropdownOptions[hoveredItemIndex];
+      if (selectedOption) {
+        onAddItem(selectedOption);
+        setSearchQuery('');
+        setShowDropdown(false);
+      }
+    }
+  };
 
   useEffect(() => {
     if (searchQuery && !searchResultsCache.has(searchQuery)) {
@@ -51,23 +67,6 @@ function ContentSearch({ onAddItem }) {
     return () => document.removeEventListener('keydown', keyHandler);
   }, [showDropdown]);
 
-  const handleInputChange = (event) => {
-    setSearchQuery(event.target.value);
-  };  
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (showDropdown && dropdownOptions.length > 0) {
-      const selectedOption = dropdownOptions[hoveredItemIndex];
-      if (selectedOption) {
-        onAddItem(selectedOption);
-        setSearchQuery('');
-        setShowDropdown(false);
-      }
-    }
-  };
-  
-
   return (
     <section>
       <div className="max-w-3xl mx-auto text-center pb-6 md:pt-32 md:pb-8">
@@ -78,7 +77,7 @@ function ContentSearch({ onAddItem }) {
 
       <form className="max-w-4xl mx-auto relative" onSubmit={(event) => handleSubmit(event)}>
         <div className="container relative max-w-4xl mx-auto w-full pb-10">
-        <input id="searchInput" type="text" placeholder="Search Desired Content..." className="absolute pl-10 pr-4 rounded-md text-gray-900 bg-slate-100 dark:bg-white placeholder-gray-500 w-full" value={searchQuery} onChange={handleInputChange}autoComplete="off"
+        <input id="searchInput" type="text" placeholder="Search Desired Content..." className="absolute pl-10 pr-4 rounded-md text-gray-900 bg-slate-100 dark:bg-white placeholder-gray-500 w-full" value={searchQuery} onChange={handleInputChange} autoComplete="off"
         />
           <button className="absolute left-3 h-full" type="submit">
             <svg className="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -87,7 +86,7 @@ function ContentSearch({ onAddItem }) {
             </svg>
           </button>
         </div>
-        {showDropdown && dropdownOptions.length > 0 &&
+        {showDropdown && dropdownOptions.length > 0 && (
           <ul className="realtive w-full mt-1 bg-slate-200 dark:bg-white rounded-md">
             {dropdownOptions.map((option, index) => (
               <li className={hoveredItemIndex === index ? "flex flex-row p-2 bg-slate-300 text-slate-800 dark:bg-slate-700 dark:text-white rounded-md" : "flex flex-row p-2 text-slate-900"} key={index} onClick={(event) => handleSubmit(event)} onMouseEnter={() => setHoveredItemIndex(index)}>
@@ -95,8 +94,7 @@ function ContentSearch({ onAddItem }) {
                   <div className="pl-2">
                     <p className="font-bold text-base">{option.title}</p>
                     { option.release_date !== null &&
-                      <p className="text-xs">Release Date: {option.release_date}</p>
-                    }
+                      <p className="text-xs">Release Date: {option.release_date}</p>}
                     {
                       option.type !== null &&
                       <p className="text-xs">Type: {option.type}</p>
@@ -105,7 +103,7 @@ function ContentSearch({ onAddItem }) {
               </li>
             ))}
           </ul>
-        }
+        )}
       </form>
     </section>
   );

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,9 +9,9 @@ function Constraints({media, budget, onSetBudget}) {
   const setLocalStorage = () => {
     let newBudget = parseFloat(document.getElementById("budget").value);
     if (media.length === 0){
-      alert("Please select desired content!");
-    } else if (isNaN(newBudget)) {
-      alert("Please provide a valid budget!");
+      // Add Error Modal : No Content Selected
+    } else if (Number.isNaN(newBudget)) {
+      // Add Error Modal : No Budget Selected
     } else {
       localStorage.setItem('budget', JSON.stringify(newBudget));
       nav('/results');
@@ -27,7 +27,7 @@ function Constraints({media, budget, onSetBudget}) {
           <div className="container relative pb-10">
             {
               session !== undefined ?
-              <input id="budget" type="number" value={budget} onChange={(event) => {onSetBudget(event.target.value)}} step="0.01" min="0" className="absolute rounded-md pl-6 pr-1 text-right bg-slate-100 dark:bg-white text-gray-900 placeholder-gray-500"/>
+              <input id="budget" type="number" value={budget} onChange={(event) => {onSetBudget(event.target.value);}} step="0.01" min="0" className="absolute rounded-md pl-6 pr-1 text-right bg-slate-100 dark:bg-white text-gray-900 placeholder-gray-500"/>
               :
               <input id="budget" type="number" placeholder='0.00' step="0.01" min="0" className="absolute rounded-md pl-6 pr-1 text-right text-gray-900 bg-slate-100 dark:bg-white placeholder-gray-500"/>
             }

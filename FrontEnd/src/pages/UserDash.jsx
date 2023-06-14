@@ -17,7 +17,7 @@ function UserDash() {
       setBundle(response.data.bundle);
       setMedia(response.data.media);
     }).catch(error => {
-      console.log(error);
+      // Add Error Modal
     });
   }, []);
 

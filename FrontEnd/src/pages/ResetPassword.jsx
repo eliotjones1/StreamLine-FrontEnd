@@ -10,14 +10,14 @@ function ResetPassword() {
   function reset_pwd(event) {
     event.preventDefault();
     let data = {
-      "email": document.getElementById('email').value
-    }
+      email: document.getElementById('email').value
+    };
     axios.post('http://127.0.0.1:8000/api/password_reset/', data).then(() => {
       nav('/signin');
     }).catch(error => {
       // Add Error Modal
       document.getElementById('email').value = '';
-    })
+    });
 
   }
 
@@ -36,7 +36,7 @@ function ResetPassword() {
 
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
                 <h1 className="h1 mb-4">Forgot your password?</h1>
-                <p className="text-xl text-slate-600 dark:text-gray-400">We'll email you instructions on how to reset it.</p>
+                <p className="text-xl text-slate-600 dark:text-gray-400">We&apos;ll email you instructions on how to reset it.</p>
               </div>
 
               <div className="max-w-sm mx-auto">

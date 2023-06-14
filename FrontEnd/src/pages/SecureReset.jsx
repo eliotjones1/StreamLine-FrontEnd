@@ -18,16 +18,16 @@ function ResetPassword() {
       document.getElementById('confirm-password').value = '';
     } else {
       let data = {
-        "token": window.location.search.substring(1),
-        "password": document.getElementById('new-password').value
-      }
+        token: window.location.search.substring(1),
+        password: document.getElementById('new-password').value
+      };
       axios.post('http://127.0.0.1:8000/api/password_reset/confirm/', data).then(() => {
         nav('/signin');
       }).catch(error => {
         // Add Error Modal
       });
     }
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">

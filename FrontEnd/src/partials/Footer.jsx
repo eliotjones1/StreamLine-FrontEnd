@@ -17,7 +17,7 @@ function Footer() {
               <div className="mb-2">
                 {/* Logo */}
                 <button className="inline-block" aria-label="Cruip" onClick={() => nav('/')}>
-                  <img className="w-8 h-8 fill-current text-blue-200" viewBox="0 0 32 32" src='/src/images/StreamLine_Transparent_Logo.png'/>
+                  <img className="w-8 h-8 fill-current text-blue-200" src='/src/images/StreamLine_Transparent_Logo.png'/>
                 </button>
               </div>
               <h3 className='font-bold'>Contact Us</h3>

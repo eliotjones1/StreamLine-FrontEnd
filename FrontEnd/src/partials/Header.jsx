@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import Dropdown from '../utils/Dropdown';
+
+import Logo from "../images/StreamLine_Transparent_Logo.png";
 
 function Header() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -41,7 +42,7 @@ function Header() {
       // Use Cookies Library to Remove Instead
     }).catch(error => {
       // Add Error Modal
-    })
+    });
   }
 
   return (
@@ -52,16 +53,16 @@ function Header() {
           {/* Site branding */}
           <div className="shrink-0 mr-4">
             {/* Logo */}
-            <div onClick={() => nav('/')} className="block hover:cursor-pointer" aria-label="StreamLine">
-              <img className="w-8 h-8 fill-current text-blue-200" viewBox="0 0 32 32" src='/src/images/StreamLine_Transparent_Logo.png' />
-            </div>
+            <button onClick={() => nav('/')} className="block" aria-label="StreamLine">
+              <img className="w-8 h-8 fill-current text-blue-200" src={Logo} />
+            </button>
           </div>
 
           {/* Desktop navigation */}
           <nav className="hidden md:flex md:grow">
 
             {/* Desktop Buttons => Either Sign-In and Sign-UP or Logout and UserDash */}
-            { session !== undefined ?
+            { session !== undefined ? (
               <ul className="flex grow justify-end flex-wrap items-center">
                 <li>
                   <button className="font-medium text-sky-600 hover:text-gray-200 px-4 py-3 flex items-center transition duration-150 ease-in-out" onClick={logout}>Log Out</button>
@@ -75,7 +76,8 @@ function Header() {
                 )}
 
               </ul>
-            :
+            )
+            : (
               <ul className="flex grow justify-end flex-wrap items-center">
               <li>
                 <button onClick={() => nav('/signin')} className="font-medium text-sky-600 hover:text-gray-200 px-4 py-3 flex items-center transition duration-150 ease-in-out">
@@ -87,8 +89,8 @@ function Header() {
                   Sign up
                 </button>
               </li>
-            </ul>
-            }
+              </ul>
+            )}
 
           </nav>
 
@@ -106,19 +108,20 @@ function Header() {
             </button>
 
             {/* Mobile navigation */}
-            <nav id="mobile-nav" ref={mobileNav} className="absolute top-full z-20 left-0 w-full px-4 sm:px-6 overflow-hidden transition-all duration-300 ease-in-out" style={mobileNavOpen ? { maxHeight: mobileNav.current.scrollHeight, opacity: 1 } : { maxHeight: 0, opacity: .8 } }>
-              { session !== undefined ?
+            <nav id="mobile-nav" ref={mobileNav} className="absolute top-full z-20 left-0 w-full px-4 sm:px-6 overflow-hidden transition-all duration-300 ease-in-out" style={mobileNavOpen ? { maxHeight: mobileNav.current.scrollHeight, opacity: 1 } : { maxHeight: 0, opacity: 0.8 } }>
+              { session !== undefined ? (
                 <ul className="bg-gray-800 px-4 py-2">
                   <li>
                     <button onClick={logout} className="flex font-medium w-full text-sky-600 hover:text-gray-200 py-2 justify-center">Logout</button>
                   </li>
-                  {location.pathname !== "/user-dash" && 
+                  {location.pathname !== "/user-dash" && (
                     <li>
                       <button onClick={() => nav("/user-dash")} className="font-medium w-full inline-flex items-center justify-center border border-transparent px-4 py-2 my-2 rounded-sm text-white bg-sky-600 hover:bg-sky-700 transition duration-150 ease-in-out">My Dashboard</button>
                     </li>
-                  }
+                  )}
                 </ul>
-              :
+              )
+              : (
                 <ul className="bg-gray-800 px-4 py-2">
                   <li>
                     <button onClick={() => nav('/signin')} className="flex font-medium w-full text-sky-600 hover:text-gray-200 py-2 justify-center">Sign in</button>
@@ -127,7 +130,7 @@ function Header() {
                     <button onClick={() => nav('/signup')} className="font-medium w-full inline-flex items-center justify-center border border-transparent px-4 py-2 my-2 rounded-sm text-white bg-sky-600 hover:bg-sky-700 transition duration-150 ease-in-out">Sign up</button>
                   </li>
                 </ul>
-              }
+              )}
               
             </nav>
           </div>

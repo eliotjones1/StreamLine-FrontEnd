@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-import { Constraints, ContentSearch, DisplaySelected, Header, PageIllustration } from '../partials'
+import { Constraints, ContentSearch, DisplaySelected, Header, PageIllustration } from '../partials';
 
 function SearchMedia() {
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
@@ -41,7 +41,7 @@ function SearchMedia() {
         // Add Error Modal
       });
     }
-  }
+  };
 
   const removeAll = () => {
     setMedia([]);
@@ -52,7 +52,7 @@ function SearchMedia() {
     } else {
       localStorage.removeItem('selectedContent');
     }
-  }
+  };
 
   useEffect(() => {
     if (session !== undefined) {
@@ -81,11 +81,11 @@ function SearchMedia() {
             <div className="container max-w-4xl w-full mx-auto">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold mb-4">Selected Movies/Shows</h2>
-                {media.length !== 0  &&
+                {media.length !== 0  && (
                   <button className="text-2xl font-bold mb-4 bg-transparent border-none cursor-pointer text-gray-500" onClick={removeAll}>
                     Clear All
                   </button>
-                }
+                )}
               </div>
               <DisplaySelected items={media} onRemoveItem={removeItem}/>
             </div>
