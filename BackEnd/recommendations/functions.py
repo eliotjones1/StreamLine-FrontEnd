@@ -130,7 +130,6 @@ def generateData(page_input):
                     new.media_type = "movie"
                 else:
                     new.media_type = "tv"
-                new.media_type = entry['media_type']
                 # Save the entry
                 new.save()
             if 'title' in entry:

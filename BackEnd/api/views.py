@@ -8,7 +8,7 @@ import cvxpy as cp
 from user_auth.models import UserData, CustomUser
 from user_auth.serializers import UserDataSerializer
 from django.core.cache import cache
-
+from fuzzywuzzy import fuzz
 # Create your views here.
 class ListMovies(generics.ListAPIView):
     def get(self, request):
@@ -131,9 +131,69 @@ class ListMedia(generics.ListAPIView):
                     'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
                     'type': 'TV Series'
                     })
+
         output = serialized_movies[0:2] + serialized_shows[0:2]
         return Response(output)
-    
+
+class returnAll(generics.ListAPIView):
+    def get(self, request):
+        search_query = request.query_params.get('search', None)
+        if search_query is None:
+            return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
+
+        title = search_query
+        # Get Movies
+        api_key = "95cd5279f17c6593123c72d04e0bedfa"
+        base_url = "https://api.themoviedb.org/3/"
+        endpoint = "search/movie?"
+        query = title
+        full_url = base_url + endpoint + "api_key=" + api_key + "&language=en-US&query=" + query + "&page=1&include_adult=false"
+        response = requests.get(full_url)
+
+        if response.status_code != 200:
+            return None
+
+        movie_data = response.json()['results']
+
+        # Get shows
+        api_key = "95cd5279f17c6593123c72d04e0bedfa"
+        base_url = "https://api.themoviedb.org/3/"
+        endpoint = "search/tv?"
+        query = title
+        full_url = base_url + endpoint + "api_key=" + api_key + "&language=en-US&query=" + query + "&include_adult=false"
+        response = requests.get(full_url)
+
+        if response.status_code != 200:
+            return None
+
+        tv_data = response.json()['results']
+        serialized_output = []
+        for movie in movie_data:
+            streaming_providers = getStreamingProviderMovie(movie['id'])
+
+            serialized_output.append({
+                'title': movie['title'],
+                'release_date': movie['release_date'],
+                'image': movie['poster_path'],
+                'rating': movie['vote_average'],
+                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'type': 'Movie'
+            })
+        for show in tv_data:
+            streaming_providers = getStreamingProviderShow(show['id'])
+            serialized_output.append({
+                'title': show['name'],
+                'release_date': show['first_air_date'],
+                'image': show['poster_path'],
+                'rating': show['vote_average'],
+                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'type': 'TV Series'
+            })
+
+
+        to_be_returned = sorted(serialized_output, key = lambda k: fuzz.ratio(k['title'], title), reverse = True)
+        return to_be_returned
+
 @api_view(['GET'])
 def getProgress(request):
     progress = cache.get('progress', 0)  # default to 0 if no progress is stored
