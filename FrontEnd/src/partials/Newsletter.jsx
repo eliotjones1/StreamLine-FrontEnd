@@ -33,7 +33,7 @@ function Newsletter() {
             <form className="w-full lg:w-1/2">
               <div className="flex flex-col sm:flex-row justify-center max-w-xs mx-auto sm:max-w-md lg:max-w-none">
                 <input type="email" className="w-full appearance-none bg-sky-700 border border-sky-500 focus:border-sky-300 rounded-sm px-4 py-3 mb-2 sm:mb-0 sm:mr-2 text-white placeholder-sky-400" placeholder="Your email…" aria-label="Your email…" />
-                <a className="btn text-sky-600 bg-sky-100 hover:bg-white shadow">Subscribe</a>
+                <button className="btn text-sky-600 bg-sky-100 hover:bg-white shadow">Subscribe</button>
               </div>
               {/* Success message */}
               {/* <p className="text-center lg:text-left lg:absolute mt-2 opacity-75 text-sm">Thanks for subscribing!</p> */}

@@ -7,12 +7,14 @@ import PageIllustration from '../partials/PageIllustration';
 
 function SignUp() {
   const nav = useNavigate();
-  function sign_up(event) {
+
+  const sign_up = (event) => {
     event.preventDefault();
     let pswd = document.getElementById('password').value;
     let confirm_pswd = document.getElementById('confirm-password').value;
+
     if (pswd !== confirm_pswd) {
-      alert('Passwords Do Not Match!');
+      // Add Error Modal
       document.getElementById('password').value = '';
       document.getElementById('confirm-password').value = '';
     } else {
@@ -22,29 +24,23 @@ function SignUp() {
         "first_name": document.getElementById('first-name').value,
         "last_name": document.getElementById('last-name').value,
       };
-      axios.post('http://127.0.0.1:8000/api/auth/register', data).then((response) => {
-        const sessionJSON = JSON.stringify(response.data);
-        const expirationDate = new Date();
-        expirationDate.setTime(expirationDate.getTime() + (24 * 60 * 60 * 1000));
-        document.cookie = `session=${sessionJSON}; expires=${expirationDate.toUTCString()}; path=/`;
+      axios.post('http://127.0.0.1:8000/api/auth/register', data).then(response => {
+        Cookies.set('session', JSON.stringify(response.data), {
+          path: '/',
+          secure: true,
+          sameSite: 'strict',
+        });
         nav('/user-dash');
-      }).catch((error) => {
-        console.log(error);
-        alert(JSON.stringify(error.response.data.password[0]));
-        document.getElementById('password').value
+      }).catch(error => {
+        // Add Error Modal
       });
     }
   }
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-
-      {/*  Site header */}
       <Header />
 
-      {/*  Page content */}
       <main className="grow">
-
-        {/*  Page illustration */}
         <div className="relative max-w-6xl mx-auto h-0 pointer-events-none" aria-hidden="true">
           <PageIllustration />
         </div>
@@ -53,12 +49,10 @@ function SignUp() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
 
-              {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-6 md:pb-10">
                 <h1 className="h1">Welcome! We exist to make streaming easier.</h1>
               </div>
 
-              {/* Form */}
               <div className="max-w-sm mx-auto">
                 <form onSubmit={sign_up}>
                   <div className="flex flex-wrap -mx-3 mb-4">
@@ -93,7 +87,7 @@ function SignUp() {
                   </div>
                   <div className="text-sm text-slate-700 dark:text-gray-500 text-center">
                     I agree to be contacted by StreamLine about this offer as per the StreamLine <Link to="#" className="underline text-slate-600 dark:text-gray-400 dark:hover:text-gray-200 hover:text-slate-200 hover:no-underline transition duration-150 ease-in-out">Privacy Policy</Link>.
-                                </div>
+                  </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
                       <button type="submit" className="btn text-white bg-sky-600 hover:bg-sky-700 w-full">Sign up</button>

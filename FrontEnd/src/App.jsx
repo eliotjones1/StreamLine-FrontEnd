@@ -1,26 +1,14 @@
 import React, { useEffect } from 'react';
-import {
-  Routes,
-  Route,
-  useLocation
-} from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import 'aos/dist/aos.css';
 import './css/style.css';
 
 import AOS from 'aos';
 
-import Home from './pages/Home';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import ResetPassword from './pages/ResetPassword';
-import Optimize from './pages/Optimize';
-import Bundles from './pages/Bundles';
-import UserDash from './pages/UserDash';
-import SecureReset from './pages/SecureReset';
+import {Home, SignIn, SignUp, ResetPassword, Bundles, UserDash, SecureReset, SearchMedia} from './pages';
 
 function App() {
-
   const location = useLocation();
 
   useEffect(() => {
@@ -45,7 +33,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/search" element={<Optimize />} />
+        <Route path="/search" element={<SearchMedia />} />
         <Route path ="/results" element={<Bundles/>}/>
         <Route path="/user-dash" element={<UserDash/>}/>
         <Route path="/secure-reset" element={<SecureReset/>}/>

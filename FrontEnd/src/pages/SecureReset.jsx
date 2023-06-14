@@ -2,16 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import PageIllustration from '../partials/PageIllustration';
+import { PageIllustration } from '../partials';
 
 function ResetPassword() {
   const nav = useNavigate();
-  function reset_pwd(event) {
+
+  const reset_pwd = (event) => {
     event.preventDefault();
     let pswd = document.getElementById('new-password').value;
     let confirm_pswd = document.getElementById('confirm-password').value;
+    
     if (pswd !== confirm_pswd) {
-      alert('Passwords Do Not Match!');
+      // Add Error Modal
       document.getElementById('new-password').value = '';
       document.getElementById('confirm-password').value = '';
     } else {
@@ -21,23 +23,16 @@ function ResetPassword() {
       }
       axios.post('http://127.0.0.1:8000/api/password_reset/confirm/', data).then(() => {
         nav('/signin');
-      }).catch((error) => {
-        if (error.response.data.password !== undefined){
-          alert(JSON.stringify(error.response.data.password[0]));
-        }
-        if (error.response.data.detail !== undefined){
-          alert("Invalid Password Reset!");
-        }
+      }).catch(error => {
+        // Add Error Modal
       });
     }
   }
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-      {/*  Page content */}
-      <main className="grow">
 
-        {/*  Page illustration */}
+      <main className="grow">
         <div className="relative max-w-6xl mx-auto h-0 pointer-events-none" aria-hidden="true">
           <PageIllustration />
         </div>
@@ -46,12 +41,10 @@ function ResetPassword() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
 
-              {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
                 <h1 className="h1 mb-4"><span className="text-sky-500">StreamLine</span> Password Reset</h1>
               </div>
-
-              {/* Form */}
+              
               <div className="max-w-sm mx-auto">
                 <form onSubmit={reset_pwd}>
                   <div className="flex flex-wrap -mx-3 mb-4">

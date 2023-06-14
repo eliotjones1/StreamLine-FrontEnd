@@ -26,8 +26,8 @@
 ::-webkit-scrollbar {
     background-color: transparent;
     width: 6px; /* Adjust the width */
-  height: 6px; /* Adjust the height */
-  margin: 10px;
+    height: 6px; /* Adjust the height */
+    margin: 10px;
   }
   
   ::-webkit-scrollbar-thumb {

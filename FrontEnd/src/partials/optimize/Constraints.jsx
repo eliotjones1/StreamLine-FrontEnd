@@ -1,11 +1,14 @@
 import React from 'react'
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
-function Constraints({items, budget, onSetBudget}) {
+function Constraints({media, budget, onSetBudget}) {
   const nav = useNavigate();
+  const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
+
   const setLocalStorage = () => {
     let newBudget = parseFloat(document.getElementById("budget").value);
-    if (items.length === 0){
+    if (media.length === 0){
       alert("Please select desired content!");
     } else if (isNaN(newBudget)) {
       alert("Please provide a valid budget!");
@@ -23,7 +26,7 @@ function Constraints({items, budget, onSetBudget}) {
           <h2 className="text-2xl font-bold pr-4">Budget:</h2>
           <div className="container relative pb-10">
             {
-              document.cookie !== "" ?
+              session !== undefined ?
               <input id="budget" type="number" value={budget} onChange={(event) => {onSetBudget(event.target.value)}} step="0.01" min="0" className="absolute rounded-md pl-6 pr-1 text-right bg-slate-100 dark:bg-white text-gray-900 placeholder-gray-500"/>
               :
               <input id="budget" type="number" placeholder='0.00' step="0.01" min="0" className="absolute rounded-md pl-6 pr-1 text-right text-gray-900 bg-slate-100 dark:bg-white placeholder-gray-500"/>
@@ -32,17 +35,8 @@ function Constraints({items, budget, onSetBudget}) {
               $
             </span>
           </div>
-          {items.length === 0 ? <p></p> : <a className="text-2xl font-bold h-full cursor-pointer text-sky-500" onClick={setLocalStorage}>Submit</a>}
-          
+          <button className="text-2xl font-bold h-full cursor-pointer text-sky-500" onClick={setLocalStorage}>Submit</button>
         </div>
-
-
-        
-        {/* <div className="pb-6">
-          <a className="btn cursor-pointer text-white bg-sky-600 hover:bg-sky-700 w-full mb-4 sm:w-auto sm:mb-0" onClick={setLocalStorage}>
-            Submit
-          </a>
-        </div> */}
       </div>
     </section>
   );

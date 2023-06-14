@@ -21,7 +21,7 @@ function Founders() {
           <div className="max-w-sm mx-auto grid gap-8 lg:grid-cols-4 lg:gap-6 items-start lg:max-w-none">
 
             {/* 1st Founder */}
-            <div className="flex flex-col h-full p-6 bg-slate-100 dark:bg-slate-800 shadow-xl">
+            <div className="flex flex-col h-full p-6 rounded-lg bg-slate-100 dark:bg-slate-800 shadow-xl">
               <div>
                 <div className="relative inline-flex flex-col mb-4">
                   <img className="rounded-full" src={RyanHeadshot} width="48" height="48" alt="Testimonial 01" />
@@ -37,7 +37,7 @@ function Founders() {
               </div>
 
               {/* 2nd Founder */}
-              <div className="flex flex-col h-full p-6 bg-slate-100 dark:bg-slate-800 shadow-xl">
+              <div className="flex flex-col h-full p-6 rounded-lg bg-slate-100 dark:bg-slate-800 shadow-xl">
                 <div>
                   <div className="relative inline-flex flex-col mb-4">
                     <img className="rounded-full" src={EliotHeadshot} width="48" height="48" alt="Testimonial 02" />
@@ -53,7 +53,7 @@ function Founders() {
                 </div>
 
                 {/* 3rd Founder */}
-              <div className="flex flex-col h-full p-6 bg-slate-100 dark:bg-slate-800 shadow-xl">
+              <div className="flex flex-col h-full p-6 rounded-lg bg-slate-100 dark:bg-slate-800 shadow-xl">
                 <div>
                   <div className="relative inline-flex flex-col mb-4">
                     <img className="rounded-full" src={JoshKHeadshot} width="48" height="48" alt="Testimonial 02" />
@@ -69,7 +69,7 @@ function Founders() {
                 </div>
 
                 {/* 4th Founder */}
-                <div className="flex flex-col h-full p-6 bg-slate-100 dark:bg-slate-800 shadow-xl">
+                <div className="flex flex-col h-full p-6 rounded-lg bg-slate-100 dark:bg-slate-800 shadow-xl">
                   <div>
                     <div className="relative inline-flex flex-col mb-4">
                       <img className="rounded-full" src={JoshFHeadshot} width="48" height="48" alt="Testimonial 03" />

@@ -12,10 +12,10 @@ function FeaturesBlocks() {
             <p className="text-xl text-slate-600 dark:text-gray-400">StreamLine's innovative features make subscription management effortless. Explore our selection of tools designed to save you time and simplify your streaming experience.</p>
           </div>
 
-          {/* Items */}
+          {/* Blocks */}
           <div className="max-w-sm mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-16 items-start md:max-w-2xl lg:max-w-none" data-aos-id-blocks>
 
-            {/* 1st item */}
+            {/* 1st Block */}
             <div className="relative flex flex-col items-center" data-aos="fade-up"  data-aos-anchor="[data-aos-id-blocks]">
               <svg className="w-16 h-16 mb-4" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <rect className="fill-current text-sky-600" width="64" height="64" rx="32" />
@@ -26,7 +26,7 @@ function FeaturesBlocks() {
               <p className="text-lg text-slate-600 dark:text-gray-400 text-center">Our subscription management feature handles the hassle of switching subscriptions for you, working with your budget, so you don't have to worry about a thing.</p>
             </div>
             
-            {/* 2nd item */}
+            {/* 2nd Block */}
             <div className="relative flex flex-col items-center" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="[data-aos-id-blocks]">
               <svg className="w-16 h-16 mb-4" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <circle className="fill-current text-sky-600" cx="32" cy="32" r="32" />
@@ -37,7 +37,7 @@ function FeaturesBlocks() {
               <p className="text-lg text-slate-600 dark:text-gray-400 text-center">Stay on top of your subscription services with StreamLine's Notifications feature. Get real-time alerts for new subscriptions, renewals, billing cycles, and price changes.</p>
             </div>
 
-            {/* 3rd item */}
+            {/* 3rd Block */}
             <div className="relative flex flex-col items-center" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="[data-aos-id-blocks]">
             <svg className="w-16 h-16 mb-4" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <rect className="fill-current text-sky-600" width="64" height="64" rx="32" />
