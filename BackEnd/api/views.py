@@ -207,69 +207,10 @@ def runOptimization(request):
     data = data[:-1]
 
     providers, prices, services = modify_input(data)
-
-    watchlist = list(providers.keys())
-    if len(watchlist) == 0:
-        return Response(["No movies available"], status=status.HTTP_400_BAD_REQUEST)
-    x = {m: cp.Variable(boolean=True) for m in watchlist}
-    y = {s: cp.Variable(boolean=True) for s in services}
-
-    objective = cp.sum(1 - cp.vstack([x[m] for m in watchlist]))
-
-
-    constraints = [
-        cp.sum(cp.vstack([y[s] * prices[s] for s in services])) <= budget,
-    ]
-    for m in providers:
-        print(m)
-        constraints += [x[m] <= cp.sum(cp.vstack([y[s] for s in providers[m]]))]
-        for s in services:
-            if s in providers[m]:
-                constraints += [y[s] <= cp.sum(cp.vstack([x[m] for m in providers]))]
-    
-    problem = cp.Problem(cp.Minimize(objective), constraints)
-    problem.solve()
-    watch_opt = []
-    stream_opt = []
-    for m in watchlist:
-        if x[m].value == 1:
-            watch_opt.append(m)
-    for s in services:
-        if y[s].value == 1:
-            stream_opt.append(s)
-    
-    z = {m: cp.Variable(boolean=True) for m in watch_opt}
-    w = {s: cp.Variable(boolean=True) for s in stream_opt}
-
-    objective = cp.sum(cp.vstack([w[s] * prices[s] for s in stream_opt]))
-
-    constraints = [
-        cp.sum(cp.vstack([w[s] * prices[s] for s in stream_opt])) <= budget
-    ]
-    for m in watch_opt:
-        constraints.append(cp.sum(cp.vstack([w[s] for s in stream_opt if s in providers[m]])) >= z[m])
-        constraints.append(z[m] == 1)
-
-    
-    new_problem = cp.Problem(cp.Minimize(objective), constraints)
-    new_problem.solve()
-
-    output = {}
-    output["Title"] = "Value Bundle"
-    output["Subheader"] = "StreamLine Recommended"
-    output["Movies_and_TV_Shows"] = []
-    output["Streaming_Services"] = []
-    output["Total_Cost"] = 0
-    
-    output["Movies_and_TV_Shows"] = watch_opt
-    
-    for s in stream_opt:
-        if w[s].value == 1:
-            output["Streaming_Services"].append(s)
-            output["Total_Cost"] += prices[s]
-
-    realOutput = getServiceImages(output)
-    return Response([realOutput.copy(), realOutput, realOutput.copy()])
+    streamLine = optimize1(providers, prices, services, budget, data)
+    maximal = optimize2(providers, prices, services, data)
+    minimal = optimize3(providers, prices, services, budget, data)
+    return Response([minimal, streamLine, maximal])
 
 
 @api_view(['POST'])
