@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django_rest_passwordreset",
     "sendgrid",
     "recommendations",
+    "prod_management",
 ]
 
 MIDDLEWARE = [

@@ -3,6 +3,7 @@ import json
 from rest_framework.response import Response
 from rest_framework import generics, status
 import pandas as pd
+import cvxpy as cp
 
 # This function takes in a string parameter which is a movie title, and uses 
 # the TMDB API to return a top five list of movies that match
@@ -322,6 +323,175 @@ def getServiceImages(output):
             service_info = df.loc[location, :] # Get pandas 
             tempOutput["Links"].append(service_info["Link"])
     return tempOutput
+
+def optimize1(providers, prices, services, budget, data):
+
+    watchlist = list(providers.keys())
+    if len(watchlist) == 0:
+        return Response(["Not available"], status=status.HTTP_400_BAD_REQUEST)
+    x = {m: cp.Variable(boolean=True) for m in watchlist}
+    y = {s: cp.Variable(boolean=True) for s in services}
+
+    objective = cp.sum(1 - cp.vstack([x[m] for m in watchlist]))
+
+
+    constraints = [
+        cp.sum(cp.vstack([y[s] * prices[s] for s in services])) <= budget,
+    ]
+    for m in providers:
+        constraints += [x[m] <= cp.sum(cp.vstack([y[s] for s in providers[m]]))]
+        for s in services:
+            if s in providers[m]:
+                constraints += [y[s] <= cp.sum(cp.vstack([x[m] for m in providers]))]
+
+    problem = cp.Problem(cp.Minimize(objective), constraints)
+    problem.solve()
+    watch_opt = []
+    stream_opt = []
+    for m in watchlist:
+        if x[m].value == 1:
+            watch_opt.append(m)
+    for s in services:
+        if y[s].value == 1:
+            stream_opt.append(s)
+
+    z = {m: cp.Variable(boolean=True) for m in watch_opt}
+    w = {s: cp.Variable(boolean=True) for s in stream_opt}
+
+    objective = cp.sum(cp.vstack([w[s] * prices[s] for s in stream_opt]))
+
+    constraints = [
+        cp.sum(cp.vstack([w[s] * prices[s] for s in stream_opt])) <= budget
+    ]
+    for m in watch_opt:
+        constraints.append(cp.sum(cp.vstack([w[s] for s in stream_opt if s in providers[m]])) >= z[m])
+        constraints.append(z[m] == 1)
+
+
+    new_problem = cp.Problem(cp.Minimize(objective), constraints)
+    new_problem.solve()
+
+    output = {}
+    output["Title"] = "Value Bundle"
+    output["Subheader"] = "StreamLine Recommended"
+    output["Movies_and_TV_Shows"] = []
+    output["Streaming_Services"] = []
+    output["Total_Cost"] = 0
+
+    output["Movies_and_TV_Shows"] = watch_opt
+    output["Type"] = []
+    for s in stream_opt:
+        if w[s].value == 1:
+            output["Streaming_Services"].append(s)
+            output["Total_Cost"] += prices[s]
+
+    for media in output["Movies_and_TV_Shows"]:
+        for object in data:
+            if media == object["title"]:
+                output["Type"].append(object["type"])
+
+    realOutput = getServiceImages(output)
+    return realOutput
+
+def optimize2(providers, prices, services, data):
+    watchlist = list(providers.keys())
+    if len(watchlist) == 0:
+        return Response(["Not available"], status=status.HTTP_400_BAD_REQUEST)
+    x = {m: cp.Variable(boolean=True) for m in watchlist}
+    y = {s: cp.Variable(boolean=True) for s in services}
+
+    objective = cp.Minimize(cp.sum(cp.vstack([y[s] * prices[s] for s in services])))
+    constraints = []
+    for m in watchlist:
+        constraints.append(cp.sum(cp.vstack([y[s] for s in services if s in providers[m]])) >= x[m])
+        constraints.append(x[m] == 1)
+        for s in services:
+            if s in providers[m]:
+                constraints += [y[s] <= cp.sum(cp.vstack([x[m] for m in providers]))]
+    problem = cp.Problem(objective, constraints)
+    problem.solve()
+
+    output = {}
+    output["Title"] = "Everything Bundle"
+    output["Subheader"] = "Want it all?"
+    output["Movies_and_TV_Shows"] = []
+    output["Streaming_Services"] = []
+    output["Total_Cost"] = 0
+
+    output["Movies_and_TV_Shows"] = [m for m in watchlist]
+    output["Type"] = []
+
+    for s in services:
+        if y[s].value == 1:
+            output["Streaming_Services"].append(s)
+            output["Total_Cost"] += prices[s]
+
+    for media in output["Movies_and_TV_Shows"]:
+        for object in data:
+            if media == object["title"]:
+                output["Type"].append(object["type"])
+
+    realOutput = getServiceImages(output)
+    return realOutput
+
+
+def optimize3(providers, prices, services, budget, data):
+    watchlist = list(providers.keys())
+    if len(watchlist) == 0:
+        return Response(["Not available"], status=status.HTTP_400_BAD_REQUEST)
+    x = {m: cp.Variable(boolean=True) for m in watchlist}
+    y = {s: cp.Variable(boolean=True) for s in services}
+
+    objective = cp.Minimize(cp.sum(1 - cp.vstack([x[m] for m in watchlist])))
+
+    constraints = [
+        cp.sum(cp.vstack([y[s] * prices[s] for s in services])) <= budget,
+        cp.sum(cp.vstack(y[s] for s in services)) == 1
+    ]
+    for m in providers:
+        constraints += [x[m] <= cp.sum(cp.vstack([y[s] for s in providers[m]]))]
+        for s in services:
+            if s in providers[m]:
+                constraints += [y[s] <= cp.sum(cp.vstack([x[m] for m in providers]))]
+    problem = cp.Problem(objective, constraints)
+    problem.solve()
+
+    output = {}
+    output["Title"] = "Just One Bundle"
+    output["Subheader"] = "Only want one?"
+    output["Movies_and_TV_Shows"] = []
+    output["Streaming_Services"] = []
+    output["Total_Cost"] = 0
+
+    output["Movies_and_TV_Shows"] = []
+    output["Type"] = []
+    for s in services:
+        if y[s].value == 1:
+            output["Streaming_Services"].append(s)
+            output["Total_Cost"] += prices[s]
+
+    for m in watchlist:
+        if x[m].value == 1:
+            output["Movies_and_TV_Shows"].append(m)
+
+    for media in output["Movies_and_TV_Shows"]:
+        for object in data:
+            if media == object["title"]:
+                output["Type"].append(object["type"])
+
+    realOutput = getServiceImages(output)
+    return realOutput
+
+
+
+
+
+
+
+
+
+
+
 
 
         
