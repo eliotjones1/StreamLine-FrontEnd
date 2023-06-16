@@ -2,15 +2,13 @@ from django.shortcuts import render
 from django.contrib.auth import get_user_model, logout, authenticate
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-
-
 from . import serializers
 from .utils import get_and_authenticate_user, create_user_account
-from .models import CustomUser, UserData
+from .models import CustomUser, UserData, UserEmail
 # Create your views here.
 
 User = get_user_model()
@@ -68,6 +66,4 @@ class AuthViewSet(viewsets.GenericViewSet):
         if self.action in self.serializer_classes.keys():
             return self.serializer_classes[self.action]
         return super().get_serializer_class()
-
-    
 

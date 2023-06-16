@@ -8,12 +8,13 @@ import cvxpy as cp
 import numpy as np
 import pandas as pd
 from django.core.cache import cache
-from user_auth.models import *
+from user_auth.models import CustomUser
 from user_auth.serializers import *
 from .models import *
 from .serializers import *
 from surprise import Reader, Dataset
 from .functions import *
+from api.functions import *
 
 
 @api_view(['POST'])
@@ -25,9 +26,14 @@ def saveRating(request):
     # This rating corresponds to the TMDB ID of the media, and gets saved to their account. Have users rate by choosing a number 1-10.
     # Maybe prompt them to rate some stuff in the beginning, and then have them rate media as they remove them from their list.
     user = data[0]
-    object_id = data[1]
+    object = data[1]
     rating = data[2]
     user_exists = CustomUser.objects.get(email = user)
+
+    if object["Type"] == "TV Series":
+        object_id = getIDShow(object["Title"])
+    else:
+        object_id = getIDMovie(object["Title"])
 
     # If there is a MediaRatings entry with the same object_id and user, we want to override it with new information. 
     # Else, create a new entry
@@ -71,3 +77,10 @@ class generate(generics.ListAPIView):
             return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Query set to 0'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def saveEmail(request):
+    email = request.data
+    new_email = UserEmail(email=email)
+    new_email.save()
+    return Response(status=status.HTTP_200_OK)

@@ -205,7 +205,7 @@ def runOptimization(request):
     # remove "budget" from data
     budget = data[-1]
     data = data[:-1]
-
+    
     providers, prices, services = modify_input(data)
     streamLine = optimize1(providers, prices, services, budget, data)
     maximal = optimize2(providers, prices, services, data)

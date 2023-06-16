@@ -8,6 +8,7 @@ from .models import *
 from .serializers import *
 from surprise import Reader, Dataset, SVD
 from user_auth.models import CustomUser
+from api.functions import *
 
 DATA_HAS_BEEN_GENERATED = 0
 
@@ -46,9 +47,16 @@ def returnData(target_user_id):
             }
 
             response = requests.get(url, headers=headers)
-            info = response.json()
-            info['type'] = "tv"
-            recs.append(info)
+            show = response.json()
+            streaming_providers = getStreamingProviderShow(show['id'])
+            recs.append({
+                "title": show["Title"],
+                'release_date': show['first_air_date'],
+                'image': show['poster_path'],
+                'rating': show['vote_average'],
+                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'type': 'TV Series'
+            })
         else:
             url = "https://api.themoviedb.org/3/movie/" + str(id) + "?language=en-US"
             headers = {
@@ -56,12 +64,18 @@ def returnData(target_user_id):
                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
             }
             response = requests.get(url, headers=headers)
-            info = response.json()
-            info['type'] = "movie"
-            recs.append(info)
-    
+            movie = response.json()
+            streaming_providers = getStreamingProviderMovie(movie['id'])
+            recs.append({
+                'title': movie['title'],
+                'release_date': movie['release_date'],
+                'image': movie['poster_path'],
+                'rating': movie['vote_average'],
+                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'type': 'Movie'
+            })
     return recs
-        
+
 
 def generateData(page_input):
     if DATA_HAS_BEEN_GENERATED == 1:
@@ -78,9 +92,9 @@ def generateData(page_input):
         print(url)
 
         headers = {
-                    "accept": "application/json",
-                     "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
-                }
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
+        }
 
         response_movies = requests.get(url, headers=headers)
 
@@ -88,9 +102,9 @@ def generateData(page_input):
         url = "https://api.themoviedb.org/3/tv/popular?language=en-US&page=" + page_input
 
         headers = {
-                    "accept": "application/json",
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
-                }
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
+        }
 
         response_tv = requests.get(url, headers=headers)
         print(response_movies.status_code)
@@ -137,13 +151,13 @@ def generateData(page_input):
             else:
                 print(entry['name'] + " was a success!")
         return 1
-        
 
 
 
-        
 
 
-            
-        
+
+
+
+
 
