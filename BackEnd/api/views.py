@@ -9,6 +9,8 @@ from user_auth.models import UserData, CustomUser
 from user_auth.serializers import UserDataSerializer
 from django.core.cache import cache
 from fuzzywuzzy import fuzz
+from django.contrib.sessions.models import Session
+from django.utils import timezone
 # Create your views here.
 class ListMovies(generics.ListAPIView):
     def get(self, request):
@@ -215,6 +217,11 @@ def runOptimization(request):
 
 @api_view(['POST'])
 def saveBudget(request):
+    # get sessionid from request cookie
+    sessionid = request.COOKIES.get('sessionid')
+    # Check if session is active
+    if isSessionActive(sessionid) == False:
+        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     data = request.data
     # Expect email to be at 0
     # Expect budget to be at 1
@@ -228,6 +235,11 @@ def saveBudget(request):
 
 @api_view(['POST'])
 def saveMedia(request):
+    # get sessionid from request cookie
+    sessionid = request.COOKIES.get('sessionid')
+    # Check if session is active
+    if isSessionActive(sessionid) == False:
+        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     data = request.data
     # Expect email to be at 0
     # Expect Media to be at 1
@@ -241,6 +253,11 @@ def saveMedia(request):
 
 @api_view(['POST'])
 def saveBundle(request):
+    # get sessionid from request cookie
+    sessionid = request.COOKIES.get('sessionid')
+    # Check if session is active
+    if isSessionActive(sessionid) == False:
+        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     data = request.data
     # Expect email to be at 0
     # Expect bundle to be at 1
@@ -252,8 +269,16 @@ def saveBundle(request):
     current.save()
     return Response({"Status":"OK"})
 
+
 class returnUserData(generics.ListAPIView):
      def get(self, request):
+        # get sessionid from request cookie
+        sessionid = request.COOKIES.get('sessionid')
+        # Check if session is active
+        if isSessionActive(sessionid) == False:
+            return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+        # Get user from session
+
         query = request.query_params.get('email', None)
         if query is None:
             return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
@@ -263,6 +288,16 @@ class returnUserData(generics.ListAPIView):
         serializer = UserDataSerializer(output)
         return Response(serializer.data)
          
+def isSessionActive(sessionid):
+    try:
+        session = Session.objects.get(pk=sessionid)
+    except session.doesNotExist:
+        return False
+    if session.expire_date > timezone.now():
+        return True
+    else:
+        return False
     
+
 
 

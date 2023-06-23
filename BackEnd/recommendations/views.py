@@ -71,7 +71,7 @@ class generate(generics.ListAPIView):
         if query is None:
             return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
         elif query == '1':
-            for i in range(14,29):
+            for i in range(1,26):
                 page_input = str(i)
                 generateData(page_input)
             return Response({'Status': 'OK'}, status=status.HTTP_200_OK)

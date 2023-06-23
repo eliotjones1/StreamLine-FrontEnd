@@ -11,7 +11,7 @@ class Command(BaseCommand):
         User = get_user_model()
         fake = Faker()
 
-        num_users = 1000 - 1085  # Set the desired number of fake users (current amount of users = 1085)
+        num_users = 1000 # Set the desired number of fake users (current amount of users = 504)
         if num_users <= 0: 
             pass
         for _ in range(num_users):
