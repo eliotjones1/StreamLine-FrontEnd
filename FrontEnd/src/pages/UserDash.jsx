@@ -12,7 +12,7 @@ function UserDash() {
   const nav = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/returnData/?email=${session.email}`).then(response => {
+    axios.get(`http://127.0.0.1:8000/returnData/?email=${session.email}`, {withCredentials: true}).then(response => {
       setBudget(parseFloat(JSON.parse(response.data.budget)).toFixed(2));
       setBundle(response.data.bundle);
       setMedia(response.data.media);

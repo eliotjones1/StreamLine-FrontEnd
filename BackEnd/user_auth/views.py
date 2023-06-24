@@ -37,7 +37,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         session.save()
         data = serializers.AuthUserSerializer(user).data
         response = Response(data=data, status=status.HTTP_200_OK)
-        response.set_cookie('sessionid', session.session_key, httponly=True, samesite='Strict', secure=True, max_age=3600)
+        response.set_cookie('sessionid', session.session_key, httponly=True, samesite='None', secure=True, max_age=3600)
         print(response.cookies)
         return response
 
@@ -64,10 +64,10 @@ class AuthViewSet(viewsets.GenericViewSet):
     @action(methods=['POST', ], detail=False)
     def logout(self, request):
         # Delete the session
-        # session_key = request.COOKIES.get('sessionid')
-        # print(session_key)
-        # session = Session.objects.get(session_key=session_key)
-        # session.delete()
+        session_key = request.COOKIES.get('sessionid')
+        print(session_key)
+        session = Session.objects.get(session_key=session_key)
+        session.delete()
         logout(request)
         data = {'success': 'Sucessfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)

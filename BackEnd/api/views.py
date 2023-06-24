@@ -201,6 +201,16 @@ def getProgress(request):
     progress = cache.get('progress', 0)  # default to 0 if no progress is stored
     return Response({'progress': progress})
 
+def isSessionActive(sessionid):
+    try:
+        session = Session.objects.get(pk=sessionid)
+    except:
+        return False
+    if session.expire_date > timezone.now():
+        return True
+    else:
+        return False
+    
 @api_view(['POST'])
 def runOptimization(request):
     data = request.data
@@ -272,8 +282,9 @@ def saveBundle(request):
 
 class returnUserData(generics.ListAPIView):
      def get(self, request):
-        # get sessionid from request cookie
+        # # get sessionid from request cookie
         sessionid = request.COOKIES.get('sessionid')
+        # print(sessionid)
         # Check if session is active
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
@@ -288,15 +299,7 @@ class returnUserData(generics.ListAPIView):
         serializer = UserDataSerializer(output)
         return Response(serializer.data)
          
-def isSessionActive(sessionid):
-    try:
-        session = Session.objects.get(pk=sessionid)
-    except session.doesNotExist:
-        return False
-    if session.expire_date > timezone.now():
-        return True
-    else:
-        return False
+
     
 
 

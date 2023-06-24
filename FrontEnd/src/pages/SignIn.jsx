@@ -21,12 +21,14 @@ function SignIn() {
       password: document.getElementById('password').value,
       keepSignedIn: isChecked,
     };
-    axios.post('http://127.0.0.1:8000/api/auth/login', data).then(response => {
+    axios.post('http://127.0.0.1:8000/api/auth/login', data,  { withCredentials: true }).then(response => {
       Cookies.set('session', JSON.stringify(response.data), {
         path: '/',
         secure: true,
         sameSite: 'strict',
       });
+       // Extract cookies from the response headers
+       const setCookieHeader = response.headers.get('set-cookie');
       nav('/user-dash');
     }).catch(error => {
       // Add Error Modal

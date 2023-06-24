@@ -36,7 +36,7 @@ function Header() {
 
   function logout(event) {
     event.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/auth/logout', {}).then(() => {
+    axios.post('http://127.0.0.1:8000/api/auth/logout', {}, {withCredentials: true}).then(() => {
       nav('/');
       document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       // Use Cookies Library to Remove Instead

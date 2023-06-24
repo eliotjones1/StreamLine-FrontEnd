@@ -107,49 +107,49 @@ def generateData(page_input):
         }
 
         response_tv = requests.get(url, headers=headers)
-        print(response_movies.status_code)
         movie_pop = response_movies.json()
         tv_pop = response_tv.json()
 
-        top_thousand_movies = movie_pop['results'][0:1000]
-        top_thousand_tv = tv_pop['results'][0:1000]
+        top_movies = movie_pop['results']
+        top_tv = tv_pop['results']
 
         # Create a list of all the media
-        media_list = top_thousand_movies + top_thousand_tv
-
         # For each entry in media_list
         # for each user in the database
         # Generate a random number between 1 and 10 from normal distribution centered around vote_average of media
         # Create a new MediaRatings entry with the user, media, and rating
         # Save the entry
-        for entry in media_list:
+
+        for entry in top_movies:
             for user in users:
                 # Generate a random number between 1 and 10 from normal distribution centered around vote_average of media
-                rating = np.random.normal(entry['vote_average'], 1)
-                # Create a new MediaRatings entry with the user, media, and rating
-                if MediaRatings.objects.filter(media_id = entry['id'], user_id = user.to_json()).exists():
-                    cur = MediaRatings.objects.get(media_id = entry['id'], user_id = user.to_json())
-                    if entry in top_thousand_movies:
-                        cur.media_type = "movie"
-                    else:
-                        cur.media_type = "tv"
-                    cur.save()
-                    continue
-
+                rating = np.random.normal(entry['vote_average'], 1)                
                 new = MediaRatings()
                 new.media_id = entry['id']
                 new.user_id = user.to_json()
                 new.rating = rating
-                if entry in top_thousand_movies:
-                    new.media_type = "movie"
-                else:
-                    new.media_type = "tv"
+                new.media_type = "movie"
                 # Save the entry
                 new.save()
             if 'title' in entry:
                 print(entry['title'] + " was a success!")
             else:
                 print(entry['name'] + " was a success!")
+
+        for entry in top_tv:
+            for user in users:
+                rating = np.random.normal(entry['vote_average'], 1)
+                new = MediaRatings()
+                new.media_id = entry['id']
+                new.user_id = user.to_json()
+                new.rating = rating
+                new.media_type = "tv"
+                new.save()
+            if 'title' in entry:
+                print(entry['title'] + " was a success!")
+            else:
+                print(entry['name'] + " was a success!")
+
         return 1
 
 
