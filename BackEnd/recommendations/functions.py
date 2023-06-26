@@ -128,7 +128,7 @@ def generateData(page_input):
                 new.media_id = entry['id']
                 new.user_id = user.to_json()
                 new.rating = rating
-                new.media_type = "movie"
+                new.type = "movie"
                 # Save the entry
                 new.save()
             if 'title' in entry:
@@ -143,7 +143,7 @@ def generateData(page_input):
                 new.media_id = entry['id']
                 new.user_id = user.to_json()
                 new.rating = rating
-                new.media_type = "tv"
+                new.type = "tv"
                 new.save()
             if 'title' in entry:
                 print(entry['title'] + " was a success!")
