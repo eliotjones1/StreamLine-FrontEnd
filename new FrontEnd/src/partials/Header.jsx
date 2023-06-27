@@ -6,13 +6,14 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-
+import Cookies from 'js-cookie';
+import axios from 'axios';
 import Logo from '../images/StreamLine_Transparent_Logo.png'
 import { useNavigate } from 'react-router-dom'
 
 const products = [
-  { name: 'Discover Content', description: 'Get a better understanding of your traffic', href: '/search', icon: MagnifyingGlassIcon },
-  { name: 'Bundle Optimization', description: 'Speak directly to your customers', href: '/bundles', icon: ChartPieIcon },
+  { name: 'Discover Content', description: 'Search for movies and television in the U.S.', href: '/search', icon: MagnifyingGlassIcon },
+  { name: 'Bundle Optimization', description: 'Let our algorithm work for you', href: '/bundles', icon: ChartPieIcon },
 ]
 const callsToAction = [
   { name: 'Watch demo', href: '/34567', icon: PlayCircleIcon },
@@ -25,35 +26,14 @@ function classNames(...classes) {
 
 export default function Example() {
   const nav = useNavigate();
-<<<<<<< HEAD
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-=======
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
-
-  // close the mobile menu on click outside
-  useEffect(() => {
-    const clickHandler = ({ target }) => {
-      if (!mobileNav.current || !trigger.current) return;
-      if (!mobileNavOpen || mobileNav.current.contains(target) || trigger.current.contains(target)) return;
-      setMobileNavOpen(false);
-    };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
-  });
-
-  // close the mobile menu if the esc key is pressed
-  useEffect(() => {
-    const keyHandler = ({ keyCode }) => {
-      if (!mobileNavOpen || keyCode !== 27) return;
-      setMobileNavOpen(false);
-    };
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
-  });
 
   function logout(event) {
     event.preventDefault();
     axios.post('http://127.0.0.1:8000/api/auth/logout', {}, {withCredentials: true}).then(() => {
+      setIsLoggedIn(false);
       nav('/');
       document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       // Use Cookies Library to Remove Instead
@@ -61,7 +41,6 @@ export default function Example() {
       // Add Error Modal
     });
   }
->>>>>>> 6326b3dbe00f002edff74f07b01059c3f185e462
 
   return (
     <header className="absolute w-full z-30">
@@ -146,9 +125,36 @@ export default function Example() {
           </button>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </button>
+        { session !== undefined ? (
+              <ul className="flex grow justify-end flex-wrap items-center">
+                <li>
+                  <button className="btn-sm text-sm font-semibold leading-6 hover:bg-sky-900 ml-3" onClick={logout}>Log Out</button>
+                </li>
+                {location.pathname !== "/user-dash" && (
+                  <li>
+                    <button onClick={() => nav("/user-dash")} className="btn-sm text-sm font-semibold leading-6 hover:bg-sky-900 ml-3">
+                      My Dashboard
+                    </button>
+                  </li>
+                )}
+
+              </ul>
+            )
+            : (
+              <ul className="flex grow justify-end flex-wrap items-center">
+              <li>
+                <button onClick={() => nav('/signin')} className="btn-sm text-sm font-semibold leading-6 hover:bg-sky-900 ml-3">
+                  Sign in
+                </button>
+              </li>
+              <li>
+                <button onClick={() => nav('/signup')} className="btn-sm text-sm font-semibold leading-6 hover:bg-sky-900 ml-3">
+                  Sign up
+                </button>
+              </li>
+              </ul>
+            )}
+
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>

@@ -194,7 +194,7 @@ class returnAll(generics.ListAPIView):
 
 
         to_be_returned = sorted(serialized_output, key = lambda k: fuzz.ratio(k['title'], title), reverse = True)
-        return to_be_returned
+        return Response(to_be_returned)
 
 @api_view(['GET'])
 def getProgress(request):

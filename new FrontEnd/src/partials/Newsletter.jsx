@@ -11,7 +11,7 @@ function Newsletter() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post("NEED URL", {}).then(response => {
+    axios.post("http://127.0.0.1:8000/api/recommendations/saveEmail/", {inputEmail}, {withCredentials: true}).then(response => {
       setInputEmail("");
       // Add Success Modal
     }).catch(error => {

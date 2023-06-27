@@ -17,7 +17,7 @@ function SearchMedia() {
     let temp = media;
     temp.push(newMedia);
     if (session !== undefined) {
-      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, temp]).catch(error =>{
+      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, temp], { withCredentials: true }).catch(error =>{
         // Add Error Modal
       });
     } else {
@@ -29,7 +29,7 @@ function SearchMedia() {
     setMedia(media.filter((_, index) => index !== indexToRemove));
     let temp = media.filter((_, index) => index !== indexToRemove);
     if (session !== undefined) {
-      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, temp]).catch(error => {
+      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, temp], { withCredentials: true }).catch(error => {
         // Add Error Modal
       });
     } else {
@@ -40,7 +40,7 @@ function SearchMedia() {
   const updateBudget = (newVal) => {
     setBudget(newVal);
     if (session !== undefined) {
-      axios.post("http://127.0.0.1:8000/saveBudget/", [session.email, newVal]).catch(error => {
+      axios.post("http://127.0.0.1:8000/saveBudget/", [session.email, newVal], { withCredentials: true }).catch(error => {
         // Add Error Modal
       });
     }
@@ -49,7 +49,7 @@ function SearchMedia() {
   const removeAll = () => {
     setMedia([]);
     if (session !== undefined) {
-      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, []]).catch(error =>{
+      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, []], { withCredentials: true }).catch(error =>{
         // Add Error Modal
       });
     } else {
@@ -59,7 +59,7 @@ function SearchMedia() {
 
   useEffect(() => {
     if (session !== undefined) {
-      axios.get("http://127.0.0.1:8000/returnData/?email=" + session.email).then(response => {
+      axios.get("http://127.0.0.1:8000/returnData/?email=" + session.email, { withCredentials: true }).then(response => {
         setMedia(response.data.media);
         setBudget(JSON.parse(response.data.budget));
       }).catch(error => {

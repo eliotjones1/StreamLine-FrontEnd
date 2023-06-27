@@ -21,8 +21,8 @@ function Footer() {
               </div>
               <h3 className='font-bold mb-2'>Contact Us</h3>
               <div className="text-slate-600 dark:text-gray-400 mb-2">Stanford University 450 Serra Mall, Stanford, CA 94305</div>
-              <div className="text-slate-600 dark:text-gray-400 mb-2">(704) 773-9313</div>
-              <div className="text-slate-600 dark:text-gray-400 mb-2">rcdunn01@stanford.edu</div>
+              <div className="text-slate-600 dark:text-gray-400 mb-2">Ryan Dunn: rcdunn01@stanford.edu</div>
+              <div className="text-slate-600 dark:text-gray-400 mb-2">Eliot Jones: eliotj1@cs.stanford.edu</div>
             </div>
 
             {/* 2nd, 3rd and 4th blocks */}

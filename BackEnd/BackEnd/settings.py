@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "sendgrid",
     "recommendations",
     "prod_management",
+    "newsletter",
 ]
 
 MIDDLEWARE = [
@@ -155,7 +156,5 @@ EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = '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'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'ekj0512@gmail.com'
-
-
 
 

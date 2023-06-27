@@ -12,7 +12,7 @@ function ResetPassword() {
     let data = {
       email: document.getElementById('email').value
     };
-    axios.post('http://127.0.0.1:8000/api/password_reset/', data).then(() => {
+    axios.post('http://127.0.0.1:8000/api/password_reset/', data, { withCredentials: true }).then(() => {
       nav('/signin');
     }).catch(error => {
       // Add Error Modal

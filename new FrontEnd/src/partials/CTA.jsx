@@ -39,7 +39,7 @@ function CTA() {
                 Get started
               </button>
               <button 
-                onClick={() => nav('/signup')} 
+                onClick={() => nav('/aboutus')} 
                 className="text-sm font-semibold leading-6">
                 Learn more <span aria-hidden="true">→</span>
               </button>

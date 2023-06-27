@@ -21,13 +21,13 @@ function Founders() {
     },
     {
       name: 'Josh Karty',
-      role: 'Co-Founder / Irrelevant',
+      role: 'Co-Founder',
       location: 'Greensboro, North Carolina',
       imageUrl: JoshKHeadshot
     },
     {
       name: 'Josh Francis',
-      role: 'Co-Founder / Irrelevant',
+      role: 'Co-Founder',
       location: 'Palo Alto, California',
       imageUrl: JoshFHeadshot
     }
@@ -58,8 +58,9 @@ function Founders() {
             </li>
           ))}
         </ul>
+        <div>
+        </div>
       </div>
-
     </section>
   );
 }

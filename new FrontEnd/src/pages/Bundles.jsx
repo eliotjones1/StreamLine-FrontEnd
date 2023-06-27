@@ -19,7 +19,7 @@ function Bundles() {
   const nav = useNavigate();
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
   const dashPin = session !== undefined ? (bundle) => {
-    axios.post('http://127.0.0.1:8000/saveBundle/', [session.email, bundle]);
+    axios.post('http://127.0.0.1:8000/saveBundle/', [session.email, bundle], { withCredentials: true });
     nav('/user-dash');
   } : undefined;
 
@@ -29,7 +29,7 @@ function Bundles() {
       let budget;
 
       if (session !== undefined) {
-        const { data } = await axios.get(`http://127.0.0.1:8000/returnData/?email=${session.email}`);
+        const { data } = await axios.get(`http://127.0.0.1:8000/returnData/?email=${session.email}`, { withCredentials: true });
         optimizeData = data.media;
         setMedia(data.media);
         budget = JSON.parse(data.budget);
@@ -39,7 +39,7 @@ function Bundles() {
         budget = JSON.parse(localStorage.getItem('budget'));
       }
 
-      const { data } = await axios.post('http://127.0.0.1:8000/optimize/', [...optimizeData, budget]);
+      const { data } = await axios.post('http://127.0.0.1:8000/optimize/', [...optimizeData, budget], { withCredentials: true });
       setBundles(data);
     } catch (error) {
       // Add Error Modal
