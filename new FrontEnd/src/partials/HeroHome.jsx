@@ -16,7 +16,7 @@ export default function HeroHome() {
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 ring-1 bg-slate-900/5 dark:bg-white/5 p-2 ring-1 ring-white/10 hover:ring-gray-900/20">
               Announcing our deployment.{' '}
-              <button onClick={() => nav('/56789')} className="font-semibold text-sky-600">
+              <button onClick={() => nav('/news')} className="font-semibold text-sky-600">
                 <span className="absolute inset-0" aria-hidden="true" />
                 Read more <span aria-hidden="true">&rarr;</span>
               </button>
