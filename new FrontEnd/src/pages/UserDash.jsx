@@ -5,14 +5,27 @@ import axios from 'axios';
 
 import Header from '../partials/Header'
 import MainBundle from '../partials/bundles/MainBundle';
-import DisplaySelected from '../partials/optimize/DisplaySelected';
+import DisplaySelected from '../partials/optimize/DIsplayUD';
 
 function UserDash() {
   const [budget, setBudget] = useState(null);
   const [media, setMedia] = useState([]);
   const [bundle, setBundle] = useState({Movies_and_TV_Shows: [], Images: []});
+  const [recs, setRecs] = useState([]);
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
   const nav = useNavigate();
+
+  const removeItem = (indexToRemove) => {
+    setMedia(media.filter((_, index) => index !== indexToRemove));
+    let temp = media.filter((_, index) => index !== indexToRemove);
+    if (session !== undefined) {
+      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, temp], { withCredentials: true }).catch(error => {
+        // Add Error Modal
+      });
+    } else {
+      localStorage.setItem('selectedContent', JSON.stringify(temp));
+    }
+  };
 
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/returnData/?email=${session.email}`, {withCredentials: true}).then(response => {
@@ -55,7 +68,7 @@ function UserDash() {
               </div>
               <div className="container max-w-4xl w-full mx-auto">
                 <h2 className="text-2xl font-bold mb-2">Current Content</h2>
-                <DisplaySelected items={media}/>
+                <DisplaySelected items={media} onRemoveItem={removeItem}/>
               </div>
             </div>
           </section>

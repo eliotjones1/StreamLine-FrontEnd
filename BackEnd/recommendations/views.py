@@ -28,21 +28,21 @@ def saveRating(request):
     user = data[0]
     object = data[1]
     rating = data[2]
-    user_exists = CustomUser.objects.get(email = user)
-
-    if object["Type"] == "TV Series":
-        object_id = getIDShow(object["Title"])
+    user_exists = CustomUser.objects.get(email = user).id
+    print(user_exists)
+    if object["type"] == "TV Series":
+        object_id = getIDShow(object["title"])
     else:
-        object_id = getIDMovie(object["Title"])
+        object_id = getIDMovie(object["title"])
 
     # If there is a MediaRatings entry with the same object_id and user, we want to override it with new information. 
     # Else, create a new entry
-    if MediaRatings.objects.filter(media = object_id, user = user_exists).exists():
-        current = MediaRatings.objects.get(media = object_id, user = user_exists)
+    if MediaRatings.objects.filter(media_id = object_id, user_id = user_exists).exists():
+        current = MediaRatings.objects.get(media_id = object_id, user_id = user_exists)
         current.rating = rating
         current.save()
     else:
-        new = MediaRatings(media = object_id, user = user_exists, rating = rating)
+        new = MediaRatings(media_id = object_id, user_id = user_exists, rating = rating, type = object["type"])
         new.save()
 
     return Response({"Status":"OK"})

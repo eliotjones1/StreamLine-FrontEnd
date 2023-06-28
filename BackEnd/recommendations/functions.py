@@ -123,7 +123,7 @@ def generateData(page_input):
         for entry in top_movies:
             for user in users:
                 # Generate a random number between 1 and 10 from normal distribution centered around vote_average of media
-                rating = np.random.normal(entry['vote_average'], 1)                
+                rating = round(np.random.normal(entry['vote_average'], 1))             
                 new = MediaRatings()
                 new.media_id = entry['id']
                 new.user_id = user.to_json()

@@ -37,7 +37,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         session.save()
         data = serializers.AuthUserSerializer(user).data
         response = Response(data=data, status=status.HTTP_200_OK)
-        response.set_cookie('sessionid', session.session_key, httponly=True, samesite='None', secure=True, max_age=3600)
+        response.set_cookie('sessionid', session.session_key, httponly=True, samesite='None', secure=True)
         print(response.cookies)
         return response
 
@@ -55,9 +55,8 @@ class AuthViewSet(viewsets.GenericViewSet):
         session = SessionStore()
         session['user'] = user
         session.save()
-    
         response = Response(data=data, status=status.HTTP_201_CREATED)
-        response.set_cookie('sessionid', session.session_key, httponly=True, samesite='Strict', secure=True, max_age=3600)
+        response.set_cookie('sessionid', session.session_key, httponly=True, samesite='Strict', secure=True)
         return response
 
 
