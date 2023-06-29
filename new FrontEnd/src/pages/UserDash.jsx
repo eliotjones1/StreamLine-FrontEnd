@@ -3,15 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-import Header from '../partials/Header'
+import Header from '../partials/Header';
 import MainBundle from '../partials/bundles/MainBundle';
-import DisplaySelected from '../partials/optimize/DIsplayUD';
+import DisplaySelected from '../partials/optimize/DisplayUD';
+import Footer from '../partials/Footer';
+
 
 function UserDash() {
   const [budget, setBudget] = useState(null);
   const [media, setMedia] = useState([]);
-  const [bundle, setBundle] = useState({Movies_and_TV_Shows: [], Images: []});
-  const [recs, setRecs] = useState([]);
+  const [bundle, setBundle] = useState({ Movies_and_TV_Shows: [], Images: [] });
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
   const nav = useNavigate();
 
@@ -19,22 +20,27 @@ function UserDash() {
     setMedia(media.filter((_, index) => index !== indexToRemove));
     let temp = media.filter((_, index) => index !== indexToRemove);
     if (session !== undefined) {
-      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, temp], { withCredentials: true }).catch(error => {
-        // Add Error Modal
-      });
+      axios
+        .post("http://127.0.0.1:8000/saveMedia/", [session.email, temp], { withCredentials: true })
+        .catch((error) => {
+          // Add Error Modal
+        });
     } else {
       localStorage.setItem('selectedContent', JSON.stringify(temp));
     }
   };
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/returnData/?email=${session.email}`, {withCredentials: true}).then(response => {
-      setBudget(parseFloat(JSON.parse(response.data.budget)).toFixed(2));
-      setBundle(response.data.bundle);
-      setMedia(response.data.media);
-    }).catch(error => {
-      // Add Error Modal
-    });
+    axios
+      .get(`http://127.0.0.1:8000/returnData/?email=${session.email}`, { withCredentials: true })
+      .then((response) => {
+        setBudget(parseFloat(JSON.parse(response.data.budget)).toFixed(2));
+        setBundle(response.data.bundle);
+        setMedia(response.data.media);
+      })
+      .catch((error) => {
+        // Add Error Modal
+      });
   }, []);
 
   return (
@@ -48,10 +54,16 @@ function UserDash() {
               <span className="text-sky-500">StreamLine</span> Dashboard
             </h1>
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
-              <button className="btn bg-sky-600 hover:bg-sky-700 w-full mb-4 sm:w-auto sm:mb-0" onClick={() => nav('/search')}>
+              <button
+                className="btn bg-sky-600 hover:bg-sky-700 w-full mb-4 sm:w-auto sm:mb-0"
+                onClick={() => nav('/search')}
+              >
                 Edit Current Content
               </button>
-              <button className="btn bg-slate-800 dark:bg-slate-700 hover:bg-slate-800 w-full sm:w-auto sm:ml-4" onClick={() => nav('/results')}>
+              <button
+                className="btn bg-slate-800 dark:bg-slate-700 hover:bg-slate-800 w-full sm:w-auto sm:ml-4"
+                onClick={() => nav('/results')}
+              >
                 View Current Bundles
               </button>
             </div>
@@ -59,7 +71,6 @@ function UserDash() {
         </section>
 
         <div className="flex">
-
           <section className="w-1/2 px-8">
             <div className="flex flex-col justify-start max-w-4xl mx-auto py-2 pb-4 h-full">
               <h2 className="text-2xl font-bold mb-2">Current Monthly Budget</h2>
@@ -68,17 +79,18 @@ function UserDash() {
               </div>
               <div className="container max-w-4xl w-full mx-auto">
                 <h2 className="text-2xl font-bold mb-2">Current Content</h2>
-                <DisplaySelected items={media} onRemoveItem={removeItem}/>
+                <DisplaySelected items={media} onRemoveItem={removeItem} />
               </div>
             </div>
           </section>
 
           <section className="w-1/2 px-8 py-5">
-            <MainBundle bundle={bundle} userData={media}/>
-          </section> 
-
+            <MainBundle bundle={bundle} userData={media} />
+          </section>
         </div>
+        
       </main>
+      <Footer />
     </div>
   );
 }
