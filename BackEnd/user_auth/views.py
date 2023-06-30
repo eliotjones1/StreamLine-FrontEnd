@@ -56,7 +56,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         session['user'] = user
         session.save()
         response = Response(data=data, status=status.HTTP_201_CREATED)
-        response.set_cookie('sessionid', session.session_key, httponly=True, samesite='Strict', secure=True)
+        response.set_cookie('sessionid', session.session_key, httponly=True, samesite='None', secure=True)
         return response
 
 
