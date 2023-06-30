@@ -27,6 +27,10 @@ function News() {
 
   const handleChangeBaseIndex = (newBaseIndex) => {
     setBaseIndex(newBaseIndex);
+    window.scrollTo({
+      top: 100,
+      behavior: "smooth"
+    })
   };
 
   const handleToggleExpand = (postId) => {
