@@ -9,10 +9,9 @@ import axios from 'axios';
 export default function accountActions(){
   const nav = useNavigate();
   const accountOptions = [
-    {name: "Sign Out", icon: ArrowLeftOnRectangleIcon, action: () => logout},
+    {name: "Sign Out", icon: ArrowLeftOnRectangleIcon, action: (event) => logout(event)},
     {name: "Edit Account", icon: Cog6ToothIcon, action: () => nav('/account-settings')},
     {name: "My Dashboard", icon: WindowIcon, action: () => nav('/user-dash')}
-
   ];
   
   function logout(event) {

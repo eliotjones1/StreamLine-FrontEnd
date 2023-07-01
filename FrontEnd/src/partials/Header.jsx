@@ -12,10 +12,6 @@ import { useNavigate } from 'react-router-dom'
 
 import AccountActions from './AccountActions';
 
-/*
-        
-        */
-
 const products = [
   { name: 'Discover Content', description: 'Search for movies and television in the U.S.', href: '/search', icon: MagnifyingGlassIcon },
   { name: 'Bundle Optimization', description: 'Let our algorithm work for you.', href: '/bundles', icon: ChartPieIcon },
