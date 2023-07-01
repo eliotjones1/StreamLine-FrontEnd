@@ -7,6 +7,7 @@ import './css/style.css';
 import AOS from 'aos';
 
 import {Home, SignIn, SignUp, ResetPassword, Bundles, UserDash, SecureReset, SearchMedia, NotFound} from './pages';
+import AccountInfo from './pages/AccountInfo'
 import Pricing from './pages/Pricing';
 import News from './pages/News';
 import AboutUs from './pages/AboutUs';
@@ -43,6 +44,7 @@ function App() {
         <Route path="/pricing" element={<Pricing/>}/>
         <Route path="/news" element={<News/>}/>
         <Route path="/aboutus" element={<AboutUs/>}/>
+        <Route path="/account-settings" element={<AccountInfo/>}/>
 
         <Route path="*" element={<NotFound />} />
       </Routes>

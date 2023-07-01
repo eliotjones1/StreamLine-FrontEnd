@@ -5,15 +5,20 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon, WindowIcon } from '@heroicons/react/20/solid'
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import Logo from '../images/StreamLine_Transparent_Logo.png'
 import { useNavigate } from 'react-router-dom'
 
+import AccountActions from './AccountActions';
+
+/*
+        
+        */
+
 const products = [
   { name: 'Discover Content', description: 'Search for movies and television in the U.S.', href: '/search', icon: MagnifyingGlassIcon },
-  { name: 'Bundle Optimization', description: 'Let our algorithm work for you', href: '/bundles', icon: ChartPieIcon },
+  { name: 'Bundle Optimization', description: 'Let our algorithm work for you.', href: '/bundles', icon: ChartPieIcon },
 ]
 const callsToAction = [
   { name: 'Watch demo', href: '/34567', icon: PlayCircleIcon },
@@ -27,20 +32,7 @@ function classNames(...classes) {
 export default function Example() {
   const nav = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
-
-  function logout(event) {
-    event.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/auth/logout', {}, {withCredentials: true}).then(() => {
-      setIsLoggedIn(false);
-      nav('/');
-      document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      // Use Cookies Library to Remove Instead
-    }).catch(error => {
-      // Add Error Modal
-    });
-  }
 
   return (
     <header className="absolute w-full z-30">
@@ -82,20 +74,20 @@ export default function Example() {
                 <div className="p-4">
                   {products.map((item) => (
                     <div
-                      key={item.name}
-                      className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
-                    >
-                      <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <item.icon className="h-6 w-6 text-slate-700 group-hover:text-sky-600" aria-hidden="true" />
-                      </div>
-                      <div className="flex-auto">
-                        <button onClick={() => nav(item.href)} className="block font-semibold">
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </button>
-                        <p className="mt-1 text-gray-600">{item.description}</p>
-                      </div>
+                    key={item.name}
+                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
+                  >
+                    <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                      <item.icon className="h-6 w-6 text-slate-700 group-hover:text-sky-600" aria-hidden="true" />
                     </div>
+                    <div className="flex-auto">
+                      <button onClick={() => nav(item.href)} className="block font-semibold">
+                        {item.name}
+                        <span className="absolute inset-0" />
+                      </button>
+                      <p className="mt-1 text-gray-600">{item.description}</p>
+                    </div>
+                  </div>
                   ))}
                 </div>
                 <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
@@ -124,37 +116,20 @@ export default function Example() {
             About Us
           </button>
         </Popover.Group>
+
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-        { session !== undefined ? (
-              <ul className="flex grow justify-end flex-wrap items-center">
-                <li>
-                  <button className="btn-sm text-sm font-semibold leading-6 hover:bg-sky-900 ml-3" onClick={logout}>Log Out</button>
-                </li>
-                {location.pathname !== "/user-dash" && (
-                  <li>
-                    <button onClick={() => nav("/user-dash")} className="btn-sm text-sm font-semibold leading-6 hover:bg-sky-900 ml-3">
-                      My Dashboard
-                    </button>
-                  </li>
-                )}
-
-              </ul>
-            )
-            : (
-              <ul className="flex grow justify-end flex-wrap items-center">
-              <li>
-                <button onClick={() => nav('/signin')} className="btn-sm text-sm font-semibold leading-6 hover:bg-sky-900 ml-3">
-                  Sign in
-                </button>
-              </li>
-              <li>
-                <button onClick={() => nav('/signup')} className="btn-sm text-sm font-semibold leading-6 hover:bg-sky-900 ml-3">
-                  Sign up
-                </button>
-              </li>
-              </ul>
-            )}
-
+          { session !== undefined ? (
+            <AccountActions/>
+          ) : (
+            <div className='flex gap-x-6'>
+              <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">
+                Sign in
+              </button>
+              <button onClick={() => nav('/signup')} className="text-sm font-semibold leading-6">
+                Sign up
+              </button>
+            </div>
+          )}
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>

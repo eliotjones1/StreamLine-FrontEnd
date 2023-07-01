@@ -51,17 +51,17 @@ function UserDash() {
         <section>
           <div className="max-w-3xl mx-auto text-center relative pb-6 md:pt-28 md:pb-8">
             <h1 className="h1 mb-4" data-aos="fade-up">
-              <span className="text-sky-500">StreamLine</span> Dashboard
+              <span className="text-sky-600">StreamLine</span> Dashboard
             </h1>
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
               <button
-                className="btn bg-sky-600 hover:bg-sky-700 w-full mb-4 sm:w-auto sm:mb-0"
+                className="btn text-white rounded-md bg-sky-600 hover:bg-sky-700 w-full mb-4 sm:w-auto sm:mb-0"
                 onClick={() => nav('/search')}
               >
                 Edit Current Content
               </button>
               <button
-                className="btn bg-slate-800 dark:bg-slate-700 hover:bg-slate-800 w-full sm:w-auto sm:ml-4"
+                className="btn text-white rounded-md bg-slate-800 dark:bg-slate-700 hover:bg-slate-800 w-full sm:w-auto sm:ml-4"
                 onClick={() => nav('/results')}
               >
                 View Current Bundles

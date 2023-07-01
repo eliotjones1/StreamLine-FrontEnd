@@ -26,11 +26,10 @@ function News() {
   }, []);
 
   const handleChangeBaseIndex = (newBaseIndex) => {
-    setBaseIndex(newBaseIndex);
-    window.scrollTo({
-      top: 100,
-      behavior: "smooth"
-    })
+    if (newBaseIndex >= 0 && newBaseIndex < posts.length){
+      setBaseIndex(newBaseIndex);
+      document.getElementById("scroll-target").scrollIntoView({behavior: "instant"});
+    }
   };
 
   const handleToggleExpand = (postId) => {
@@ -64,7 +63,7 @@ function News() {
                 Stay updated with the latest announcements from the StreamLine team!
               </p>
             </div>
-            <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <div id="scroll-target" className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
               {paginatedPosts.map((post) => (
                 <article key={post.id} className="flex flex-col justify-between max-w-xl">
                   <div className="flex flex-col items-start justify-start">
