@@ -12,7 +12,7 @@ function EditAccount() {
   function handleSubmit(event) {
     event.preventDefault();
     const curData = JSON.stringify(profileData);
-    /*
+    /* NEEDS URL & can modify get/post if needed
     axios.post("URL", curData).then(response => {
       // Show Success Modal
     }).catch(error => {
@@ -22,6 +22,7 @@ function EditAccount() {
   }
 
   function loadData() {
+    // Replace following with commented out code
     setProfileData({
       Email: "rcdunn01@stanford.edu",
       First_Name: "Ryan",
@@ -35,7 +36,7 @@ function EditAccount() {
       Promotions: "off",
       Push_Notifications: "Everything"
     })
-    /*
+    /* NEEDS URL & can modify get/post if needed
     axios.get("URL").then( response => {
       setProfileData(JSON.parse(response.data))
     }).catch(error => {
