@@ -25,12 +25,22 @@ function SignUp() {
         last_name: document.getElementById('last-name').value,
       };
       axios.post('http://127.0.0.1:8000/api/auth/register', data).then(response => {
+        console.log('success');
+        const new_data = {
+          email: data.email,
+          password: data.password,
+        }
+        
+        axios.post('http://127.0.0.1:8000/api/auth/login', new_data,  { withCredentials: true }).then(response => {
         Cookies.set('session', JSON.stringify(response.data), {
           path: '/',
           secure: true,
           sameSite: 'strict',
-        });
+        });      
         nav('/user-dash');
+      }).catch(error => {
+        // Add Error Modal
+      });
       }).catch(error => {
         // Add Error Modal
       });

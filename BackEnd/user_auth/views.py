@@ -51,12 +51,14 @@ class AuthViewSet(viewsets.GenericViewSet):
         user_exists = CustomUser.objects.get(email = user)
         user_data = UserData(user = user_exists, budget = "0", bundle = {"Images":[], "Movies_and_TV_Shows":[]}, media = [])
         user_data.save()
-       
+        
         session = SessionStore()
         session['user'] = user
         session.save()
+
         response = Response(data=data, status=status.HTTP_201_CREATED)
         response.set_cookie('sessionid', session.session_key, httponly=True, samesite='None', secure=True)
+        print(response.cookies)
         return response
 
 

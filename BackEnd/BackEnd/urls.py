@@ -23,6 +23,6 @@ urlpatterns = [
     path('api/', include('user_auth.urls')),
     path('api/password_reset/', include('django_rest_passwordreset.urls', namespace = 'password_reset')),
     path('api/recommendations/', include('recommendations.urls')),
-    path('api/subscriptions/', include('prod_management.urls')),
+    path('api/user/', include('prod_management.urls')),
     path('api/newsletter/', include('newsletter.urls')),
 ]

@@ -5,51 +5,51 @@ import axios from 'axios';
 
 import Header from '../partials/Header';
 import PageTopIllustration from "../partials/PageTopIllustration";
+import Cookies from 'js-cookie';
 
 function EditAccount() {
-  const [profileData, setProfileData] = useState({Email:"",First_Name:"",Last_Name : "",Street_Address: "",City: "",State_Province: "",Country: "",Postal_Code: "",Newsletter: "off",Promotions: "off",Push_Notifications:""});
+  const [profileData, setProfileData] = useState({user:"", Email:"",First_Name:"",Last_Name : "",Street_Address: "",City: "",State_Province: "",Country: "",Postal_Code: "",Newsletter: false,Promotions: false,Push_Notifications:""});
+  const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
 
   function handleSubmit(event) {
     event.preventDefault();
     const curData = JSON.stringify(profileData);
-    /* NEEDS URL & can modify get/post if needed
-    axios.post("URL", curData).then(response => {
-      // Show Success Modal
+    axios.post("http://127.0.0.1:8000/api/user/settings/update/", curData, {withCredentials:true, headers: {
+      'Content-Type': 'application/json'}}).then(response => {
+      setProfileData({user:response.data.user, Email: response.data.Email, First_Name:response.data.First_Name, Last_Name:response.data.Last_Name, 
+        Street_Address: response.data.Street_Address, City:response.data.City, State_Province:response.data.State_Province, Country:response.data.Country,
+      Postal_Code:response.data.Postal_Code, Newsletter:response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications:response.data.Push_Notifications}); 
+      console.log(response.data.Newsletter)   
     }).catch(error => {
       // Show Error Modal
     })
-    */
+
   }
 
   function loadData() {
-    // Replace following with commented out code
-    setProfileData({
-      Email: "rcdunn01@stanford.edu",
-      First_Name: "Ryan",
-      Last_Name : "Dunn",
-      Street_Address: "623 North Oak Drive",
-      City: "Huntersville",
-      State_Province: "North Carolina", 
-      Country: "United States",
-      Postal_Code: "28078",
-      Newsletter: "on",
-      Promotions: "off",
-      Push_Notifications: "Everything"
-    })
-    /* NEEDS URL & can modify get/post if needed
-    axios.get("URL").then( response => {
-      setProfileData(JSON.parse(response.data))
+  
+    axios.get('http://127.0.0.1:8000/api/user/settings/?email=' + session.email, { withCredentials: true} ).then( response => {
+      setProfileData({user:response.data.user, Email: response.data.Email, First_Name:response.data.First_Name, Last_Name:response.data.Last_Name, 
+      Street_Address: response.data.Street_Address, City:response.data.City, State_Province:response.data.State_Province, Country:response.data.Country,
+    Postal_Code:response.data.Postal_Code, Newsletter:response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications:response.data.Push_Notifications});
     }).catch(error => {
       // Show error modal
     });
-    */
-  }
 
+  }
   const handleFormValueChange = (event) => {
     let { name, value } = event.target;
-    if (value === "on" && profileData[name] === "on") value = "off";
+    if (value === true && profileData[name] === true) value = false;
     setProfileData(prevData => ({ ...prevData, [name]: value }));
   };
+
+  const handleButtonValueChange = (event) => {
+    const { name, checked } = event.target;
+    const value = checked;
+  
+    setProfileData(prevData => ({ ...prevData, [name]: value }));
+  };
+  
 
   useEffect(() => {
     loadData();
@@ -237,8 +237,8 @@ function EditAccount() {
                           <input
                             name="Newsletter"
                             type="checkbox"
-                            checked={profileData.Newsletter === "on"}
-                            onChange={handleFormValueChange}
+                            checked={profileData.Newsletter === true}
+                            onChange={handleButtonValueChange}
                             className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
                           />
                         </div>
@@ -254,8 +254,8 @@ function EditAccount() {
                           <input
                             name="Promotions"
                             type="checkbox"
-                            checked={profileData.Promotions === "on"}
-                            onChange={handleFormValueChange}
+                            checked={profileData.Promotions === true}
+                            onChange={handleButtonValueChange}
                             className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
                           />
                         </div>

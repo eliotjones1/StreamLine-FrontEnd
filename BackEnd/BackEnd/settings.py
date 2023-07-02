@@ -86,9 +86,13 @@ WSGI_APPLICATION = "BackEnd.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'streamlinedb',
+        'USER': 'postgres',
+        'PASSWORD': 'Liverp00l',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -139,6 +143,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

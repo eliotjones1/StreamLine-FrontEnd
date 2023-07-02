@@ -26,9 +26,7 @@ function SignIn() {
         path: '/',
         secure: true,
         sameSite: 'strict',
-      });
-       // Extract cookies from the response headers
-       const setCookieHeader = response.headers.get('set-cookie');
+      });      
       nav('/user-dash');
     }).catch(error => {
       // Add Error Modal

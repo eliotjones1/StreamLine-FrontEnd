@@ -15,3 +15,6 @@ django-rest-passwordreset
 sendgrid
 surprise
 fuzzywuzzy
+django-environ
+psycopg2
+sqlparse
