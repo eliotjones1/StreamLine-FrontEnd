@@ -6,20 +6,28 @@ import axios from 'axios';
 import Header from '../partials/Header';
 import PageTopIllustration from "../partials/PageTopIllustration";
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom'
+
 
 function EditAccount() {
-  const [profileData, setProfileData] = useState({user:"", Email:"",First_Name:"",Last_Name : "",Street_Address: "",City: "",State_Province: "",Country: "",Postal_Code: "",Newsletter: false,Promotions: false,Push_Notifications:""});
+  const [profileData, setProfileData] = useState({ user: "", Email: "", First_Name: "", Last_Name: "", Street_Address: "", City: "", State_Province: "", Country: "", Postal_Code: "", Newsletter: false, Promotions: false, Push_Notifications: "" });
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
-
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const nav = useNavigate();
   function handleSubmit(event) {
     event.preventDefault();
     const curData = JSON.stringify(profileData);
-    axios.post("http://127.0.0.1:8000/api/user/settings/update/", curData, {withCredentials:true, headers: {
-      'Content-Type': 'application/json'}}).then(response => {
-      setProfileData({user:response.data.user, Email: response.data.Email, First_Name:response.data.First_Name, Last_Name:response.data.Last_Name, 
-        Street_Address: response.data.Street_Address, City:response.data.City, State_Province:response.data.State_Province, Country:response.data.Country,
-      Postal_Code:response.data.Postal_Code, Newsletter:response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications:response.data.Push_Notifications}); 
-      console.log(response.data.Newsletter)   
+    axios.post("http://127.0.0.1:8000/api/user/settings/update/", curData, {
+      withCredentials: true, headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      setProfileData({
+        user: response.data.user, Email: response.data.Email, First_Name: response.data.First_Name, Last_Name: response.data.Last_Name,
+        Street_Address: response.data.Street_Address, City: response.data.City, State_Province: response.data.State_Province, Country: response.data.Country,
+        Postal_Code: response.data.Postal_Code, Newsletter: response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications: response.data.Push_Notifications
+      });
+      console.log(response.data.Newsletter)
     }).catch(error => {
       // Show Error Modal
     })
@@ -27,11 +35,13 @@ function EditAccount() {
   }
 
   function loadData() {
-  
-    axios.get('http://127.0.0.1:8000/api/user/settings/?email=' + session.email, { withCredentials: true} ).then( response => {
-      setProfileData({user:response.data.user, Email: response.data.Email, First_Name:response.data.First_Name, Last_Name:response.data.Last_Name, 
-      Street_Address: response.data.Street_Address, City:response.data.City, State_Province:response.data.State_Province, Country:response.data.Country,
-    Postal_Code:response.data.Postal_Code, Newsletter:response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications:response.data.Push_Notifications});
+
+    axios.get('http://127.0.0.1:8000/api/user/settings/?email=' + session.email, { withCredentials: true }).then(response => {
+      setProfileData({
+        user: response.data.user, Email: response.data.Email, First_Name: response.data.First_Name, Last_Name: response.data.Last_Name,
+        Street_Address: response.data.Street_Address, City: response.data.City, State_Province: response.data.State_Province, Country: response.data.Country,
+        Postal_Code: response.data.Postal_Code, Newsletter: response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications: response.data.Push_Notifications
+      });
     }).catch(error => {
       // Show error modal
     });
@@ -46,19 +56,39 @@ function EditAccount() {
   const handleButtonValueChange = (event) => {
     const { name, checked } = event.target;
     const value = checked;
-  
+
     setProfileData(prevData => ({ ...prevData, [name]: value }));
   };
-  
+
+  function handleDeleteAccount() {
+    setShowConfirmation(true);
+  }
+
+  function handleConfirmDelete() {
+    // Placeholder Axios request for account deletion
+    axios.post("http://127.0.0.1:8000/api/user/settings/delete/", {Email:profileData.Email}, { withCredentials: true })
+      .then(response => {
+        console.log("Account deleted successfully!");
+        document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        nav('/')
+      })
+      .catch(error => {
+        // Show Error Modal or handle errors
+      });
+  }
+
+  function handleCancelDelete() {
+    setShowConfirmation(false);
+  }
 
   useEffect(() => {
     loadData();
   }, []);
 
   return (
-      <div className="flex flex-col min-h-screen overflow-hidden">
-        <Header/>
-        <main className="grow">
+    <div className="flex flex-col min-h-screen overflow-hidden">
+      <Header />
+      <main className="grow">
         <PageTopIllustration />
         <div className="flex justify-center">
           <form className='py-24' onSubmit={handleSubmit}>
@@ -315,7 +345,24 @@ function EditAccount() {
                   </fieldset>
                 </div>
               </div>
+              <div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
+              <h2 className="text-base font-semibold leading-7">Account Deletion</h2>
+              <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
+                This will delete your account and all of your information permanently.                </p>
+
+              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <div className="flex justify-center mt-8">
+                  <button
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full"
+                    onClick={handleDeleteAccount}
+                  >
+                    Delete Account
+                  </button>
+                </div>
+              </div>
             </div>
+            </div>
+
 
             <div className="mt-6 flex items-center justify-end gap-x-6">
               <button type="button" onClick={loadData} className="text-sm font-semibold leading-6">
@@ -330,8 +377,23 @@ function EditAccount() {
             </div>
           </form>
         </div>
-        </main>
-      </div>
+        {showConfirmation && (
+          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
+            <div className="bg-white rounded-lg p-8">
+              <p className='text-black'>Are you sure you want to delete your account?</p>
+              <div className="flex justify-end mt-4">
+                <button className="px-4 py-2 bg-red-500 text-white rounded mr-2" onClick={handleConfirmDelete}>
+                  Yes
+                </button>
+                <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded" onClick={handleCancelDelete}>
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
   )
 }
 

@@ -11,6 +11,7 @@ from django.contrib.sessions.models import Session
 from . import serializers
 from .utils import get_and_authenticate_user, create_user_account
 from .models import CustomUser, UserData
+from prod_management.models import UserSettings
 # Create your views here.
 
 User = get_user_model()
@@ -51,7 +52,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         user_exists = CustomUser.objects.get(email = user)
         user_data = UserData(user = user_exists, budget = "0", bundle = {"Images":[], "Movies_and_TV_Shows":[]}, media = [])
         user_data.save()
-        
+        # create user settings
+        user_settings = UserSettings(user = user_exists, Email = user_exists, First_Name = user_exists.first_name, Last_Name = user_exists.last_name, Street_Address = "", City = "", State_Province = "", Country = "", Postal_Code = "", Newsletter = True, Promotions = True, Push_Notifications = "Everything")
+        user_settings.save()
         session = SessionStore()
         session['user'] = user
         session.save()

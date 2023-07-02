@@ -5,4 +5,5 @@ from .views import *
 urlpatterns = [
     path('settings/', ReturnSettings.as_view(), name='user-settings'),
     path('settings/update/', UpdateSettings, name='update-settings'),
+    path('settings/delete/', deleteAccount, name='delete-account')
 ]

@@ -8,7 +8,8 @@ from rest_framework import viewsets, status
 from .models import UserSettings
 from .serializers import UserSettingsSerializer
 from api.views import isSessionActive
-from user_auth.models import CustomUser
+from user_auth.models import CustomUser, UserData
+from django.contrib.sessions.models import Session
 
 
 
@@ -60,4 +61,28 @@ def UpdateSettings(request):
     user_settings.save()
     serializer = UserSettingsSerializer(user_settings)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def deleteAccount(request):
+    sessionid = request.COOKIES.get('sessionid')
+    # print(sessionid)
+    # Check if session is active
+    if isSessionActive(sessionid) == False:
+        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+    # Get user from session
+    data = request.data
+    user = CustomUser.objects.get(email = data["Email"])
+    user_data = UserData.objects.get(user = user)
+    user_settings = UserSettings.objects.get(user = user)
+    # Check if user_settings
+    if user_settings is None:
+        return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+    # Update user_settings
+    session = Session.objects.get(session_key = sessionid)
+    session.delete()
+    user_settings.delete()
+    user.delete()
+    user_data.delete()
+    return Response(status=status.HTTP_200_OK)
+    
     
