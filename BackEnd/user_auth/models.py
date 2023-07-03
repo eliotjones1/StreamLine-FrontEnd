@@ -36,7 +36,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     token = reset_password_token.key
     reset_password_url = 'http://localhost:5173/secure-reset?' + token
     expiry_time = timezone.now() + timedelta(minutes=15)
-
+    template_id = "d-467cfdba14174276864542097b246c07"
     # email_plaintext_message = "{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
     email_plaintext_message = f"Click the link below to reset your password: \n\n{reset_password_url}"
     message = Mail(
@@ -45,6 +45,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         subject = "StreamLine Password Reset",
         plain_text_content=email_plaintext_message
     )
+    message.template_id = template_id
     reset_password_token.expires = expiry_time
     reset_password_token.save()
     try:

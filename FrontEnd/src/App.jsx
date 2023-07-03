@@ -45,7 +45,6 @@ function App() {
         <Route path="/news" element={<News/>}/>
         <Route path="/aboutus" element={<AboutUs/>}/>
         <Route path="/account-settings" element={<AccountInfo/>}/>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

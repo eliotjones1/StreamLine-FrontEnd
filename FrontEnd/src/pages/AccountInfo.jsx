@@ -17,17 +17,23 @@ function EditAccount() {
   function handleSubmit(event) {
     event.preventDefault();
     const curData = JSON.stringify(profileData);
-    axios.post("http://127.0.0.1:8000/api/user/settings/update/", curData, {
+    axios.post("http://127.0.0.1:8000/api/user/settings/update/", [curData, session.email], {
       withCredentials: true, headers: {
         'Content-Type': 'application/json'
       }
     }).then(response => {
+      console.log(response.data)
       setProfileData({
-        user: response.data.user, Email: response.data.Email, First_Name: response.data.First_Name, Last_Name: response.data.Last_Name,
-        Street_Address: response.data.Street_Address, City: response.data.City, State_Province: response.data.State_Province, Country: response.data.Country,
-        Postal_Code: response.data.Postal_Code, Newsletter: response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications: response.data.Push_Notifications
+        user: response.data.settings.user, Email: response.data.settings.Email, First_Name: response.data.settings.First_Name, Last_Name: response.data.settings.Last_Name,
+        Street_Address: response.data.settings.Street_Address, City: response.data.settings.City, State_Province: response.data.settings.State_Province, Country: response.data.settings.Country,
+        Postal_Code: response.data.settings.Postal_Code, Newsletter: response.data.settings.Newsletter, Promotions: response.data.settings.Promotions, Push_Notifications: response.data.settings.Push_Notifications
       });
-      console.log(response.data.Newsletter)
+      document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      Cookies.set('session', JSON.stringify(response.data.user), {
+        path: '/',
+        secure: true,
+        sameSite: 'strict',
+      });    
     }).catch(error => {
       // Show Error Modal
     })

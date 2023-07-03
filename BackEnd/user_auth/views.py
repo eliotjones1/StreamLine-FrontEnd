@@ -7,7 +7,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
-
+import sendgrid
+from sendgrid.helpers.mail import Mail
 from . import serializers
 from .utils import get_and_authenticate_user, create_user_account
 from .models import CustomUser, UserData
@@ -56,12 +57,30 @@ class AuthViewSet(viewsets.GenericViewSet):
         user_settings = UserSettings(user = user_exists, Email = user_exists, First_Name = user_exists.first_name, Last_Name = user_exists.last_name, Street_Address = "", City = "", State_Province = "", Country = "", Postal_Code = "", Newsletter = True, Promotions = True, Push_Notifications = "Everything")
         user_settings.save()
         # create user subscription
-        user_subscription = UserSubscription(user = user_exists, Premium = False, Basic = False, Free = True, Premium_Expiration = None, Basic_Expiration = None, stripe_customer_id = None, stripe_subscription_id = None)
+        user_subscription = UserSubscription(user = user_exists, Premium = False, Basic = False, Premium_Expiration = None, Basic_Expiration = None, stripe_customer_id = None, stripe_subscription_id = None)
         user_subscription.save()
         session = SessionStore()
         session['user'] = user
         session.save()
-
+        print(user)
+        # Send Welcome Email
+        template_id = "d-65eff9edfd4f47e493b649f54bb336f6"
+        message = Mail(
+        from_email='ekj0512@gmail.com',
+        to_emails=user,
+        )
+        message.template_id = template_id
+        try:
+            sg = sendgrid.SendGridAPIClient(api_key='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')  # Replace with your SendGrid API key
+            response = sg.send(message)
+            print(response)
+            if response.status_code == 202:
+                pass
+            else:
+                return Response({})
+        except Exception as e:
+            print(str(e))
+            pass
         response = Response(data=data, status=status.HTTP_201_CREATED)
         response.set_cookie('sessionid', session.session_key, httponly=True, samesite='None', secure=True)
         print(response.cookies)
