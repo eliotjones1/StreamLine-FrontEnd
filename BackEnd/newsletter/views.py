@@ -10,7 +10,7 @@ from user_auth.models import CustomUser
 
 
 
-SECRET_KEY = "9fG2Jm5qZkRLpcYn6vjDWhYUdN1X3tH4"
+SECRET_KEY = "9fG2Jm5qZkRLpcYn6vjDWhYUdN1X3tH4" # Why are you here
 class getAllPosts(generics.ListAPIView):
     def get(self, request):
         # Get all blog posts

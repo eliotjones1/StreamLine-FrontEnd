@@ -11,7 +11,7 @@ from django.contrib.sessions.models import Session
 from . import serializers
 from .utils import get_and_authenticate_user, create_user_account
 from .models import CustomUser, UserData
-from prod_management.models import UserSettings
+from prod_management.models import UserSettings, UserSubscription
 # Create your views here.
 
 User = get_user_model()
@@ -55,6 +55,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         # create user settings
         user_settings = UserSettings(user = user_exists, Email = user_exists, First_Name = user_exists.first_name, Last_Name = user_exists.last_name, Street_Address = "", City = "", State_Province = "", Country = "", Postal_Code = "", Newsletter = True, Promotions = True, Push_Notifications = "Everything")
         user_settings.save()
+        # create user subscription
+        user_subscription = UserSubscription(user = user_exists, Premium = False, Basic = False, Free = True, Premium_Expiration = None, Basic_Expiration = None, stripe_customer_id = None, stripe_subscription_id = None)
+        user_subscription.save()
         session = SessionStore()
         session['user'] = user
         session.save()

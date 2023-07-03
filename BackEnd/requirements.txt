@@ -18,3 +18,4 @@ fuzzywuzzy
 django-environ
 psycopg2
 sqlparse
+stripe
