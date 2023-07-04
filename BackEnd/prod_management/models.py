@@ -37,4 +37,9 @@ class UserSubscription(models.Model):
     stripe_subscription_id = models.CharField(max_length=100, null=True, blank=True)
 
 
-    
+class Subscription(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subscription')
+    subscription_name = models.CharField(max_length=100)
+    end_date = models.DateField(null=True, blank=True)
+    recurring = models.BooleanField(default = "False")
+

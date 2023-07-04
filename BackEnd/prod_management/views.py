@@ -374,3 +374,8 @@ def CancelSubscription(request):
         print(str(e))
         pass
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def UpgradeSubscription(request):
+    pass
+#prob has to be done once we've figured our shit out
