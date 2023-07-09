@@ -26,8 +26,9 @@ function SignIn() {
         path: '/',
         secure: true,
         sameSite: 'strict',
-      });      
+      });
       nav('/user-dash');
+
     }).catch(error => {
       // Add Error Modal
       document.getElementById('email').value = '';

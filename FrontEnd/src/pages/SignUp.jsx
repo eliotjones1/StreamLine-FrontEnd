@@ -37,7 +37,7 @@ function SignUp() {
           secure: true,
           sameSite: 'strict',
         });      
-        nav('/user-dash');
+        nav('/new-sub');
       }).catch(error => {
         // Add Error Modal
       });

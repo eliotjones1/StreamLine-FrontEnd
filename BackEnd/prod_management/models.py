@@ -2,6 +2,9 @@ from django.db import models
 from user_auth.models import CustomUser
 # Create your models here.
 
+class TOSChecked(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, related_name='toschecked')
+    TOS_Checked = models.BooleanField(default = "False")
 
 class UserSettings(models.Model):
     EVERYTHING = 'Everything'
@@ -35,11 +38,13 @@ class UserSubscription(models.Model):
     Basic_Expiration = models.DateField(null=True, blank=True)
     stripe_customer_id = models.CharField(max_length=100, null=True, blank=True)
     stripe_subscription_id = models.CharField(max_length=100, null=True, blank=True)
-
+    is_setup = models.BooleanField(default = "False")
 
 class Subscription(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subscription')
     subscription_name = models.CharField(max_length=100)
     end_date = models.DateField(null=True, blank=True)
-    recurring = models.BooleanField(default = "False")
-
+    num_months = models.IntegerField(default = 0)
+    num_cancellations = models.IntegerField(default = 0)
+    is_active = models.BooleanField(default = "True")
+    

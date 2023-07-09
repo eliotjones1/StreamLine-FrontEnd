@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import requests
 from rest_framework import viewsets, status
-from .models import UserSettings, UserSubscription, Subscription
+from .models import UserSettings, UserSubscription, Subscription, TOSChecked
 from .serializers import UserSettingsSerializer, SubscriptionSerializer
 from api.views import isSessionActive
 from user_auth.models import CustomUser, UserData
@@ -22,23 +22,58 @@ from api.functions import *
 
 # Create your views here.
 @api_view(['POST'])
+def agreeTOS(request):
+    sessionid = request.COOKIES.get('sessionid')
+    # print(sessionid)
+    # Check if session is active
+    if isSessionActive(sessionid) == False:
+        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+    # expects user_id at 0, subscription info (name, date) at 1. Expect name to be from our list of possible (like a search and drop down type thing, 
+    # Needs to be exact string
+    user_email = request.data[0]
+    print(request.data)
+    user = CustomUser.objects.get(email=user_email)
+    tos = TOSChecked.objects.get(user=user)
+    tos.TOS_Checked = True
+    tos.save()
+    return Response(status=status.HTTP_200_OK)
+
+class checkTOSStatus(generics.ListAPIView):
+    def get(self, request):
+        sessionid = request.COOKIES.get('sessionid')
+        print(sessionid)
+        # Check if session is active
+        if isSessionActive(sessionid) == False:
+            return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+        user_email = request.query_params.get('email', None)
+        if user_email is None:
+            return Response({'error': 'No email provided'}, status=status.HTTP_400_BAD_REQUEST)
+        user = CustomUser.objects.get(email=user_email)
+        tos = TOSChecked.objects.get(user=user)
+        if tos.TOS_Checked == True:
+            return Response("ok", status=status.HTTP_200_OK)
+        else:
+            return Response("not ok", status=status.HTTP_200_OK)
+        
+@api_view(['POST'])
 def createSubscription(request):
     sessionid = request.COOKIES.get('sessionid')
     # print(sessionid)
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    # expects user_id at 0, subscription info (name, date, recurring) at 1. Expect name to be from our list of possible (like a search and drop down type thing, 
+    # expects user_id at 0, subscription info (name, date) at 1. Expect name to be from our list of possible (like a search and drop down type thing, 
     # Needs to be exact string
     user_email = request.data[0]
-    subscription_info = json.dumps(request.data[1])
+    subscription_info = request.data[1]
+
     user = CustomUser.objects.get(email=user_email)
-    this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'], end_date=subscription_info['date'], recurring=subscription_info['recurring'])
+    this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'], end_date=subscription_info['date'][:10], num_months=1, num_cancellations=0, is_active=True)
     this_subscription.save()
-    return Response(SubscriptionSerializer(this_subscription), status=status.HTTP_200_OK)
+    return Response(SubscriptionSerializer(this_subscription).data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
-def deleteSubscription(request):
+def cancelSubscription(request):
     sessionid = request.COOKIES.get('sessionid')
     # print(sessionid)
     # Check if session is active
@@ -48,8 +83,10 @@ def deleteSubscription(request):
     user_email = request.data[0]
     subscription_info = json.dumps(request.data[1])
     user = CustomUser.objects.get(email=user_email)
-    this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'], end_date=subscription_info['date'], recurring=subscription_info['recurring'])
-    this_subscription.delete()
+    this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'])
+    this_subscription.is_active = False
+    this_subscription.num_cancellations += 1
+    this_subscription.save()
     return Response(status=status.HTTP_200_OK)
 
 class getSubscriptions(generics.ListAPIView):

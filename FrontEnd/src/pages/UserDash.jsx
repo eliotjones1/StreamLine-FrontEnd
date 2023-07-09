@@ -31,6 +31,13 @@ function UserDash() {
   };
 
   useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/api/user/tosCompliance/?email=${session.email}`, { withCredentials: true }).then(response => {
+      if (response.data !== "ok") {
+        nav('/new-sub')
+      }
+    }).catch(error => {
+      // Add Error Modal
+    });
     axios
       .get(`http://127.0.0.1:8000/returnData/?email=${session.email}`, { withCredentials: true })
       .then((response) => {
@@ -78,7 +85,7 @@ function UserDash() {
                 ${budget}
               </div>
               <div className="container max-w-4xl w-full mx-auto">
-                <h2 className="text-2xl font-bold mb-2">Current Content</h2>
+                <h2 className="text-2xl font-bold mb-2">Watchlist</h2>
                 <DisplaySelected items={media} onRemoveItem={removeItem} />
               </div>
             </div>

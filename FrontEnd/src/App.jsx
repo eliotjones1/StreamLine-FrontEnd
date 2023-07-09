@@ -11,6 +11,7 @@ import AccountInfo from './pages/AccountInfo'
 import Pricing from './pages/Pricing';
 import News from './pages/News';
 import AboutUs from './pages/AboutUs';
+import NewSub from './pages/NewSub';
 
 function App() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUs/>}/>
         <Route path="/account-settings" element={<AccountInfo/>}/>
         <Route path="*" element={<NotFound />} />
+        <Route path="/new-sub" element={<NewSub />} />
       </Routes>
     </>
   );
