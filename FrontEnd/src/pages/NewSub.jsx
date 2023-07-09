@@ -57,10 +57,14 @@ const WelcomePage = ({ username }) => {
                     .catch(err => {
                     })
             }
-            // clear seeked content and dates from local storage
-            localStorage.removeItem('selectedContent');
-            localStorage.removeItem('selectedDates');
-            nav('/user-dash');
+            // Send msg to backEnd to render bundles from subscriptions
+            axios.post('http://127.0.0.1:8000/api/user/subscriptions/generateBundle/', [session.email], { withCredentials: true }).then(res => {
+                localStorage.removeItem('selectedContent');
+                localStorage.removeItem('selectedDates');
+                nav('/user-dash');
+            }).catch(err => {
+                // Add Error Modal
+            })
         }
     }
 

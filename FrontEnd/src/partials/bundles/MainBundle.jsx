@@ -17,7 +17,7 @@ function MainBundle({ bundle, userData, dashPin }) {
     arrows: false,
   };
   const cost = parseFloat(bundle.Total_Cost).toFixed(2);
-
+  console.log(bundle)
   return (
     <div className={location.pathname === '/user-dash' ? 'flex flex-col max-w-4xl mx-auto h-full dark:bg-white overflow-hidden transform bg-slate-50  rounded-lg shadow-xl' : 'z-10 flex flex-1 flex-basis-0 flex-grow flex-col mt-8 overflow-hidden transform bg-slate-50 dark:bg-white rounded-lg shadow-xl md:scale-110'}>
       <div className="flex flex-col items-center px-8 py-4 text-white bg-slate-800 dark:bg-sky-600">

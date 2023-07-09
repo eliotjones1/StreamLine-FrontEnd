@@ -19,5 +19,6 @@ urlpatterns = [
     path('subscriptions/search/', AvailSubs.as_view(), name='search-subscriptions'),
     path('tosCompliance/', checkTOSStatus.as_view(), name='tos-compliance'),
     path('tosCompliance/update/', agreeTOS, name='update-tos-compliance'),
+    path('subscriptions/generateBundle/', generateBundle, name='create-bundle'),
 
 ]

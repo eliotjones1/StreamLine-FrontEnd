@@ -188,6 +188,7 @@ function NotificationInfo() {
                                                     onChange={handleSubmit}
                                                     className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
                                                 />
+                                                {/* HELP THIS BUTTON WORKS WEIRD*/}
                                                 <label htmlFor="termsCheck" className="ml-2 block text-sm leading-6">
                                                     I have read and agree to the <a href="/terms">Terms of Service</a>.
                                                 </label>

@@ -250,6 +250,78 @@ def handleSelection(request):
                 temp_sub.save()
             return Response("Updated", status=status.HTTP_200_OK)
             
-        
+@api_view(['POST'])
+def generateBundle(request):
+    sessionid = request.COOKIES.get('sessionid')
+    # print(sessionid)
+    # Check if session is active
+    if isSessionActive(sessionid) == False:
+        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+    # expects user_id at 0, subscription info (name, date, recurring) at 1
+    user_email = request.data[0]
+    user = CustomUser.objects.get(email=user_email)
+    user_data = UserData.objects.get(user=user)
+    cur_subs =  Subscription.objects.filter(user=user)
+
+    # TODO: Get all subscriptions for the user and create bundle
+    # Bundle requires Links, Title, Subheader, Images, Total_Cost, Streaming_Services, Movies_and_TV_Shows
+    # How to do: get user watchlist, and rig the optimization function to only include items not on current subscriptions
+
+    # Get all titles on watchlist, current subscriptions
+    subscriptions = list(cur_subs.values_list('subscription_name', flat=True))
+    input = user_data.media
+    providers, prices, services = modify_input(input)
+
+    ## Run optimization, but only on items not on current subscriptions
+    watchlist = list(providers.keys())
+    if len(watchlist) == 0:
+        return Response(["Not available"], status=status.HTTP_400_BAD_REQUEST)
+    x = {m: cp.Variable(boolean=True) for m in watchlist}
+    y = {s: cp.Variable(boolean=True) for s in services}
+    objective = cp.Minimize(cp.sum(1 - cp.vstack([x[m] for m in watchlist])))
+
+    constraints = []
+    for m in providers:
+        constraints += [x[m] <= cp.sum(cp.vstack([y[s] for s in providers[m]]))]
+        for s in services:
+            if s in providers[m]:
+                constraints += [y[s] <= cp.sum(cp.vstack([x[m] for m in providers]))]
+    for s in services:
+        if s in subscriptions:
+            constraints += [y[s] == 1]
+        else:
+            constraints += [y[s] == 0]
+    problem = cp.Problem(objective, constraints)
+    problem.solve()
+
+    output = {}
+    output["Title"] = "Personal Bundle"
+    output["Subheader"] = "Just for you"
+    output["Movies_and_TV_Shows"] = []
+    output["Streaming_Services"] = []
+    output["Total_Cost"] = 0
+
+    output["Movies_and_TV_Shows"] = []
+    output["Type"] = []
+    for s in services:
+        if y[s].value == 1:
+            output["Streaming_Services"].append(s)
+            output["Total_Cost"] += prices[s]
+
+    for m in watchlist:
+        if x[m].value == 1:
+            output["Movies_and_TV_Shows"].append(m)
+
+    for media in output["Movies_and_TV_Shows"]:
+        for object in input:
+            if media == object["title"]:
+                output["Type"].append(object["type"])
+    realOutput = getServiceImages(output)
+    print(realOutput)
+    user_data.bundle = realOutput
+    user_data.budget = realOutput["Total_Cost"]
+    user_data.save()
+    return Response(status=status.HTTP_200_OK)
+
 
 
