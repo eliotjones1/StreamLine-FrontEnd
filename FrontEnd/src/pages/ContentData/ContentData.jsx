@@ -69,7 +69,7 @@ function Detail() {
                     {contentDetails.title || contentDetails.name}
                   </h2>
 
-                  <button className='rounded-full p-2 bg-slate-900' onClick={addToUserList}>
+                  <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={addToUserList}>
                     <ListBulletIcon className='h-6 text-white' />
                   </button>
 
