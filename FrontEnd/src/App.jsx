@@ -12,6 +12,8 @@ import Pricing from './pages/Pricing';
 import News from './pages/News';
 import AboutUs from './pages/AboutUs';
 import NewSub from './pages/NewSub';
+import ContentSearch from './pages/ContentSearch/ContentSearch';
+import ContentData from './pages/ContentData/ContentData';
 
 function App() {
   const location = useLocation();
@@ -34,7 +36,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -46,8 +48,10 @@ function App() {
         <Route path="/news" element={<News/>}/>
         <Route path="/aboutus" element={<AboutUs/>}/>
         <Route path="/account-settings" element={<AccountInfo/>}/>
-        <Route path="*" element={<NotFound />} />
         <Route path="/new-sub" element={<NewSub />} />
+        <Route path="/content-search/:id" element={<ContentSearch/>}/>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
