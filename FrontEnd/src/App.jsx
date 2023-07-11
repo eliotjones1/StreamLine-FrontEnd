@@ -13,6 +13,7 @@ import News from './pages/News';
 import AboutUs from './pages/AboutUs';
 import NewSub from './pages/NewSub';
 import ContentSearch from './pages/ContentSearch/ContentSearch';
+import ContentData from './pages/ContentData/ContentData';
 
 function App() {
   const location = useLocation();
@@ -49,7 +50,7 @@ function App() {
         <Route path="/account-settings" element={<AccountInfo/>}/>
         <Route path="/new-sub" element={<NewSub />} />
         <Route path="/content-search" element={<ContentSearch/>}/>
-        <Route path="/content-data/:id/" element={<ContentSearch/>}/>
+        <Route path="/content-data/:id/" element={<ContentData/>}/>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
