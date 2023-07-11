@@ -4,21 +4,20 @@ import SearchContent from "./Components/SearchContent";
 import Searchbar from "./Components/SearchBar";
 import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
+import axios from "axios";
 
 function ContentSearch() {
   const [showDefault, setShowDefault] = useState(true)
   const [content, setContent] = useState([]);
   const [lastSearch, setLastSearch] = useState("");
-  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
 
-  const fetchSearch = async (query) => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${APIKEY}&language=en-US&query=${query}&include_adult=false`
-    );
-    const searchContent = await data.json();
-    setContent(searchContent.results);
-    setLastSearch(query);
-    setShowDefault(false);
+  const fetchSearch = (query) => {
+    axios.get(`http://127.0.0.1:8000/search/all/?search=${query}`).then(response => {
+      console.log(response);
+      //setContent(searchContent.results);
+      //setLastSearch(query);
+      //setShowDefault(false);
+    }).catch();
   }
 
   return (

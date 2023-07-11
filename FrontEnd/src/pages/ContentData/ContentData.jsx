@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { ListBulletIcon } from '@heroicons/react/20/solid';
+import { PlusIcon } from '@heroicons/react/20/solid';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import axios from 'axios';
 
@@ -36,11 +36,10 @@ function Detail() {
     setVideo(videodata.results);
   }*/
 
-  const addToUserList = async () => {
-    /*
-    axios.post("url", contentDetails).catch(error => {
-      //Error Modal
-    });*/
+  const addToUserList = () => {
+      axios.post("http://127.0.0.1:8000/saveMedia/", ["rycdunn@gmail.com", contentDetails], { withCredentials: true }).then(response => {
+        console.log("Added Succesfully!");
+      }).catch(error => {});
   };
 
   useEffect(() => {
@@ -69,8 +68,8 @@ function Detail() {
                     {contentDetails.title || contentDetails.name}
                   </h2>
 
-                  <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={addToUserList}>
-                    <ListBulletIcon className='h-6 text-white' />
+                  <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
+                    <PlusIcon className='h-6 text-white' />
                   </button>
 
 
