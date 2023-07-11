@@ -13,7 +13,6 @@ import News from './pages/News';
 import AboutUs from './pages/AboutUs';
 import NewSub from './pages/NewSub';
 import ContentSearch from './pages/ContentSearch/ContentSearch';
-import ContentData from './pages/ContentData/ContentData';
 
 function App() {
   const location = useLocation();
@@ -40,8 +39,8 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/search" element={<SearchMedia />} />
-        <Route path ="/bundles" element={<Bundles/>}/>
+        <Route path="/search" element={<ContentSearch />} />
+        <Route path="/bundles" element={<Bundles/>}/>
         <Route path="/user-dash" element={<UserDash/>}/>
         <Route path="/secure-reset" element={<SecureReset/>}/>
         <Route path="/pricing" element={<Pricing/>}/>

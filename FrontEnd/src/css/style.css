@@ -22,20 +22,4 @@
 [x-cloak=""] {
     display: none;
 }
-
-::-webkit-scrollbar {
-    background-color: transparent;
-    width: 6px; /* Adjust the width */
-    height: 6px; /* Adjust the height */
-    margin: 10px;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: #d6d6d6;
-    border-radius: 8px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #eeeeee;
-  }
   
