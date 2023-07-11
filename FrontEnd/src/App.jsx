@@ -10,7 +10,7 @@ import {Home, SignIn, SignUp, ResetPassword, Bundles, UserDash, SecureReset, Sea
 import AccountInfo from './pages/AccountInfo'
 import Pricing from './pages/Pricing';
 import News from './pages/News';
-import AboutUs from './pages/AboutUs';
+import AboutUs from './pages/AboutUs/AboutUs';
 import NewSub from './pages/NewSub';
 import ContentSearch from './pages/ContentSearch/ContentSearch';
 import ContentData from './pages/ContentData/ContentData';

@@ -1,9 +1,9 @@
 import React from "react";
 
-import Header from '../partials/Header';
-import Footer from "../partials/Footer";
-import Founders from "../partials/Founders";
-import About from "../partials/LearnMore";
+import Header from '../../partials/Header';
+import Footer from "../../partials/Footer";
+import Founders from "../../partials/Founders";
+import About from "./Components/LearnMore";
 
 function AboutUs() {
   return (

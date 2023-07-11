@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ListBulletIcon } from '@heroicons/react/20/solid';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import axios from 'axios';
 
 import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
 
 function Detail() {
-  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
   const { id } = useParams();
   const [contentDetails, setContentDetails] = useState([]);
 
+  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
   const fetchContentData = async () => {
     const data = await fetch(
       `https://api.themoviedb.org/3/movie/${id}?api_key=${APIKEY}&language=en-US`
@@ -34,6 +35,13 @@ function Detail() {
     const videodata = await data.json();
     setVideo(videodata.results);
   }*/
+
+  const addToUserList = async () => {
+    /*
+    axios.post("url", contentDetails).catch(error => {
+      //Error Modal
+    });*/
+  };
 
   useEffect(() => {
     fetchContentData();
@@ -61,7 +69,7 @@ function Detail() {
                     {contentDetails.title || contentDetails.name}
                   </h2>
 
-                  <button className='rounded-full p-2 bg-slate-900'>
+                  <button className='rounded-full p-2 bg-slate-900' onClick={addToUserList}>
                     <ListBulletIcon className='h-6 text-white' />
                   </button>
 
