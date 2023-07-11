@@ -6,7 +6,7 @@ import { Cog6ToothIcon, ChevronDownIcon, UserCircleIcon, ArrowLeftOnRectangleIco
 import axios from 'axios';
 
 
-export default function accountActions(){
+export default function accountActions({ flipColors=false }){
   const nav = useNavigate();
   const accountOptions = [
     {name: "Sign Out", icon: ArrowLeftOnRectangleIcon, action: (event) => logout(event)},
@@ -29,7 +29,12 @@ export default function accountActions(){
   <Popover.Group className="hidden lg:flex lg:flex-1 lg:justify-end">
     <Popover className="relative">
       <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6">
-        <UserCircleIcon className="h-8 w-8 flex-none text-slate-700 dark:text-white" aria-hidden="true" />
+        {
+          flipColors ?
+            <UserCircleIcon className="h-8 w-8 flex-none text-white dark:text-slate-700" aria-hidden="true" />
+          :
+            <UserCircleIcon className="h-8 w-8 flex-none text-slate-700 dark:text-white" aria-hidden="true" />
+        }
         <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400 dark:text-white" aria-hidden="true" />
       </Popover.Button>
 

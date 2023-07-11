@@ -25,7 +25,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function Header({ flipColors=false }) {
   const nav = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
@@ -52,10 +52,18 @@ export default function Example() {
 
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
-            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6">
-              Features
-              <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-            </Popover.Button>
+            {
+              flipColors ? 
+              <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-white dark:text-slate-900">
+                Features
+                <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+              </Popover.Button>
+              :
+              <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6">
+                Features
+                <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+              </Popover.Button>
+            }
 
             <Transition
               as={Fragment}
@@ -102,20 +110,37 @@ export default function Example() {
             </Transition>
           </Popover>
 
-          <button onClick={() => nav('/pricing')} className="text-sm font-semibold leading-6">
-            Pricing
-          </button>
-          <button onClick={() => nav('/news')} className="text-sm font-semibold leading-6">
-            News
-          </button>
-          <button onClick={() => nav('/aboutus')} className="text-sm font-semibold leading-6">
-            About Us
-          </button>
+          {
+            flipColors ?
+            <>
+              <button onClick={() => nav('/pricing')} className="text-sm font-semibold leading-6 text-white dark:text-slate-900">
+                Pricing
+              </button>
+              <button onClick={() => nav('/news')} className="text-sm font-semibold leading-6 text-white dark:text-slate-900">
+                News
+              </button>
+              <button onClick={() => nav('/aboutus')} className="text-sm font-semibold leading-6 text-white dark:text-slate-900">
+                About Us
+              </button>
+            </>
+            :
+            <>
+              <button onClick={() => nav('/pricing')} className="text-sm font-semibold leading-6">
+                Pricing
+              </button>
+              <button onClick={() => nav('/news')} className="text-sm font-semibold leading-6">
+                News
+              </button>
+              <button onClick={() => nav('/aboutus')} className="text-sm font-semibold leading-6">
+                About Us
+              </button>
+            </>
+          }
         </Popover.Group>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           { session !== undefined ? (
-            <AccountActions/>
+            <AccountActions flipColors={flipColors}/>
           ) : (
             <div className='flex gap-x-6'>
               <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">

@@ -23,7 +23,7 @@ function ContentSearch() {
 
     return (
         <section>
-            <Header/>
+            <Header flipColors={true}/>
             <main className="grow">
               <div className="mx-auto w-full pb-10">
                 <div className="relative isolate overflow-hidden bg-slate-900 dark:bg-slate-50 px-6 pt-16 shadow-2xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
