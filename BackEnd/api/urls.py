@@ -8,6 +8,7 @@ urlpatterns = [
     path('optimize/', runOptimization, name='optimize'),
     path('saveBudget/', saveBudget, name='saveBudget'),
     path('saveMedia/', saveMedia, name='saveMedia'),
+    path('removeMedia/', removeMedia, name='removeMedia'),
     path('saveBundle/', saveBundle, name='saveBundle'),
     path('returnData/', returnUserData.as_view(), name="return_data"),
     path('getProgress/', getProgress, name="get_progress"),
