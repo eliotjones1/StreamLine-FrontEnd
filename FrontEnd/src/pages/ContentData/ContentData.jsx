@@ -8,24 +8,18 @@ import Footer from "../../partials/Footer";
 
 function Detail() {
   const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
-
-  const { id } = useParams()
-
+  const { id } = useParams();
   const [contentDetails, setContentDetails] = useState([]);
-  const [castdata, setCastdata] = useState([]);
-  const [moviegenres, setMoviegenres] = useState([]);
-  const [video, setVideo] = useState([]);
 
-  const fetchMovie = async () => {
+  const fetchContentData = async () => {
     const data = await fetch(
       `https://api.themoviedb.org/3/movie/${id}?api_key=${APIKEY}&language=en-US`
     );
     const moviedetail = await data.json();
-    console.log(moviedetail)
     setContentDetails(moviedetail);
   };
 
-  const fetchCast = async () => {
+  /*const fetchCast = async () => {
     const castdata = await fetch(
       `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${APIKEY}&language`
     );
@@ -39,12 +33,10 @@ function Detail() {
     );
     const videodata = await data.json();
     setVideo(videodata.results);
-  }
+  }*/
 
   useEffect(() => {
-    fetchMovie();
-    fetchCast();
-    fetchVideo();
+    fetchContentData();
   }, []);
 
   return (
