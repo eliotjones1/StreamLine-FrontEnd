@@ -37,8 +37,7 @@ class ListMedia(generics.ListAPIView):
                 'backdrop': show['backdrop_path'], 
                 'rating': show['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                'genres': show['genres'],
-                'homepage': show['homepage'],
+                'genres': show['genre_ids'],
                 'overview': show['overview'],
                 'type': 'TV Series',
                 'id' : show['id']
@@ -55,8 +54,7 @@ class ListMedia(generics.ListAPIView):
                 'backdrop': movie['backdrop_path'],
                 'rating': movie['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                'genres': movie['genres'],
-                'homepage': movie['homepage'],
+                'genres': movie['genre_ids'],
                 'overview': movie['overview'],
                 'type': 'Movie',
                 'id' : movie['id']
@@ -67,7 +65,6 @@ class ListMedia(generics.ListAPIView):
             serialized_shows = []
             # For each movie, we want to include title, image, rating, release date, and streaming providers 
             for movie in movies:
-
                 streaming_providers = getStreamingProviderMovie(movie['id'])
 
                 serialized_movies.append({
@@ -77,8 +74,7 @@ class ListMedia(generics.ListAPIView):
                 'backdrop': movie['backdrop_path'],
                 'rating': movie['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                'genres': movie['genres'],
-                'homepage': movie['homepage'],
+                'genres': movie['genre_ids'],
                 'overview': movie['overview'],
                 'type': 'Movie'
             })
@@ -94,8 +90,7 @@ class ListMedia(generics.ListAPIView):
                 'backdrop': show['backdrop_path'], 
                 'rating': show['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                'genres': show['genres'],
-                'homepage': show['homepage'],
+                'genres': show['genre_ids'],
                 'overview': show['overview'],
                 'type': 'TV Series'
             })
@@ -146,8 +141,7 @@ class returnAll(generics.ListAPIView):
                 'backdrop': movie['backdrop_path'],
                 'rating': movie['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                'genres': movie['genres'],
-                'homepage': movie['homepage'],
+                'genres': movie['genre_ids'],
                 'overview': movie['overview'],
                 'type': 'Movie',
                 'id' : movie['id']
@@ -161,8 +155,7 @@ class returnAll(generics.ListAPIView):
                 'backdrop': show['backdrop_path'], 
                 'rating': show['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                'genres': show['genres'],
-                'homepage': show['homepage'],
+                'genres': show['genre_ids'],
                 'overview': show['overview'],
                 'type': 'TV Series',
                 'id' : show['id']
@@ -232,6 +225,7 @@ def saveMedia(request):
     object = data[1]
     user_exists = CustomUser.objects.get(email = user)
     current = UserData.objects.get(user_id = user_exists)
+    print(current.media)
     current.media += object
     current.save()
     return Response({"Status":"OK"})
