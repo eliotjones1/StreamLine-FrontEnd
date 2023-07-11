@@ -40,7 +40,8 @@ class ListMedia(generics.ListAPIView):
                 'genres': show['genres'],
                 'homepage': show['homepage'],
                 'overview': show['overview'],
-                'type': 'TV Series'
+                'type': 'TV Series',
+                'id' : show['id']
             })
                 return Response(serialized_shows)
         elif shows == None:
@@ -57,7 +58,8 @@ class ListMedia(generics.ListAPIView):
                 'genres': movie['genres'],
                 'homepage': movie['homepage'],
                 'overview': movie['overview'],
-                'type': 'Movie'
+                'type': 'Movie',
+                'id' : movie['id']
             })
                 return Response(serialized_movies)
         else:
@@ -147,7 +149,8 @@ class returnAll(generics.ListAPIView):
                 'genres': movie['genres'],
                 'homepage': movie['homepage'],
                 'overview': movie['overview'],
-                'type': 'Movie'
+                'type': 'Movie',
+                'id' : movie['id']
             })
         for show in tv_data:
             streaming_providers = getStreamingProviderShow(show['id'])
@@ -161,7 +164,8 @@ class returnAll(generics.ListAPIView):
                 'genres': show['genres'],
                 'homepage': show['homepage'],
                 'overview': show['overview'],
-                'type': 'TV Series'
+                'type': 'TV Series',
+                'id' : show['id']
             })
 
 
@@ -195,7 +199,6 @@ def runOptimization(request):
     maximal = optimize2(providers, prices, services, data)
     minimal = optimize3(providers, prices, services, budget, data)
     return Response([minimal, streamLine, maximal])
-
 
 @api_view(['POST'])
 def saveBudget(request):
@@ -288,7 +291,31 @@ class returnUserData(generics.ListAPIView):
         serializer = UserDataSerializer(output)
         return Response(serializer.data)
          
-
+@api_view(['POST'])
+def returnInfo(request):
+    object = request.data
+    if object["type"] == "Movie":
+        id = object['id']
+        api_key = "95cd5279f17c6593123c72d04e0bedfa"
+        base_url = "https://api.themoviedb.org/3/"
+        endpoint = "movie/"
+        full_url = base_url + endpoint + str(id) + "?api_key=" + api_key + "&language=en-US"
+        response = requests.get(full_url)
+        if response.status_code != 200:
+            return None
+        movie_data = response.json()
+        return Response(movie_data)
+    else:
+        id = object['id']
+        api_key = "95cd5279f17c6593123c72d04e0bedfa"
+        base_url = "https://api.themoviedb.org/3/"
+        endpoint = "tv/"
+        full_url = base_url + endpoint + str(id) + "?api_key=" + api_key + "&language=en-US"
+        response = requests.get(full_url)
+        if response.status_code != 200:
+            return None
+        show_data = response.json()
+        return Response(show_data)
     
 
 

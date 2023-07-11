@@ -12,4 +12,5 @@ urlpatterns = [
     path('saveBundle/', saveBundle, name='saveBundle'),
     path('returnData/', returnUserData.as_view(), name="return_data"),
     path('getProgress/', getProgress, name="get_progress"),
+    path('returnInfo/', returnInfo, name="return_info"),
 ]
