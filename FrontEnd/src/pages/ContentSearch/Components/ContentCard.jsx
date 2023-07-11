@@ -4,7 +4,7 @@ import noimage from '../../../images/no-image.jpg';
 
 function ContentCard({ content }) {
   const nav = useNavigate();
-  console.log(content);
+  
   return (
     <div className="card relative w-44 mx-4 md:mx-0 cursor-pointer rounded-xl overflow-hidden">
       <button onClick={() => nav(`/content-data/${content.id}`)} className='h-full w-full shadow absolute z-10'/>
