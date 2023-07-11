@@ -10,7 +10,7 @@ function Content() {
 
   const fetchTrending = async () => {
     const data = await fetch(
-      `https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=AS`
+      `https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=US`
     );
     let trend = await data.json();
     setTrendingAll(trend.results);

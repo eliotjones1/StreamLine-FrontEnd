@@ -33,7 +33,7 @@ class ListMedia(generics.ListAPIView):
                 serialized_shows.append({
                 'title': show['name'],
                 'release_date': show['first_air_date'],
-                'image': show['poster_path'],
+                'poster_path': show['poster_path'],
                 'backdrop': show['backdrop_path'], 
                 'rating': show['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
@@ -50,7 +50,7 @@ class ListMedia(generics.ListAPIView):
                 serialized_movies.append({
                 'title': movie['title'],
                 'release_date': movie['release_date'],
-                'image': movie['poster_path'],
+                'poster_path': movie['poster_path'],
                 'backdrop': movie['backdrop_path'],
                 'rating': movie['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
@@ -70,7 +70,7 @@ class ListMedia(generics.ListAPIView):
                 serialized_movies.append({
                 'title': movie['title'],
                 'release_date': movie['release_date'],
-                'image': movie['poster_path'],
+                'poster_path': movie['poster_path'],
                 'backdrop': movie['backdrop_path'],
                 'rating': movie['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
@@ -86,7 +86,7 @@ class ListMedia(generics.ListAPIView):
                 serialized_shows.append({
                 'title': show['name'],
                 'release_date': show['first_air_date'],
-                'image': show['poster_path'],
+                'poaster_path': show['poster_path'],
                 'backdrop': show['backdrop_path'], 
                 'rating': show['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
@@ -137,7 +137,7 @@ class returnAll(generics.ListAPIView):
             serialized_output.append({
                 'title': movie['title'],
                 'release_date': movie['release_date'],
-                'image': movie['poster_path'],
+                'poster_path': movie['poster_path'],
                 'backdrop': movie['backdrop_path'],
                 'rating': movie['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
@@ -151,7 +151,7 @@ class returnAll(generics.ListAPIView):
             serialized_output.append({
                 'title': show['name'],
                 'release_date': show['first_air_date'],
-                'image': show['poster_path'],
+                'poster_path': show['poster_path'],
                 'backdrop': show['backdrop_path'], 
                 'rating': show['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
