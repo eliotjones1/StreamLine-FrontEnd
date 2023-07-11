@@ -177,8 +177,12 @@ class returnAll(generics.ListAPIView):
                 'title': movie['title'],
                 'release_date': movie['release_date'],
                 'image': movie['poster_path'],
+                'backdrop': movie['backdrop_path'],
                 'rating': movie['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'genres': movie['genres'],
+                'homepage': movie['homepage'],
+                'overview': movie['overview'],
                 'type': 'Movie'
             })
         for show in tv_data:
@@ -187,8 +191,12 @@ class returnAll(generics.ListAPIView):
                 'title': show['name'],
                 'release_date': show['first_air_date'],
                 'image': show['poster_path'],
+                'backdrop': show['backdrop_path'], 
                 'rating': show['vote_average'],
                 'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'genres': show['genres'],
+                'homepage': show['homepage'],
+                'overview': show['overview'],
                 'type': 'TV Series'
             })
 
