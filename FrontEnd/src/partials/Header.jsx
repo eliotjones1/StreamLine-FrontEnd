@@ -142,14 +142,24 @@ export default function Header({ flipColors=false }) {
           { session !== undefined ? (
             <AccountActions flipColors={flipColors}/>
           ) : (
-            <div className='flex gap-x-6'>
-              <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">
-                Sign in
-              </button>
-              <button onClick={() => nav('/signup')} className="text-sm font-semibold leading-6">
-                Sign up
-              </button>
-            </div>
+            flipColors ?
+              <div className='flex gap-x-6 text-white dark:text-slate-900'>
+                <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">
+                  Sign in
+                </button>
+                <button onClick={() => nav('/signup')} className="text-sm font-semibold leading-6">
+                  Sign up
+                </button>
+              </div>
+            :
+              <div className='flex gap-x-6'>
+                <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">
+                  Sign in
+                </button>
+                <button onClick={() => nav('/signup')} className="text-sm font-semibold leading-6">
+                  Sign up
+                </button>
+              </div>
           )}
         </div>
       </nav>
