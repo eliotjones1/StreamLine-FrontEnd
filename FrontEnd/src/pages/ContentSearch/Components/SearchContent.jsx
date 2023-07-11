@@ -1,5 +1,5 @@
 import React from 'react'
-import Moviecard from './Moviecard';
+import ContentCard from './ContentCard';
 import { useNavigate } from 'react-router-dom';
 
 function Content({ mediaContent, searchQuery, returnToMain }) {
@@ -53,7 +53,7 @@ function Content({ mediaContent, searchQuery, returnToMain }) {
             {mediaContent.map((content) => (
                 <div className='bg-white dark:bg-slate-900 rounded-3xl ring-1 ring-slate-200 dark:ring-slate-600 p-2 px-4 flex w-full cursor-pointer space-x-6 shadow-md' onClick={() => nav(`/content-data/${content.id}`)} key={content.id}>
                     <div>
-                        <Moviecard key={content.id} movie={content} />
+                        <ContentCard key={content.id} content={content} />
                     </div>
                     <div className="w-full relative flex-auto">
                         <h2 className="font-bold truncate pr-20 text-2xl">

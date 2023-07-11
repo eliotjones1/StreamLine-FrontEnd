@@ -1,12 +1,12 @@
 import React from 'react';
-import Moviecard from './Moviecard';
+import ContentCard from './ContentCard';
 
 function ContentSlider({ mediaContent }) {
   return (
     <div className="flex overflow-x-auto space-x-4 scrollbar-hidden relative">
       {mediaContent.map((content, index) => (
         <div className='w-44' key={index} >
-          <Moviecard key={content.id} movie={content} />
+          <ContentCard key={content.id} content={content} />
           <div className='py-3'>
             <p className='font-semibold'>{content.title || content.name}</p>
             { content.release_date && 
