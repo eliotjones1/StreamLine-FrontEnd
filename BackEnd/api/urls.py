@@ -3,8 +3,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('movies/', ListMovies.as_view(), name='movie-list'),
-    path('shows/', ListShows.as_view(), name='show-list'),   
     path('search/', ListMedia.as_view(), name='all-media'),
     path('search/all/', returnAll.as_view(), name='return-all'),
     path('optimize/', runOptimization, name='optimize'),

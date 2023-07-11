@@ -12,59 +12,7 @@ from fuzzywuzzy import fuzz
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 # Create your views here.
-class ListMovies(generics.ListAPIView):
-    def get(self, request):
-        search_query = request.query_params.get('search', None)
-        if search_query is None:
-            return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        title = search_query
-        movies = getMovies(title)
 
-        if movies == None:
-            return Response({'error': 'Unable to fetch movies'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        serialized_movies = []
-        # For each movie, we want to include title, image, rating, release date, and streaming providers 
-        for movie in movies:
-
-            streaming_providers = getStreamingProviderMovie(movie['id'])
-
-            serialized_movies.append({
-                'title': movie['title'],
-                'release_date': movie['release_date'],
-                'image': movie['poster_path'],
-                'rating': movie['vote_average'],
-                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available"
-                })
-        return Response(serialized_movies)
-
-class ListShows(generics.ListAPIView):
-    def get(self, request):
-        search_query = request.query_params.get('search', None)
-        if search_query is None:
-            return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        title = search_query
-        shows = getShows(title)
-
-        if shows == None:
-            return Response({'error': 'Unable to fetch shows'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        serialized_shows = []
-        # For each show, we want to include title, image, rating, release date, and streaming providers 
-        for show in shows:
-
-            streaming_providers = getStreamingProviderShow(show['id'])
-
-            serialized_shows.append({
-                'title': show['name'],
-                'release_date': show['first_air_date'],
-                'image': show['poster_path'],
-                'rating': show['vote_average'],
-                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available"
-                })
-        return Response(serialized_shows)
     
 class ListMedia(generics.ListAPIView):
     def get(self, request):
@@ -262,10 +210,10 @@ def saveMedia(request):
     # Expect email to be at 0
     # Expect Media to be at 1
     user = data[0]
-    media = data[1]
+    object = data[1]
     user_exists = CustomUser.objects.get(email = user)
     current = UserData.objects.get(user_id = user_exists)
-    current.media = media
+    current.media += object
     current.save()
     return Response({"Status":"OK"})
 
