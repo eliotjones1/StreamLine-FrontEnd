@@ -31,26 +31,34 @@ class ListMedia(generics.ListAPIView):
             for show in shows:
                 streaming_providers = getStreamingProviderShow(show['id'])
                 serialized_shows.append({
-                    'title': show['name'],
-                    'release_date': show['first_air_date'],
-                    'image': show['poster_path'],
-                    'rating': show['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                    'type': 'TV Series'
-                    })
+                'title': show['name'],
+                'release_date': show['first_air_date'],
+                'image': show['poster_path'],
+                'backdrop': show['backdrop_path'], 
+                'rating': show['vote_average'],
+                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'genres': show['genres'],
+                'homepage': show['homepage'],
+                'overview': show['overview'],
+                'type': 'TV Series'
+            })
                 return Response(serialized_shows)
         elif shows == None:
             serialized_movies = []
             for movie in movies:
                 streaming_providers = getStreamingProviderMovie(movie['id'])
                 serialized_movies.append({
-                    'title': movie['title'],
-                    'release_date': movie['release_date'],
-                    'image': movie['poster_path'],
-                    'rating': movie['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                    'type': 'Movie'
-                    })
+                'title': movie['title'],
+                'release_date': movie['release_date'],
+                'image': movie['poster_path'],
+                'backdrop': movie['backdrop_path'],
+                'rating': movie['vote_average'],
+                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'genres': movie['genres'],
+                'homepage': movie['homepage'],
+                'overview': movie['overview'],
+                'type': 'Movie'
+            })
                 return Response(serialized_movies)
         else:
             serialized_movies = []
@@ -61,26 +69,34 @@ class ListMedia(generics.ListAPIView):
                 streaming_providers = getStreamingProviderMovie(movie['id'])
 
                 serialized_movies.append({
-                    'title': movie['title'],
-                    'release_date': movie['release_date'],
-                    'image': movie['poster_path'],
-                    'rating': movie['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                    'type': 'Movie'
-                    })
+                'title': movie['title'],
+                'release_date': movie['release_date'],
+                'image': movie['poster_path'],
+                'backdrop': movie['backdrop_path'],
+                'rating': movie['vote_average'],
+                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'genres': movie['genres'],
+                'homepage': movie['homepage'],
+                'overview': movie['overview'],
+                'type': 'Movie'
+            })
             # For each show, we want to include title, image, rating, release date, and streaming providers 
             for show in shows:
 
                 streaming_providers = getStreamingProviderShow(show['id'])
 
                 serialized_shows.append({
-                    'title': show['name'],
-                    'release_date': show['first_air_date'],
-                    'image': show['poster_path'],
-                    'rating': show['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                    'type': 'TV Series'
-                    })
+                'title': show['name'],
+                'release_date': show['first_air_date'],
+                'image': show['poster_path'],
+                'backdrop': show['backdrop_path'], 
+                'rating': show['vote_average'],
+                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
+                'genres': show['genres'],
+                'homepage': show['homepage'],
+                'overview': show['overview'],
+                'type': 'TV Series'
+            })
 
         output = serialized_movies[0:2] + serialized_shows[0:2]
         return Response(output)
@@ -252,7 +268,6 @@ def saveBundle(request):
     current.bundle = bundle
     current.save()
     return Response({"Status":"OK"})
-
 
 class returnUserData(generics.ListAPIView):
      def get(self, request):
