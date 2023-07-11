@@ -39,7 +39,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/search" element={<ContentSearch />} />
+        <Route path="/search" element={<SearchMedia />} />
         <Route path="/bundles" element={<Bundles/>}/>
         <Route path="/user-dash" element={<UserDash/>}/>
         <Route path="/secure-reset" element={<SecureReset/>}/>
@@ -48,7 +48,8 @@ function App() {
         <Route path="/aboutus" element={<AboutUs/>}/>
         <Route path="/account-settings" element={<AccountInfo/>}/>
         <Route path="/new-sub" element={<NewSub />} />
-        <Route path="/content-search/:id" element={<ContentSearch/>}/>
+        <Route path="/content-search" element={<ContentSearch/>}/>
+        <Route path="/content-data/:id/" element={<ContentSearch/>}/>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
