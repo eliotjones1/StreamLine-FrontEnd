@@ -88,8 +88,12 @@ function Content({ mediaContent, searchQuery, returnToMain }) {
                             </div>
                             { content.release_date && 
                                 <div className='flex space-x-1 mb-2'>
-                                    <p className='font-semibold'>Release Year:</p>
-                                    {"  " + new Date(content.release_date).toLocaleString('en-US', {year:'numeric'})}                                 
+                                    <p className='font-semibold'>
+                                        Release Year:
+                                    </p>
+                                    <p>
+                                    {new Date(content.release_date).toLocaleString('en-US', {year:'numeric'})} 
+                                    </p>                                
                                 </div>
                             }
                             <div className="w-full mt-2 font-normal">

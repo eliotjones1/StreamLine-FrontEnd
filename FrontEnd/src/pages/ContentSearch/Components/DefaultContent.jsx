@@ -1,50 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import ContentSlider from './ContentSlider';
+import axios from 'axios';
 
 function Content() {
-  const [trendingAll, setTrendingAll] = useState([]);
-  const [popMovies, setPopMovies] = useState([]);
-  const [popShows, setPopShows] = useState([]);
-  const [upcoming, setUpcoming] = useState([]);
-  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
+  const [trending, setTrending] = useState([]);
+  const [popularContent, setPopularContent] = useState([]);
+  const [popularServcies, setPopularServices] = useState([]);
+  const [newlyReleased, setNewlyReleased] = useState([]);
 
   const fetchTrending = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=US`
-    );
-    let trend = await data.json();
-    setTrendingAll(trend.results);
+    axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=95cd5279f17c6593123c72d04e0bedfa&language=en-US&region=US`)
+    .then(response => {
+      console.log(response);
+      setTrending(response.data.results);
+    });
   }
 
-  const fetchTopRatedMovies = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${APIKEY}&language=en-US&include_adult=false&sort_by=popularity.desc`
-    );
-    const topMov = await data.json();
-    setPopMovies(topMov.results);
+  const fetchPopularContent = () => {
+    /*axios.get('url').then(response => {
+      setPopularContent(response.data)
+    })*/
   }
 
-  const fetchTopRatedShows = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/tv/popular?api_key=${APIKEY}&language=en-US&include_adult=false&sort_by=popularity.desc`
-    );
-    const topShow = await data.json();
-    setPopShows(topShow.results);
+  const fetchPopularServices = () => {
+    /*axios.get('url').then(response => {
+      setPopularServices(response.data)
+    })*/
   }
 
-  const fetchUpcoming = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${APIKEY}&language=en-US&include_adult=false`
-    );
-    const upc = await data.json();
-    setUpcoming(upc.results)
+  const fetchNewlyReleased =  () => {
+    /*axios.get('url').then(response => {
+      setNewlyReleased(response.data)
+    })*/
   }
 
   useEffect(() => {
     fetchTrending()
-    fetchTopRatedMovies()
-    fetchTopRatedShows()
-    fetchUpcoming()
+    fetchPopularContent()
+    fetchPopularServices()
+    fetchNewlyReleased()
   }, []);
 
   return (
@@ -53,25 +47,25 @@ function Content() {
         <p className="font-bold pb-2 text-2xl">
           Trending Content
         </p>
-        <ContentSlider mediaContent={trendingAll}/>
+        <ContentSlider mediaContent={trending}/>
       </div>
       <div className='pb-4'>
         <p className="font-bold pb-2 text-2xl">
-          Top Rated Shows
+          Popular Services
         </p>
-        <ContentSlider mediaContent={popShows}/>
+        <ContentSlider mediaContent={popularServcies}/>
       </div>
       <div className='pb-4'>
         <p className="font-bold pb-2 text-2xl">
-          Top Rated Movies
+          Popular Content
         </p>
-        <ContentSlider mediaContent={popMovies}/>
+        <ContentSlider mediaContent={popularContent}/>
       </div>
       <div className='pb-4'>
         <p className="font-bold pb-2 text-2xl">
-          Upcoming & New Movies
+          Newly Released
         </p>
-        <ContentSlider mediaContent={upcoming}/>
+        <ContentSlider mediaContent={newlyReleased}/>
       </div>
     </div>
   )
