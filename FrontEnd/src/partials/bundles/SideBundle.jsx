@@ -95,7 +95,7 @@ function SideBundle({ bundle, userData, dashPin, isLeft }) {
                 style={{ filter: isInBundle ? 'none' : 'grayscale(100%)', opacity: isInBundle ? '1' : '0.3' }}
               >
                 <img
-                  src={`https://image.tmdb.org/t/p/w185/${show.image}`}
+                  src={`https://image.tmdb.org/t/p/w185/${show.poster_path}`}
                   className="rounded-md"
                   width="92.5"
                   height="139"

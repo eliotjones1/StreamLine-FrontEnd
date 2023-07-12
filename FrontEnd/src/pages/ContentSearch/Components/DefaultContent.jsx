@@ -23,9 +23,9 @@ function Content() {
   }
 
   const fetchPopularServices = () => {
-    axios.get('http://127.0.0.1:8000/popularServices/').then(response => {
-      setPopularServices(response.data)
-    })
+    // axios.get('http://127.0.0.1:8000/popularServices/').then(response => {
+    //   setPopularServices(response.data)
+    // })
   }
 
   const fetchNewlyReleased =  () => {
