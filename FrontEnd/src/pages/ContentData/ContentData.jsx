@@ -8,43 +8,31 @@ import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
 
 function Detail() {
-  const { id } = useParams();
-  const [contentDetails, setContentDetails] = useState([]);
+  const { type, id } = useParams();
+  const [contentDetails, setContentDetails] = useState({});
+  let date = "";
 
-  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
-  const fetchContentData = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=${APIKEY}&language=en-US`
-    );
-    const moviedetail = await data.json();
-    setContentDetails(moviedetail);
+  const fetchContentData = () => {
+    axios.post("http://127.0.0.1:8000/returnInfo/", {type: type, id: id}).then(response => {
+      setContentDetails(response.data);
+      if (response.data.first_air_date !== undefined) {date = response.data.first_air_date;}
+      else {date = response.data.release_date;}
+    });
   };
 
-  /*const fetchCast = async () => {
-    const castdata = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${APIKEY}&language`
-    );
-    const castdetail = await castdata.json();
-    setCastdata(castdetail.cast);
-  }
-
-  const fetchVideo = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${APIKEY}&language=en-US`
-    );
-    const videodata = await data.json();
-    setVideo(videodata.results);
-  }*/
-
   const addToUserList = () => {
-      axios.post("http://127.0.0.1:8000/saveMedia/", ["rycdunn@gmail.com", contentDetails], { withCredentials: true }).then(response => {
-        console.log("Added Succesfully!");
-      }).catch(error => {});
+      axios.post("http://127.0.0.1:8000/saveMedia/", ["rycdunn@gmail.com", contentDetails], { withCredentials: true });
   };
 
   useEffect(() => {
     fetchContentData();
   }, []);
+
+  if (Object.keys(contentDetails).length === 0){
+    return (
+      <></>
+    );
+  }
 
   return (
     <div>
@@ -76,12 +64,7 @@ function Detail() {
                   <div className="mt-2 flex-rows flex-wrap text-sm leading-6 font-medium">
                     <div className="flex space-x-1 mb-2">
                       <p className="font-semibold">Release Year:</p>
-                      {contentDetails.release_date && (
-                        <div>{"  " + new Date(contentDetails.release_date).toLocaleString("en-US", { year: "numeric" })}</div>
-                      )}
-                      {contentDetails.first_air_date && (
-                        <div>{"  " + new Date(contentDetails.first_air_date).toLocaleString("en-US", { year: "numeric" })}</div>
-                      )}
+                      <p>{new Date(date).toLocaleString("en-US", { year: "numeric" })}</p>
                     </div>
                     <div className="w-full mt-2 font-normal">
                       <p className="font-semibold text-xl mb-2">Overview</p>

@@ -50,7 +50,7 @@ function App() {
         <Route path="/account-settings" element={<AccountInfo/>}/>
         <Route path="/new-sub" element={<NewSub />} />
         <Route path="/content-search" element={<ContentSearch/>}/>
-        <Route path="/content-data/:id/" element={<ContentData/>}/>
+        <Route path="/content-data/:type/:id/" element={<ContentData/>}/>
 
         <Route path="*" element={<NotFound />} />
       </Routes>

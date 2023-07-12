@@ -51,7 +51,7 @@ function Content({ mediaContent, searchQuery, returnToMain }) {
         </div>
         <div className="mb-20 md:mb-0 space-y-8">
             {mediaContent.map((content) => (
-                <div className='bg-white dark:bg-slate-900 rounded-3xl ring-1 ring-slate-200 dark:ring-slate-600 p-2 px-4 flex w-full cursor-pointer space-x-6 shadow-md' onClick={() => nav(`/content-data/${content.id}`)} key={content.id}>
+                <div className='bg-white dark:bg-slate-900 rounded-3xl ring-1 ring-slate-200 dark:ring-slate-600 p-2 px-4 flex w-full cursor-pointer space-x-6 shadow-md' onClick={() => nav(`/content-data/${content.type}/${content.id}`)} key={content.id}>
                     <div>
                         <ContentCard key={content.id} content={content} />
                     </div>
