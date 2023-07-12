@@ -13,4 +13,6 @@ urlpatterns = [
     path('returnData/', returnUserData.as_view(), name="return_data"),
     path('getProgress/', getProgress, name="get_progress"),
     path('returnInfo/', returnInfo, name="return_info"),
+    path('recent/', newlyReleased.as_view(), name="recent"),
+    path('popularServices/', popularServices.as_view(), name="popularServices"),
 ]

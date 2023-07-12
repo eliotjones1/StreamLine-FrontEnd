@@ -23,15 +23,16 @@ function Content() {
   }
 
   const fetchPopularServices = () => {
-    /*axios.get('url').then(response => {
+    axios.get('http://127.0.0.1:8000/popularServices/').then(response => {
       setPopularServices(response.data)
-    })*/
+    })
   }
 
   const fetchNewlyReleased =  () => {
-    /*axios.get('url').then(response => {
+    axios.get('http://127.0.0.1:8000/recent/').then(response => {
+      console.log(response.data)
       setNewlyReleased(response.data)
-    })*/
+    })
   }
 
   useEffect(() => {

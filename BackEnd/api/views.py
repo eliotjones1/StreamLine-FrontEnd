@@ -434,6 +434,7 @@ class popularServices(generics.ListAPIView):
                 if provider['title'] == sub:
                     provider['num'] += 1
         sorted_providers = sorted(
-            providers, key=lambda x: x['num'], reverse=True)
-        
-        return Response(sorted_providers[:10], status=status.HTTP_200_OK)
+            providers, key=lambda x: x['num'], reverse=False)
+        temp = set(tuple(item.items()) for item in sorted_providers)
+        out = [dict(item) for item in temp]
+        return Response(out[:10], status=status.HTTP_200_OK)
