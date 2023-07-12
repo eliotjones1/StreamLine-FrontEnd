@@ -61,8 +61,8 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 class UserData(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     budget = models.CharField(max_length=10)
-    bundle = models.JSONField()
-    media = models.JSONField()
+    bundle = models.JSONField(default=dict)
+    media = models.JSONField(default=list)
 
 
 

@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom'
 import { PlusIcon } from '@heroicons/react/20/solid';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
 import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
 
 function Detail() {
   const { type, id } = useParams();
   const [contentDetails, setContentDetails] = useState({});
+  const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
   let date = "";
 
   const fetchContentData = () => {
@@ -21,7 +22,7 @@ function Detail() {
   };
 
   const addToUserList = () => {
-      axios.post("http://127.0.0.1:8000/saveMedia/", ["rycdunn@gmail.com", contentDetails], { withCredentials: true });
+      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, contentDetails], { withCredentials: true });
   };
 
   useEffect(() => {
