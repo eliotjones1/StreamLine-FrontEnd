@@ -13,11 +13,8 @@ function SearchMedia() {
   const [budget, setBudget] = useState(0.00);
 
   const addItem = (newMedia) => {
-    setMedia((prevMedia) => [...prevMedia, newMedia]);
-    let temp = media;
-    temp.push(newMedia);
     if (session !== undefined) {
-      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, temp], { withCredentials: true }).catch(error =>{
+      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, newMedia], { withCredentials: true }).catch(error =>{
         // Add Error Modal
       });
     } else {
@@ -29,7 +26,7 @@ function SearchMedia() {
     setMedia(media.filter((_, index) => index !== indexToRemove));
     let temp = media.filter((_, index) => index !== indexToRemove);
     if (session !== undefined) {
-      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, temp], { withCredentials: true }).catch(error => {
+      axios.post("http://127.0.0.1:8000/removeMedia/", [session.email, temp], { withCredentials: true }).catch(error => {
         // Add Error Modal
       });
     } else {
@@ -49,7 +46,7 @@ function SearchMedia() {
   const removeAll = () => {
     setMedia([]);
     if (session !== undefined) {
-      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, []], { withCredentials: true }).catch(error =>{
+      axios.post("http://127.0.0.1:8000/clearAll/", [session.email, []], { withCredentials: true }).catch(error =>{
         // Add Error Modal
       });
     } else {

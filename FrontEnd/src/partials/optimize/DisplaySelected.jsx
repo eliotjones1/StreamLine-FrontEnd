@@ -34,7 +34,7 @@ function DisplaySelected({items, onRemoveItem}) {
               }}
             >
               <div className="flex flex-row">
-                <img width="46.25" height="69.5" style={{ borderRadius: '10%' }} src={`https://image.tmdb.org/t/p/w185${item.image}`} alt={DefaultMovieImg}/>
+                <img width="46.25" height="69.5" style={{ borderRadius: '10%' }} src={`https://image.tmdb.org/t/p/w185${item.poster_path}`} alt={DefaultMovieImg}/>
                 <div className="pl-2 text-white">
                   <Typography
                     variant="body1"

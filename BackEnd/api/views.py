@@ -88,7 +88,7 @@ class ListMedia(generics.ListAPIView):
                 serialized_shows.append({
                     'title': show['name'],
                     'release_date': show['first_air_date'],
-                    'poaster_path': show['poster_path'],
+                    'poster_path': show['poster_path'],
                     'backdrop': show['backdrop_path'],
                     'rating': show['vote_average'],
                     'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
@@ -236,11 +236,28 @@ def saveMedia(request):
     object = data[1]
     user_exists = CustomUser.objects.get(email=user)
     current = UserData.objects.get(user_id=user_exists)
-    print(current.media)
-    current.media += object
+    cur_list = current.media
+    cur_list.append(object)
     current.save()
     return Response({"Status": "OK"})
 
+@api_view(['POST'])
+def clearMedia(request):
+ # get sessionid from request cookie
+    sessionid = request.COOKIES.get('sessionid')
+    # Check if session is active
+    if isSessionActive(sessionid) == False:
+        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+    data = request.data
+    # Expect email to be at 0
+    # Expect Media to be at 1
+    user = data[0]
+    object = data[1]
+    user_exists = CustomUser.objects.get(email=user)
+    current = UserData.objects.get(user_id=user_exists)
+    current.media = object
+    current.save()
+    return Response({"Status": "OK"})
 
 @api_view(['POST'])
 def removeMedia(request):
@@ -256,7 +273,8 @@ def removeMedia(request):
     object = data[1]
     user_exists = CustomUser.objects.get(email=user)
     current = UserData.objects.get(user_id=user_exists)
-    current.media -= object
+    cur_list = current.media
+    cur_list.remove(object)
     current.save()
     return Response({"Status": "OK"})
 

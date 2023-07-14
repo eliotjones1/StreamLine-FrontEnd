@@ -131,7 +131,7 @@ function ContentSearch({ onAddItem }) {
                 onClick={handleSubmit}
                 onMouseEnter={() => setHoveredItemIndex(index)}
               >
-                <img width="60" height="90.65" src={`https://image.tmdb.org/t/p/w185${option.image}`} alt={DefaultMovieImg} />
+                <img width="60" height="90.65" src={`https://image.tmdb.org/t/p/w185${option.poster_path}`} alt={DefaultMovieImg} />
                 <div className="pl-2">
                   <p className="font-bold text-base">{option.title}</p>
                   {option.release_date !== null && <p className="text-xs">Release Date: {option.release_date}</p>}
