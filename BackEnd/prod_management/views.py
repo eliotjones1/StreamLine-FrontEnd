@@ -28,11 +28,9 @@ class ReturnSettings(generics.ListAPIView):
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
         # Get user from session
-        query = request.query_params.get('email', None)
-        if query is None:
-            return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-
-        user_email = query
+        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+        if user_email is None:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         output = UserSettings.objects.get(Email=user_email)
         serializer = UserSettingsSerializer(output)
         return Response(serializer.data)
@@ -61,8 +59,10 @@ def UpdateSettings(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # Get user from session
-    data = json.loads(request.data[0])
-    user_email = request.data[1]
+    data = json.loads(request.data)
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     user = CustomUser.objects.get(email=user_email)
     if user_email != data['Email']:
         # store temp info
@@ -153,8 +153,10 @@ def deleteAccount(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # Get user from session
-    data = request.data
-    user = CustomUser.objects.get(email=data["Email"])
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    user = CustomUser.objects.get(email=user_email)
     user_data = UserData.objects.get(user=user)
     user_settings = UserSettings.objects.get(user=user)
     user_sub = UserSubscription.objects.get(user=user)
@@ -167,8 +169,8 @@ def deleteAccount(request):
     user_settings.delete()
     user.delete()
     user_data.delete()
-    if stripe.Customer.list(email=data["Email"]).data:
-        customer = stripe.Customer.list(email=data["Email"]).data[0]
+    if stripe.Customer.list(email=user_email).data:
+        customer = stripe.Customer.list(email=user_email).data[0]
         if stripe.Subscription.list(customer=customer['id']).data:
             stripe.Subscription.delete(user_sub.stripe_subscription_id)
         stripe.Customer.delete(customer['id'])
@@ -184,12 +186,12 @@ def BasicSubscription(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # Get user from session
-    email = request.query_params.get('email', None)
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     payment_method = request.query_params.get('payment_method', None)
-    if email is None:
-        return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-
-    user_exists = CustomUser.objects.get(email=email)
+    
+    user_exists = CustomUser.objects.get(email=user_email)
     if user_exists is None:
         return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -202,11 +204,11 @@ def BasicSubscription(request):
     serializer = UserSubscriptionSerializer(subscription)
 
     # Stripe customer creation stuff
-    if stripe.Customer.list(email=email).data:
-        customer = stripe.Customer.list(email=email).data[0]
+    if stripe.Customer.list(email=user_email).data:
+        customer = stripe.Customer.list(email=user_email).data[0]
     else:
         customer = stripe.Customer.create(
-            email=email,
+            email=user_email,
             name=user_exists.first_name + " " + user_exists.last_name,
             description="Basic Subscription",
             payment_method=payment_method,
@@ -229,7 +231,7 @@ def BasicSubscription(request):
     template_id = "d-57f98ea68557417bbcb5b5a0ee77af46"
     message = Mail(
     from_email='ekj0512@gmail.com',
-    to_emails=email,
+    to_emails=user_email,
     )
     message.template_id = template_id
     try:
@@ -255,12 +257,12 @@ def PremiumSubscription(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # Get user from session
-    email = request.query_params.get('email', None)
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     payment_method = request.query_params.get('payment_method', None)
-    if email is None:
-        return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-
-    user_exists = CustomUser.objects.get(email=email)
+    
+    user_exists = CustomUser.objects.get(email=user_email)
     if user_exists is None:
         return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -274,11 +276,11 @@ def PremiumSubscription(request):
 
     subscription.stripe_customer_id = customer['id']
     # Stripe customer creation stuff
-    if stripe.Customer.list(email=email).data:
-        customer = stripe.Customer.list(email=email).data[0]
+    if stripe.Customer.list(email=user_email).data:
+        customer = stripe.Customer.list(email=user_email).data[0]
     else:
         customer = stripe.Customer.create(
-            email=email,
+            email=user_email,
             name=user_exists.first_name + " " + user_exists.last_name,
             description="Premium Subscription",
             payment_method=payment_method,
@@ -301,7 +303,7 @@ def PremiumSubscription(request):
     template_id = "d-57f98ea68557417bbcb5b5a0ee77af46"
     message = Mail(
     from_email='ekj0512@gmail.com',
-    to_emails=email,
+    to_emails=user_email,
     )
     message.template_id = template_id
     try:
@@ -327,11 +329,12 @@ def CancelSubscription(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # Get user from session
-    query = request.query_params.get('email', None)
-    if query is None:
-        return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
-    user_exists = CustomUser.objects.get(email=query)
+
+    user_exists = CustomUser.objects.get(email=user_email)
     if user_exists is None:
         return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -349,8 +352,8 @@ def CancelSubscription(request):
     serializer = UserSubscriptionSerializer(subscription)
 
     # Stripe customer creation stuff
-    if stripe.Customer.list(email=query).data:
-        customer = stripe.Customer.list(email=query).data[0]
+    if stripe.Customer.list(email=user_email).data:
+        customer = stripe.Customer.list(email=user_email).data[0]
     else:
         return Response({'error': 'User does not have a subscription'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -359,7 +362,7 @@ def CancelSubscription(request):
     template_id = "d-3a02207c24d94688a70caf7c168dd96a"
     message = Mail(
     from_email='ekj0512@gmail.com',
-    to_emails=query,
+    to_emails=user_email,
     )
     message.template_id = template_id
     try:

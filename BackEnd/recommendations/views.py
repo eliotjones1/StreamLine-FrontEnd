@@ -15,20 +15,27 @@ from .serializers import *
 from surprise import Reader, Dataset
 from .functions import *
 from api.functions import *
+from django.contrib.sessions.models import Session
+from api.views import isSessionActive
 
 
 @api_view(['POST'])
 def saveRating(request):
+    sessionid = request.COOKIES.get('sessionid')
+    if not isSessionActive(sessionid):
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     data = request.data
     # Expect email to be at 0
     # Expect object at 1, rating at 2
     # Functionality: When the user, in their dashboard, removes something from their list, we prompt them to rate it. 
     # This rating corresponds to the TMDB ID of the media, and gets saved to their account. Have users rate by choosing a number 1-10.
     # Maybe prompt them to rate some stuff in the beginning, and then have them rate media as they remove them from their list.
-    user = data[0]
-    object = data[1]
-    rating = data[2]
-    user_exists = CustomUser.objects.get(email = user).id
+    object = data[0]
+    rating = data[1]
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    user_exists = CustomUser.objects.get(email = user_email).id
     print(user_exists)
     if object["type"] == "TV Series":
         object_id = getIDShow(object["title"])
@@ -50,11 +57,13 @@ def saveRating(request):
 
 class returnRecommendations(generics.ListAPIView):
      def get(self, request):
-        query = request.query_params.get('email', None)
-        if query is None:
-            return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-        email = query
-        user_exists = CustomUser.objects.get(email = email)
+        sessionid = request.COOKIES.get('sessionid')
+        if not isSessionActive(sessionid):
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+        if user_email is None:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        user_exists = CustomUser.objects.get(email = user_email)
         # If user doesn't exist throw an error
         if not user_exists:
             return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)

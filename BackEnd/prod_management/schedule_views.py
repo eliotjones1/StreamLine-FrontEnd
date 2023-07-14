@@ -30,8 +30,9 @@ def agreeTOS(request):
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # expects user_id at 0, subscription info (name, date) at 1. Expect name to be from our list of possible (like a search and drop down type thing, 
     # Needs to be exact string
-    user_email = request.data[0]
-    print(request.data)
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     user = CustomUser.objects.get(email=user_email)
     tos = TOSChecked.objects.get(user=user)
     tos.TOS_Checked = True
@@ -45,9 +46,9 @@ class checkTOSStatus(generics.ListAPIView):
         # Check if session is active
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-        user_email = request.query_params.get('email', None)
+        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
         if user_email is None:
-            return Response({'error': 'No email provided'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         user = CustomUser.objects.get(email=user_email)
         tos = TOSChecked.objects.get(user=user)
         if tos.TOS_Checked == True:
@@ -64,8 +65,10 @@ def createSubscription(request):
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # expects user_id at 0, subscription info (name, date) at 1. Expect name to be from our list of possible (like a search and drop down type thing, 
     # Needs to be exact string
-    user_email = request.data[0]
-    subscription_info = request.data[1]
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    subscription_info = request.data
 
     user = CustomUser.objects.get(email=user_email)
     this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'], end_date=subscription_info['date'][:10], num_months=1, num_cancellations=0, is_active=True)
@@ -80,8 +83,10 @@ def cancelSubscription(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # expects user_id at 0, subscription info (name, date, recurring) at 1
-    user_email = request.data[0]
-    subscription_info = json.dumps(request.data[1])
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    subscription_info = json.dumps(request.data)
     user = CustomUser.objects.get(email=user_email)
     this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'])
     this_subscription.is_active = False
@@ -97,10 +102,10 @@ class getSubscriptions(generics.ListAPIView):
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
         # expects user_id at 0, subscription info (name, date, recurring) at 1
-        email = request.query_params.get('email', None)
-        if email is None:
-            return Response({'error': 'No email provided'}, status=status.HTTP_400_BAD_REQUEST)
-        user = CustomUser.objects.get(email=email)
+        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+        if user_email is None:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        user = CustomUser.objects.get(email=user_email)
         subscriptions = Subscription.objects.filter(user=user)
         out = []
         for subscription in subscriptions:
@@ -141,10 +146,10 @@ class actionItems(generics.ListAPIView):
         # Check if session is active
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-        email = request.query_params.get('email', None)
-        if email is None:
-            return Response({'error': 'No email provided'}, status=status.HTTP_400_BAD_REQUEST)
-        user = CustomUser.objects.get(email=email)
+        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+        if user_email is None:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        user = CustomUser.objects.get(email=user_email)
         sub_status = checkSubscriptionStatus(user)
         if not sub_status:
             return Response({'error': 'No StreamLine subscription'}, status=status.HTTP_400_BAD_REQUEST)
@@ -216,10 +221,11 @@ def handleSelection(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # Needs to get the exact response from get request above back, but with "email": session.email
-    email = request.data["email"]
-    if email is None:
-        return Response({'error': 'No email provided'}, status=status.HTTP_400_BAD_REQUEST)
-    user = CustomUser.objects.get(email=email)
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    user = CustomUser.objects.get(email=user_email)
     sub_status = checkSubscriptionStatus(user)
     if not sub_status:
         return Response({'error': 'No StreamLine subscription'}, status=status.HTTP_400_BAD_REQUEST)
@@ -258,7 +264,9 @@ def generateBundle(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # expects user_id at 0, subscription info (name, date, recurring) at 1
-    user_email = request.data[0]
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)    
     user = CustomUser.objects.get(email=user_email)
     user_data = UserData.objects.get(user=user)
     cur_subs =  Subscription.objects.filter(user=user)

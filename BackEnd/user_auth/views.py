@@ -35,12 +35,11 @@ class AuthViewSet(viewsets.GenericViewSet):
 
         # Create a session for the user
         session = SessionStore()
-        session['user'] = user.email
+        session['user_email'] = user.email
         session.save()
         data = serializers.AuthUserSerializer(user).data
         response = Response(data=data, status=status.HTTP_200_OK)
         response.set_cookie('sessionid', session.session_key, httponly=True, samesite='None', secure=True)
-        print(response.cookies)
         return response
 
     @action(methods=['POST', ], detail=False)
