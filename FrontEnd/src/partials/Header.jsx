@@ -1,11 +1,7 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
-import {
-  Bars3Icon,
-  MagnifyingGlassIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon, WindowIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import Cookies from 'js-cookie';
 import Logo from '../images/StreamLine_Transparent_Logo.png'
 import { useNavigate } from 'react-router-dom'

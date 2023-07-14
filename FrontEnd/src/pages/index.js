@@ -1,5 +1,5 @@
 export { default as Bundles } from './Bundles';
-export { default as Home } from './Home';
+export { default as Home } from './Home/Home';
 export { default as NotFound } from './NotFound';
 export { default as SearchMedia } from './SearchMedia';
 export { default as ResetPassword } from './ResetPassword';
