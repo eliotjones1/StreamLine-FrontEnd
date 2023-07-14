@@ -39,6 +39,10 @@ function Content({ mediaContent, searchQuery, returnToMain }) {
         return genre ? genre.name : 'Unknown Genre';
       };
 
+    if (mediaContent.length === 0) {
+        return <></>
+    }
+
     return (
         <section className='max-w-6xl mx-auto'>
         <div className="flex justify-between pb-10">

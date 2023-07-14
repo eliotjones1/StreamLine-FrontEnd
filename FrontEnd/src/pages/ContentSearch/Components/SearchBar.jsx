@@ -1,32 +1,24 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
-function Searchbar({ fetchSearch }) {
-  const [searchQuery, setSearchQuery] = useState("");
+export default function Searchbar({ fetchSearch }) {
+  const inputRef = useRef(null);
 
-  const executeSearch = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if (searchQuery !== "") {
-      fetchSearch(searchQuery);
-      setSearchQuery("");
-    } 
+    fetchSearch(inputRef.current.value);
+    inputRef.current.value = '';
   };
 
-  const handleQueryChange = (event) =>{
-    event.preventDefault();
-    setSearchQuery(event.target.value);
-  }
-
   return (
-    <form className="max-w-4xl mx-auto relative" onSubmit={executeSearch}>
+    <form className="max-w-4xl mx-auto relative" onSubmit={handleSubmit}>
       <div className="container relative max-w-4xl mx-auto w-full pb-10">
         <input
+          ref={inputRef}
           id="searchInput"
           name="searchInput"
           type="search"
           placeholder="Search Desired Content..."
           className="absolute pl-10 pr-4 rounded-md text-gray-900 bg-slate-100 dark:bg-white placeholder-gray-500 w-full"
-          value={searchQuery}
-          onChange={handleQueryChange}
           autoComplete="off"
         />
         <button className="absolute left-3 h-full" type="submit">
@@ -37,7 +29,6 @@ function Searchbar({ fetchSearch }) {
         </button>
       </div>
     </form>
-  )
+  );
 }
 
-export default Searchbar

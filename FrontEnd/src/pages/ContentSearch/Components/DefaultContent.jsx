@@ -11,7 +11,6 @@ function Content() {
   const fetchTrending = async () => {
     axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=95cd5279f17c6593123c72d04e0bedfa&language=en-US&region=US`)
     .then(response => {
-      console.log(response);
       setTrending(response.data.results);
     });
   }
@@ -30,7 +29,6 @@ function Content() {
 
   const fetchNewlyReleased =  () => {
     axios.get('http://127.0.0.1:8000/recent/').then(response => {
-      console.log(response.data)
       setNewlyReleased(response.data)
     })
   }

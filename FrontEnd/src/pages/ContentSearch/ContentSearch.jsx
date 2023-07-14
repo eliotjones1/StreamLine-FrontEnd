@@ -13,11 +13,10 @@ function ContentSearch() {
 
   const fetchSearch = (query) => {
     axios.get(`http://127.0.0.1:8000/search/all/?search=${query}`).then(response => {
-      console.log(response.data)
       setContent(response.data);
       setLastSearch(query);
       setShowDefault(false);
-    }).catch();
+    });
   }
 
   return (
@@ -39,7 +38,7 @@ function ContentSearch() {
                     </radialGradient>
                   </defs>
                 </svg>
-                <div className="mx-auto w-full lg:mx-0 lg:flex-auto lg:py-32 lg:text-left text-white dark:text-slate-900">
+                <div className="mx-auto w-full lg:mx-0 lg:flex-auto lg:py-24 lg:text-left text-white dark:text-slate-900">
                 <div className="max-w-3xl mx-auto text-center">
                           <h1 className="h1 mb-4" data-aos="fade-up">
                               <span className="text-sky-600">StreamLine</span> Content Discovery
