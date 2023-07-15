@@ -210,12 +210,13 @@ def saveBudget(request):
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    data = request.data
-    # Expect email to be at 0
-    # Expect budget to be at 1
-    user = data[0]
-    budget = data[1]
-    user_exists = CustomUser.objects.get(email=user)
+
+    budget = request.data
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)        
+
+    user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     current.budget = budget
     current.save()
@@ -229,12 +230,11 @@ def saveMedia(request):
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    data = request.data
-    # Expect email to be at 0
-    # Expect Media to be at 1
-    user = data[0]
-    object = data[1]
-    user_exists = CustomUser.objects.get(email=user)
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    object = request.data
+    user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     cur_list = current.media
     cur_list.append(object)
@@ -248,12 +248,11 @@ def clearMedia(request):
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    data = request.data
-    # Expect email to be at 0
-    # Expect Media to be at 1
-    user = data[0]
-    object = data[1]
-    user_exists = CustomUser.objects.get(email=user)
+    object = request.data
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     current.media = object
     current.save()
@@ -266,12 +265,13 @@ def removeMedia(request):
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    data = request.data
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     # Expect email to be at 0
     # Expect Media to be at 1
-    user = data[0]
-    object = data[1]
-    user_exists = CustomUser.objects.get(email=user)
+    object = request.data
+    user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     cur_list = current.media
     cur_list.remove(object)
@@ -286,12 +286,13 @@ def saveBundle(request):
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    data = request.data
+    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     # Expect email to be at 0
     # Expect bundle to be at 1
-    user = data[0]
-    bundle = data[1]
-    user_exists = CustomUser.objects.get(email=user)
+    bundle = request.data
+    user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     current.bundle = bundle
     current.save()
@@ -302,17 +303,14 @@ class returnUserData(generics.ListAPIView):
     def get(self, request):
         # # get sessionid from request cookie
         sessionid = request.COOKIES.get('sessionid')
-        print(sessionid)
         # Check if session is active
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
         # Get user from session
-
-        query = request.query_params.get('email', None)
-        if query is None:
-            return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-        email = query
-        user_exists = CustomUser.objects.get(email=email)
+        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+        if user_email is None:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        user_exists = CustomUser.objects.get(email=user_email)
         output = UserData.objects.get(user_id=user_exists)
         serializer = UserDataSerializer(output)
         return Response(serializer.data)
