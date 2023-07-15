@@ -188,6 +188,12 @@ def isSessionActive(sessionid):
     else:
         return False
 
+class isAuthenticated(generics.ListAPIView):
+    def get(self, request):
+        sessionid = request.COOKIES.get('sessionid')
+        if isSessionActive(sessionid) == False:
+            return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Status": "OK"})
 
 @api_view(['POST'])
 def runOptimization(request):
