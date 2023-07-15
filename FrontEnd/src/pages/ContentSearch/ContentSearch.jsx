@@ -7,18 +7,6 @@ import Footer from "../../partials/Footer";
 import axios from "axios";
 
 function ContentSearch() {
-  const [showDefault, setShowDefault] = useState(true)
-  const [content, setContent] = useState([]);
-  const [lastSearch, setLastSearch] = useState("");
-
-  const fetchSearch = (query) => {
-    axios.get(`http://127.0.0.1:8000/search/all/?search=${query}`).then(response => {
-      setContent(response.data);
-      setLastSearch(query);
-      setShowDefault(false);
-    });
-  }
-
   return (
       <section>
           <Header flipColors={true}/>
@@ -38,7 +26,7 @@ function ContentSearch() {
                     </radialGradient>
                   </defs>
                 </svg>
-                <div className="mx-auto w-full lg:mx-0 lg:flex-auto lg:py-24 lg:text-left text-white dark:text-slate-900">
+                <div className="mx-auto w-full lg:mx-0 lg:flex-auto lg:py- lg:text-left text-white dark:text-slate-900">
                 <div className="max-w-3xl mx-auto text-center">
                           <h1 className="h1 mb-4" data-aos="fade-up">
                               <span className="text-sky-600">StreamLine</span> Content Discovery

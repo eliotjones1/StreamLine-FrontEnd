@@ -6,9 +6,7 @@ import './css/style.css';
 
 import AOS from 'aos';
 
-import Context from './context';
-
-
+// Import Pages
 import { Home, SignIn, SignUp, ResetPassword, Bundles, UserDash, SecureReset, SearchMedia, NotFound } from './pages';
 import AccountInfo from './pages/AccountInfo';
 import Pricing from './pages/Pricing';
@@ -17,6 +15,9 @@ import AboutUs from './pages/AboutUs/AboutUs';
 import NewSub from './pages/NewSub';
 import ContentSearch from './pages/ContentSearch/ContentSearch';
 import ContentData from './pages/ContentData/ContentData';
+
+// Import Context
+import ContextWrapper from './contexts';
 
 export default function App() {
   const location = useLocation();
@@ -55,13 +56,13 @@ export default function App() {
   ];
 
   return (
-    <Context>
+    <ContextWrapper>
       <Routes>
         {routesConfig.map(route => (
           <Route key={route.path} path={route.path} element={<route.component />} />
         ))}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Context>
+    </ContextWrapper>
   );
 }

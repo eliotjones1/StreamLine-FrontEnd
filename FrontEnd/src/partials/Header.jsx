@@ -1,12 +1,13 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useContext, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import Cookies from 'js-cookie';
 import Logo from '../images/StreamLine_Transparent_Logo.png'
 import { useNavigate } from 'react-router-dom'
 
 import AccountActions from './AccountActions';
+
+import { LoginContext } from '../contexts/loginContext';
 
 const products = [
   { name: 'Discover Content', description: 'Search for movies and television in the U.S.', href: '/content-search', icon: MagnifyingGlassIcon },
@@ -24,7 +25,7 @@ function classNames(...classes) {
 export default function Header({ flipColors=false }) {
   const nav = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
+  const { isLoggedIn } = useContext(LoginContext);
 
   return (
     <header className="absolute w-full z-30">
@@ -135,7 +136,7 @@ export default function Header({ flipColors=false }) {
         </Popover.Group>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          { session !== undefined ? (
+          { isLoggedIn ? (
             <AccountActions flipColors={flipColors}/>
           ) : (
             flipColors ?

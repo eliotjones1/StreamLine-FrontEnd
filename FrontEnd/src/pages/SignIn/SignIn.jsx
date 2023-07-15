@@ -1,39 +1,28 @@
-import React, { useState } from 'react';
+// Basic Imports
+import React, { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 
-import Header from '../partials/Header';
+// Component Imports
+import Header from '../../partials/Header';
 
-function SignIn() {
+// Context Imports
+import { LoginContext } from '../../context';
+
+
+export default function SignIn() {
+  const { login } = useContext(LoginContext);
   const nav = useNavigate();
-  const [isChecked, setIsChecked] = useState(false);
-  
-  const handleCheckboxChange = (event) => {
-    event.preventDefault();
-    setIsChecked(event.target.checked);
-  };
+  const email = useRef("");
+  const password = useRef("");
+  const keepSignedIn = useRef(false);
 
   const signIn = (event) => {
     event.preventDefault();
-    const data = {
-      email: document.getElementById('email').value,
-      password: document.getElementById('password').value,
-      keepSignedIn: isChecked,
-    };
-    axios.post('http://127.0.0.1:8000/api/auth/login', data,  { withCredentials: true }).then(response => {
-      Cookies.set('session', JSON.stringify(response.data), {
-        path: '/',
-        secure: true,
-        sameSite: 'strict',
-      });
-      nav('/user-dash');
-
-    }).catch(error => {
-      // Add Error Modal
-      document.getElementById('email').value = '';
-      document.getElementById('password').value = '';
-    });
+    login({
+      email: email.current.value,
+      password: password.current.value,
+      keepSignedIn: keepSignedIn.current.value,
+    })
   };
 
   return (
@@ -58,8 +47,13 @@ function SignIn() {
                         Email
                         <span className="text-red-600">*</span>
                       </label>
-                      <input id="email" type="email" className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900" placeholder="Email Address" required />
-                      
+                      <input 
+                        type="email"
+                        placeholder="Email Address" 
+                        ref={email}
+                        required
+                        className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900" 
+                      />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
@@ -68,14 +62,24 @@ function SignIn() {
                         Password
                         <span className="text-red-600">*</span>
                       </label>
-                      <input id="password" type="password" className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900" placeholder="Password" required />
+                      <input 
+                        type="password" 
+                        placeholder="Password" 
+                        ref={password}
+                        required 
+                        className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900" 
+                      />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <div className="flex justify-between">
                         <label className="flex items-center">
-                          <input type="checkbox" className="form-checkbox" checked={isChecked} onChange={handleCheckboxChange} />
+                          <input 
+                            type="checkbox" 
+                            className="form-checkbox" 
+                            ref={keepSignedIn} 
+                          />
                           <span className="text-gray-800 dark:text-gray-400 ml-2">Keep me signed in</span>
                         </label>
                         <button type="button" onClick={() => nav('/reset-password')} className="text-sky-600 hover:text-sky-900 dark:hover:text-gray-200 transition duration-150 ease-in-out">Forgot Password?</button>
@@ -102,5 +106,3 @@ function SignIn() {
     </div>
   );
 }
-
-export default SignIn;

@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from 'react';
+// Import Libraries
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 
+// Import Components
 import Header from '../partials/Header';
 import MainBundle from '../partials/bundles/MainBundle';
 import DisplaySelected from '../partials/optimize/DisplayUD';
 import Footer from '../partials/Footer';
 
+// Import Contexts
+import { LoginContext } from '../contexts/loginContext';
+
 
 function UserDash() {
+  const { isLoggedIn, user } = useContext(LoginContext);
   const [budget, setBudget] = useState(null);
   const [media, setMedia] = useState([]);
   const [bundle, setBundle] = useState({ Movies_and_TV_Shows: [], Images: [] });
-  const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
   const nav = useNavigate();
 
   const removeItem = (indexToRemove) => {
     setMedia(media.filter((_, index) => index !== indexToRemove));
     let temp = media.filter((_, index) => index !== indexToRemove);
-    if (session !== undefined) {
+    if (isLoggedIn) {
       axios
-        .post("http://127.0.0.1:8000/saveMedia/", [session.email, temp], { withCredentials: true })
+        .post("http://127.0.0.1:8000/saveMedia/", [user.email, temp], { withCredentials: true })
         .catch((error) => {
           // Add Error Modal
         });
@@ -31,15 +35,13 @@ function UserDash() {
   };
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/user/tosCompliance/?email=${session.email}`, { withCredentials: true }).then(response => {
+    axios.get(`http://127.0.0.1:8000/api/user/tosCompliance/?email=${user.email}`, { withCredentials: true }).then(response => {
       if (response.data !== "ok") {
         nav('/new-sub')
       }
-    }).catch(error => {
-      // Add Error Modal
-    });
+    })
     axios
-      .get(`http://127.0.0.1:8000/returnData/?email=${session.email}`, { withCredentials: true })
+      .get(`http://127.0.0.1:8000/returnData/?email=${user.email}`, { withCredentials: true })
       .then((response) => {
         setBudget(parseFloat(JSON.parse(response.data.budget)).toFixed(2));
         setBundle(response.data.bundle);

@@ -1,29 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Popover, Transition } from '@headlessui/react'
 import { Cog6ToothIcon, ChevronDownIcon, UserCircleIcon, ArrowLeftOnRectangleIcon, WindowIcon} from '@heroicons/react/20/solid';
 import axios from 'axios';
+import { LoginContext } from '../contexts/loginContext';
 
 
 export default function accountActions({ flipColors=false }){
+  const { logout } = useContext(LoginContext);
   const nav = useNavigate();
   const accountOptions = [
-    {name: "Sign Out", icon: ArrowLeftOnRectangleIcon, action: (event) => logout(event)},
+    {name: "Sign Out", icon: ArrowLeftOnRectangleIcon, action: (event) => {
+      event.preventDefault();
+      logout();
+    }},
     {name: "Edit Account", icon: Cog6ToothIcon, action: () => nav('/account-settings')},
     {name: "My Dashboard", icon: WindowIcon, action: () => nav('/user-dash')}
   ];
   
-  function logout(event) {
-    event.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/auth/logout', {}, {withCredentials: true}).then(() => {
-      nav('/');
-      document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      // Use Cookies Library to Remove Instead
-    }).catch(error => {
-      // Add Error Modal
-    });
-  }
 
   return(
   <Popover.Group className="hidden lg:flex lg:flex-1 lg:justify-end">
