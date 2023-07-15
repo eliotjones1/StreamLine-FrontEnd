@@ -1,13 +1,22 @@
+// Basic Imports
 import React, { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import AOS from 'aos';
 
+// Import CSS
 import 'aos/dist/aos.css';
 import './css/style.css';
 
-import AOS from 'aos';
-
 // Import Pages
-import { Home, SignIn, SignUp, ResetPassword, Bundles, UserDash, SecureReset, SearchMedia, NotFound } from './pages';
+import Home from './pages/Home/Home';
+import SignIn from './pages/SignIn/SignIn';
+import SignUp from './pages/SignUp/SignUp';
+import ResetPassword from './pages/ResetPassword';
+import Bundles from './pages/Bundles';
+import UserDash from './pages/UserDash';
+import SecureReset from './pages/SecureReset';
+import SearchMedia from './pages/SearchMedia';
+import NotFound from './pages/NotFound';
 import AccountInfo from './pages/AccountInfo';
 import Pricing from './pages/Pricing';
 import News from './pages/News';
@@ -17,7 +26,7 @@ import ContentSearch from './pages/ContentSearch/ContentSearch';
 import ContentData from './pages/ContentData/ContentData';
 
 // Import Context
-import ContextWrapper from './contexts';
+import ContextWrapper from './contexts/Index';
 
 export default function App() {
   const location = useLocation();

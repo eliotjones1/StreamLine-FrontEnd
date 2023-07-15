@@ -1,6 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
+import { SearchContext } from '../../../contexts/SearchContext';
 
-export default function Searchbar({ fetchSearch }) {
+export default function Searchbar() {
+  const { fetchSearch } = useContext(SearchContext)
   const inputRef = useRef(null);
 
   const handleSubmit = (event) => {

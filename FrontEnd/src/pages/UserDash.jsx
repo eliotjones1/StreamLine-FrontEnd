@@ -10,7 +10,7 @@ import DisplaySelected from '../partials/optimize/DisplayUD';
 import Footer from '../partials/Footer';
 
 // Import Contexts
-import { LoginContext } from '../contexts/loginContext';
+import { LoginContext } from '../contexts/LoginContext';
 
 
 function UserDash() {

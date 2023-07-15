@@ -1,18 +1,25 @@
-import React, { useState } from "react";
+// Basic Imports
+import React, { useContext } from "react";
+
+// Import Components
 import DefaultContent from "./Components/DefaultContent";
 import SearchContent from "./Components/SearchContent";
 import Searchbar from "./Components/SearchBar";
 import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
-import axios from "axios";
+
+// Import Contexts
+import { SearchContext } from "../../contexts/SearchContext";
 
 function ContentSearch() {
+  const { showDefault } = useContext(SearchContext);
+
   return (
       <section>
           <Header flipColors={true}/>
           <main className="grow">
             <div className="mx-auto w-full pb-10">
-              <div className="relative isolate overflow-hidden bg-slate-900 dark:bg-slate-50 px-6 pt-16 shadow-2xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
+              <div className="relative isolate overflow-hidden bg-slate-900 dark:bg-slate-50 px-6 pt-16 shadow-2xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:py-24">
                 <svg
                   viewBox="0 0 1024 1024"
                   className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)] sm:left-full sm:-ml-80 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 lg:translate-y-0"
@@ -33,14 +40,16 @@ function ContentSearch() {
                           </h1>
                       </div>
                   <div className="mt-10">
-                    <Searchbar fetchSearch={fetchSearch}/>
+                    <Searchbar/>
                   </div>
                 </div>
               </div>
             </div>
             {
-              showDefault ? <DefaultContent/>
-              : <SearchContent mediaContent={content} searchQuery={lastSearch} returnToMain={setShowDefault}/>
+              showDefault ? 
+                <DefaultContent/>
+              : 
+                <SearchContent/>
             }
             
           </main>

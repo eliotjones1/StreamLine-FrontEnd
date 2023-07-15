@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 import AccountActions from './AccountActions';
 
-import { LoginContext } from '../contexts/loginContext';
+import { LoginContext } from '../contexts/LoginContext';
 
 const products = [
   { name: 'Discover Content', description: 'Search for movies and television in the U.S.', href: '/content-search', icon: MagnifyingGlassIcon },

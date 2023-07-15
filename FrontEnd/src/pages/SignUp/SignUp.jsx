@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../partials/Header';
 
 // Context Imports
-import { LoginContext } from '../../context';
+import { LoginContext } from '../../contexts/LoginContext';
 
 export default function SignUp() {
   const { signUp } = useContext(LoginContext);

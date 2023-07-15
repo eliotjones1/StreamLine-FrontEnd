@@ -2,8 +2,8 @@
 import React from "react";
 
 // Import Contexts
-import { LoginProvider } from './loginContext';
-import { SearchProvider } from './searchContext';
+import LoginProvider from './LoginContext';
+import SearchProvider from './SearchContext';
 
 export default function ContextWrapper({ children }) {
   //element to wrap all context

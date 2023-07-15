@@ -34,7 +34,6 @@ export default function LoginProvider({ children }){
   const logout = () => {
     axios.post('http://127.0.0.1:8000/api/auth/logout', {}, {withCredentials: true}).then(() => {
       setIsLoggedIn(false);
-      setUser(null);
       Cookies.remove('session');
     });
   }
@@ -42,7 +41,6 @@ export default function LoginProvider({ children }){
   return (
     <LoginContext.Provider value={{
       isLoggedIn,
-      user,
       login,
       logout,
       signUp,

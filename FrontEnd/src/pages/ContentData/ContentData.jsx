@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { PlusIcon } from '@heroicons/react/20/solid';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+
 import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
 
-function Detail() {
+// Import Contexts
+import { LoginContext } from '../../contexts/LoginContext';
+
+export default function Detail() {
+  const { isLoggedIn } = useContext(LoginContext)
   const { type, id } = useParams();
   const [contentDetails, setContentDetails] = useState({});
-  const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
   let date = "";
 
   const fetchContentData = () => {
@@ -57,10 +60,12 @@ function Detail() {
                     {contentDetails.title || contentDetails.name}
                   </h2>
 
-                  <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
-                    <PlusIcon className='h-6 text-white' />
-                  </button>
-
+                  {
+                    isLoggedIn &&
+                    <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
+                      <PlusIcon className='h-6 text-white' />
+                    </button>
+                  }
 
                   <div className="mt-2 flex-rows flex-wrap text-sm leading-6 font-medium">
                     <div className="flex space-x-1 mb-2">
@@ -81,5 +86,3 @@ function Detail() {
     </div>
   )
 }
-
-export default Detail;

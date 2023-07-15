@@ -1,45 +1,18 @@
-import React from 'react'
-import ContentCard from './ContentCard';
+// Basic Imports
+import React, {useContext} from 'react'
 import { useNavigate } from 'react-router-dom';
 
-function Content({ mediaContent, searchQuery, returnToMain }) {
+// Import Components
+import ContentCard from './ContentCard';
+
+// Import Contexts
+import { SearchContext } from '../../../contexts/SearchContext';
+
+function Content() {
+    const { content, lastSearch, returnToMain, getGenreById } = useContext(SearchContext)
     const nav = useNavigate();
 
-    const getGenreById = (id) => {
-        const genres = [
-            { id: 12, name: 'Adventure' },
-            { id: 14, name: 'Fantasy' },
-            { id: 16, name: 'Animation' },
-            { id: 18, name: 'Drama' },
-            { id: 27, name: 'Horror' },
-            { id: 28, name: 'Action' },
-            { id: 35, name: 'Comedy' },
-            { id: 36, name: 'History' },
-            { id: 37, name: 'Western' },
-            { id: 53, name: 'Thriller' },
-            { id: 80, name: 'Crime' },
-            { id: 99, name: 'Documentary' },
-            { id: 878, name: 'Science Fiction' },
-            { id: 9648, name: 'Mystery' },
-            { id: 10402, name: 'Music' },
-            { id: 10749, name: 'Romance' },
-            { id: 10751, name: 'Family' },
-            { id: 10752, name: 'War' },
-            { id: 10759, name: 'Action & Adventure' },
-            { id: 10762, name: 'Kids' },
-            { id: 10763, name: 'News' },
-            { id: 10764, name: 'Reality' },
-            { id: 10765, name: 'Sci-Fi & Fantasy' },
-            { id: 10766, name: 'Soap' },
-            { id: 10767, name: 'Talk' },
-            { id: 10768, name: 'War & Politics' },
-            { id: 10770, name: 'TV Movie' }
-        ];
-        const genre = genres.find((genre) => genre.id === id);
-        return genre ? genre.name : 'Unknown Genre';
-      };
-
-    if (mediaContent.length === 0) {
+    if (content.length === 0) {
         return <></>
     }
 
@@ -47,14 +20,14 @@ function Content({ mediaContent, searchQuery, returnToMain }) {
         <section className='max-w-6xl mx-auto'>
         <div className="flex justify-between pb-10">
             <p className="mr-auto">
-                Showing search results for "{searchQuery}"
+                Showing search results for "{lastSearch}"
             </p>
             <button className="ml-auto text-sky-600" onClick={() => returnToMain(true)}>
                 Return to main
             </button>
         </div>
         <div className="mb-20 md:mb-0 space-y-8">
-            {mediaContent.map((content) => (
+            {content.map((content) => (
                 <div className='bg-white dark:bg-slate-900 rounded-3xl ring-1 ring-slate-200 dark:ring-slate-600 p-2 px-4 flex w-full cursor-pointer space-x-6 shadow-md' onClick={() => nav(`/content-data/${content.type}/${content.id}`)} key={content.id}>
                     <div>
                         <ContentCard key={content.id} content={content} />
