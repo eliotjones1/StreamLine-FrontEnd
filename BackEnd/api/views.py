@@ -336,6 +336,9 @@ def returnInfo(request):
         if response.status_code != 200:
             return None
         movie_data = response.json()
+        movie_data['type'] = object['type']
+        streaming_providers = getStreamingProviderMovie(id)
+        movie_data['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
         return Response(movie_data)
     else:
         id = object['id']
@@ -348,6 +351,9 @@ def returnInfo(request):
         if response.status_code != 200:
             return None
         show_data = response.json()
+        show_data['type'] = object['type']
+        streaming_providers = getStreamingProviderShow(id)
+        show_data['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
         return Response(show_data)
 
 

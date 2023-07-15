@@ -13,7 +13,6 @@ function DisplaySelected({ items, onRemoveItem }) {
     const [selectedItem, setSelectedItem] = useState(null);
     const [rating, setRating] = useState(5);
     const [item_index, setIndex] = useState(null);
-    const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
 
     useEffect(() => {
         if (
@@ -51,7 +50,7 @@ function DisplaySelected({ items, onRemoveItem }) {
 
     const handleSubmit = () => {
         // Make POST request to http://127.0.0.1:8000/api/recommendations/saveRating/
-        axios.post("http://127.0.0.1:8000/api/recommendations/saveRating/", [session.email, selectedItem, rating], { withCredentials: true }).then(response => {
+        axios.post("http://127.0.0.1:8000/api/recommendations/saveRating/", [selectedItem, rating], { withCredentials: true }).then(response => {
             console.log(response);
         }).catch(error => {
             console.log(error);
@@ -86,7 +85,7 @@ function DisplaySelected({ items, onRemoveItem }) {
                                     width="46.25"
                                     height="69.5"
                                     style={{ borderRadius: '10%' }}
-                                    src={`https://image.tmdb.org/t/p/w185${item.image}`}
+                                    src={`https://image.tmdb.org/t/p/w185${item.poster_path}`}
                                     alt={DefaultMovieImg}
                                 />
                                 <div className="pl-2 text-white">
@@ -148,7 +147,7 @@ function DisplaySelected({ items, onRemoveItem }) {
                                 width="200"
                                 height="300"
                                 style={{ borderRadius: '5%' }}
-                                src={`https://image.tmdb.org/t/p/w185${selectedItem.image}`}
+                                src={`https://image.tmdb.org/t/p/w185${selectedItem.poster_path}`}
                                 alt={DefaultMovieImg}
                             />
                             <Typography variant="h5" style={{ color: 'black' }}>

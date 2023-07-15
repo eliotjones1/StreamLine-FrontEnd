@@ -23,6 +23,7 @@ export default function SignIn() {
       password: password.current.value,
       keepSignedIn: keepSignedIn.current.value,
     })
+    nav('/')
   };
 
   return (

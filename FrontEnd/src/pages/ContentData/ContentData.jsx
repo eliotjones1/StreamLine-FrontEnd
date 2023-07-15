@@ -25,7 +25,7 @@ export default function Detail() {
   };
 
   const addToUserList = () => {
-      axios.post("http://127.0.0.1:8000/saveMedia/", [session.email, contentDetails], { withCredentials: true });
+      axios.post("http://127.0.0.1:8000/saveMedia/", contentDetails, { withCredentials: true });
   };
 
   useEffect(() => {
