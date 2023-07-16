@@ -188,6 +188,12 @@ def isSessionActive(sessionid):
     else:
         return False
 
+class isAuthenticated(generics.ListAPIView):
+    def get(self, request):
+        sessionid = request.COOKIES.get('sessionid')
+        if isSessionActive(sessionid) == False:
+            return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Status": "OK"})
 
 @api_view(['POST'])
 def runOptimization(request):
@@ -330,6 +336,9 @@ def returnInfo(request):
         if response.status_code != 200:
             return None
         movie_data = response.json()
+        movie_data['type'] = object['type']
+        streaming_providers = getStreamingProviderMovie(id)
+        movie_data['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
         return Response(movie_data)
     else:
         id = object['id']
@@ -342,6 +351,9 @@ def returnInfo(request):
         if response.status_code != 200:
             return None
         show_data = response.json()
+        show_data['type'] = object['type']
+        streaming_providers = getStreamingProviderShow(id)
+        show_data['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
         return Response(show_data)
 
 

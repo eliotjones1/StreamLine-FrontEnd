@@ -25,7 +25,7 @@ function UserDash() {
     let temp = media.filter((_, index) => index !== indexToRemove);
     if (isLoggedIn) {
       axios
-        .post("http://127.0.0.1:8000/saveMedia/", [user.email, temp], { withCredentials: true })
+        .post("http://127.0.0.1:8000/saveMedia/", [temp], { withCredentials: true })
         .catch((error) => {
           // Add Error Modal
         });
@@ -35,13 +35,13 @@ function UserDash() {
   };
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/user/tosCompliance/?email=${user.email}`, { withCredentials: true }).then(response => {
+    axios.get(`http://127.0.0.1:8000/api/user/tosCompliance/`, { withCredentials: true }).then(response => {
       if (response.data !== "ok") {
         nav('/new-sub')
       }
     })
     axios
-      .get(`http://127.0.0.1:8000/returnData/?email=${user.email}`, { withCredentials: true })
+      .get(`http://127.0.0.1:8000/returnData/`, { withCredentials: true })
       .then((response) => {
         setBudget(parseFloat(JSON.parse(response.data.budget)).toFixed(2));
         setBundle(response.data.bundle);
