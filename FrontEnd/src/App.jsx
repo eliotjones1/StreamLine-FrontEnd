@@ -24,6 +24,7 @@ import AboutUs from './pages/AboutUs/AboutUs';
 import NewSub from './pages/NewSub';
 import ContentSearch from './pages/ContentSearch/ContentSearch';
 import ContentData from './pages/ContentData/ContentData';
+import Payment from './pages/Payment/Payment';
 
 // Import Context
 import ContextWrapper from './contexts/Index';
@@ -62,6 +63,7 @@ export default function App() {
     { path: '/new-sub', component: NewSub },
     { path: '/content-search', component: ContentSearch },
     { path: '/content-data/:type/:id/', component: ContentData },
+    { path: '/payment', component: Payment},
   ];
 
   return (
