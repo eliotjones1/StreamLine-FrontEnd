@@ -137,7 +137,6 @@ class returnAll(generics.ListAPIView):
         tv_data = response.json()['results']
         serialized_output = []
         for movie in movie_data:
-            streaming_providers = getStreamingProviderMovie(movie['id'])
 
             serialized_output.append({
                 'title': movie['title'],
@@ -145,21 +144,18 @@ class returnAll(generics.ListAPIView):
                 'poster_path': movie['poster_path'],
                 'backdrop': movie['backdrop_path'],
                 'rating': movie['vote_average'],
-                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
                 'genres': movie['genre_ids'],
                 'overview': movie['overview'],
                 'type': 'Movie',
                 'id': movie['id']
             })
         for show in tv_data:
-            streaming_providers = getStreamingProviderShow(show['id'])
             serialized_output.append({
                 'title': show['name'],
                 'release_date': show['first_air_date'],
                 'poster_path': show['poster_path'],
                 'backdrop': show['backdrop_path'],
                 'rating': show['vote_average'],
-                'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
                 'genres': show['genre_ids'],
                 'overview': show['overview'],
                 'type': 'TV Series',
@@ -386,14 +382,12 @@ class newlyReleased(generics.ListAPIView):
         serialized_list = []
         for show in new_shows:
             if datetime.strptime(show['first_air_date'], '%Y-%m-%d') < datetime.now():
-                streaming_providers = getStreamingProviderShow(show['id'])
                 serialized_list.append({
                     'title': show['name'],
                     'release_date': show['first_air_date'],
                     'poster_path': show['poster_path'],
                     'backdrop': show['backdrop_path'],
                     'rating': show['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
                     'genres': show['genre_ids'],
                     'overview': show['overview'],
                     'type': 'TV Series',
@@ -401,14 +395,12 @@ class newlyReleased(generics.ListAPIView):
                 })
         for movie in new_movies:
             if datetime.strptime(movie['release_date'], '%Y-%m-%d') < datetime.now():
-                streaming_providers = getStreamingProviderMovie(movie['id'])
                 serialized_list.append({
                     'title': movie['title'],
                     'release_date': movie['release_date'],
                     'poster_path': movie['poster_path'],
                     'backdrop': movie['backdrop_path'],
                     'rating': movie['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
                     'genres': movie['genre_ids'],
                     'overview': movie['overview'],
                     'type': 'Movie',
