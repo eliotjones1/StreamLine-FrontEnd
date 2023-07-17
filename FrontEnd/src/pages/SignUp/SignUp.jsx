@@ -1,11 +1,11 @@
-// Basic Imports
+// Import Libraries
 import React, { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Component Imports
+// Import Components
 import Header from '../../partials/Header';
 
-// Context Imports
+// Import Contexts
 import { LoginContext } from '../../contexts/LoginContext';
 
 export default function SignUp() {

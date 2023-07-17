@@ -1,4 +1,7 @@
+// Import Libraries
 import React, { useContext, useRef } from 'react';
+
+// Import Contexts
 import { SearchContext } from '../../../contexts/SearchContext';
 
 export default function Searchbar() {

@@ -1,8 +1,11 @@
+// Import Libraries
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// Import Images
 import noimage from '../../../images/no-image.jpg';
 
-function ContentCard({ content }) {
+export default function ContentCard({ content }) {
   const nav = useNavigate();
   
   return (
@@ -15,5 +18,3 @@ function ContentCard({ content }) {
     </div>
   )
 }
-
-export default ContentCard;

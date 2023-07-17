@@ -1,11 +1,13 @@
+// Import Libraries
 import React from "react";
 
+// Import Components
 import Header from '../../partials/Header';
 import Footer from "../../partials/Footer";
 import Founders from "../../partials/Founders";
 import About from "./Components/LearnMore";
 
-function AboutUs() {
+export default function AboutUs() {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Header/>
@@ -17,5 +19,3 @@ function AboutUs() {
     </div>
   );
 }
-
-export default AboutUs;

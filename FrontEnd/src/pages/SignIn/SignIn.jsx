@@ -23,14 +23,11 @@ export default function SignIn() {
       password: password.current.value,
       keepSignedIn: keepSignedIn.current.value,
     })
-    nav('/')
   };
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-
       <Header />
-
       <main className="grow">
         <section className="relative">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -78,7 +75,7 @@ export default function SignIn() {
                         <label className="flex items-center">
                           <input 
                             type="checkbox" 
-                            className="form-checkbox" 
+                            className="form-checkbox cursor-pointer" 
                             ref={keepSignedIn} 
                           />
                           <span className="text-gray-800 dark:text-gray-400 ml-2">Keep me signed in</span>

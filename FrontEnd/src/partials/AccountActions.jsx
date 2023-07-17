@@ -3,7 +3,6 @@ import { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Popover, Transition } from '@headlessui/react'
 import { Cog6ToothIcon, ChevronDownIcon, UserCircleIcon, ArrowLeftOnRectangleIcon, WindowIcon} from '@heroicons/react/20/solid';
-import axios from 'axios';
 import { LoginContext } from '../contexts/LoginContext';
 
 

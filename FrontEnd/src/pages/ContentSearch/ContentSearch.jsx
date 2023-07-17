@@ -1,4 +1,4 @@
-// Basic Imports
+// Imports Libraries
 import React, { useContext } from "react";
 
 // Import Components

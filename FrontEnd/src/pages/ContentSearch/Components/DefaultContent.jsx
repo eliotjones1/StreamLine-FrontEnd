@@ -1,24 +1,31 @@
+// Import Libraries
 import React, { useState, useEffect } from 'react';
-import ContentSlider from './ContentSlider';
 import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
 
+// Import Components
+import ContentSlider from './ContentSlider';
+
 const queryClient = new QueryClient();
+
+const fetchNewlyReleased = async () => {
+  const { data } = await axios.get('http://127.0.0.1:8000/recent/');
+  return data;
+};
+
+const fetchTrending = async () => {
+  const { data } = await axios.get('http://127.0.0.1:8000/trending/');
+  return data;
+}
 
 function Content() {
   const [trending, setTrending] = useState([]);
-  
-  const fetchNewlyReleased = async () => {
-    const response = await axios.get('http://127.0.0.1:8000/recent/');
-    return response.data;
-  };
   const { data: newlyReleased } = useQuery('newlyReleased', fetchNewlyReleased);
 
-  const fetchTrending = async () => {
+  const fetchTrending = () => {
     axios.get(
         `https://api.themoviedb.org/3/trending/all/week?api_key=95cd5279f17c6593123c72d04e0bedfa&language=en-US&region=US`
-    )
-    .then((response) => {
+    ).then((response) => {
       setTrending(response.data.results);
     });
   };

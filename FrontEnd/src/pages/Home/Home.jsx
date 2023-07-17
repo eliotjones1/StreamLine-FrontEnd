@@ -1,14 +1,15 @@
+// Import Libraries
 import React from 'react';
 
+// Import Components
 import Footer from '../../partials/Footer';
-import Newsletter from '../../partials/Newsletter';
+import Newsletter from './Components/Newsletter';
 import Founders from '../../partials/Founders';
-import FeaturesZigzag from '../../partials/FeaturesZigzag';
-import HeroHome from '../../partials/HeroHome';
-import LogoClouds from '../../partials/LogoClouds';
+import FeaturesZigzag from './Components/FeaturesZigzag';
+import HeroHome from './Components/HeroHome';
+import LogoClouds from './Components/LogoClouds';
 import Header from '../../partials/Header';
-import CTA from '../../partials/CTA';
-
+import CTA from './Components/CTA';
 
 export default function Home() {
   return (

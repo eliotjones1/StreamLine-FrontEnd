@@ -1,4 +1,7 @@
+// Import Libraries
 import React from 'react';
+
+// Imprt Components
 import ContentCard from './ContentCard';
 
 function ContentSlider({ mediaContent }) {
@@ -6,7 +9,7 @@ function ContentSlider({ mediaContent }) {
     <div className="flex overflow-x-auto space-x-4 scrollbar-hidden relative">
       {mediaContent.map((content, index) => (
         <div className='w-44' key={index} >
-          <ContentCard key={content.id} content={content} />
+          <ContentCard content={content} />
           <div className='py-3'>
             <p className='font-semibold'>{content.title || content.name}</p>
             { content.release_date && 
