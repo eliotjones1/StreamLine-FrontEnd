@@ -191,6 +191,8 @@ def isSessionActive(sessionid):
 class isAuthenticated(generics.ListAPIView):
     def get(self, request):
         sessionid = request.COOKIES.get('sessionid')
+        print("AUTH")
+        print(sessionid)
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Status": "OK"})
@@ -309,6 +311,8 @@ class returnUserData(generics.ListAPIView):
     def get(self, request):
         # # get sessionid from request cookie
         sessionid = request.COOKIES.get('sessionid')
+        print("DATA")
+        print(sessionid)
         # Check if session is active
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
