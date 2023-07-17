@@ -42,6 +42,7 @@ def agreeTOS(request):
 class checkTOSStatus(generics.ListAPIView):
     def get(self, request):
         sessionid = request.COOKIES.get('sessionid')
+        print("TOS")
         print(sessionid)
         # Check if session is active
         if isSessionActive(sessionid) == False:
