@@ -92,17 +92,7 @@ export default function MediaInfo({ info }){
         <ul className='space-y-2'>
           {info.production_companies.map((producer, index) => (
             <li key={index}>
-              {
-                producer.logo_path ?
-                  <img
-                    src={`https://image.tmdb.org/t/p/original${producer.logo_path}`}
-                    className='h-6'
-                  />
-                :
-                  <p>
-                    {producer.name}
-                  </p>
-              }
+              {producer.name}
             </li>
           ))}
         </ul>
