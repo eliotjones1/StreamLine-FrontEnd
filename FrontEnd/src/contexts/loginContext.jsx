@@ -6,17 +6,11 @@ export const LoginContext = createContext();
 
 export default function LoginProvider({ children }){
   const nav = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const validateSession = async () => {
-      try {
-        await axios.get('http://127.0.0.1:8000/isAuthenticated/', { withCredentials: true});
-        setIsLoggedIn(true)
-      } catch {}
-    }
-    validateSession();
-  }, []);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    axios.get('http://127.0.0.1:8000/isAuthenticated/', { withCredentials: true}).then(() => {
+      setIsLoggedIn(true);
+    });
+  });
 
   const signUp = async (userData) => {
     await axios.post('http://127.0.0.1:8000/api/auth/register', userData, { withCredentials: true});

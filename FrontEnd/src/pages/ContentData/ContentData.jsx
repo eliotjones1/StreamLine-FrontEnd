@@ -21,7 +21,8 @@ export default function Detail() {
   const { isLoggedIn } = useContext(LoginContext);
   const { type, id } = useParams();
   const [contentDetails, setContentDetails] = useState({});
-  const [contentVideos, setContentVideos] = useState({});
+  const [contentVideos, setContentVideos] = useState([]);
+  const [contentCastCrew, setContentCastCrew] = useState({});
   const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
 
   const fetchContentData = async () => {
@@ -30,26 +31,38 @@ export default function Detail() {
   };
 
   const fetchCast = async () => {
-    const castdata = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${APIKEY}&language`
-    );
-    const castdetail = await castdata.json();
-    console.log(castdetail);
+    if (type === "Movie") {
+      const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${APIKEY}&language`);
+      setContentCastCrew(data);
+    } else {
+      const { data } = await axios.get(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${APIKEY}&language`);
+      setContentCastCrew(data);
+    }
   }
 
   const fetchVideo = async () => {
-    const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${APIKEY}&language=en-US`);
-    setContentVideos(data.results);
+    if (type === "Movie") {
+      const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${APIKEY}&language=en-US`);
+      setContentVideos(data.results);
+    } else {
+      const { data } = await axios.get(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${APIKEY}&language=en-US`);
+      setContentVideos(data.results);
+    }
+  }
+
+  const onList = async () => {
+    const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
   }
 
   const addToUserList = () => {
-      axios.post("http://127.0.0.1:8000/saveMedia/", contentDetails, { withCredentials: true });
+    axios.post("http://127.0.0.1:8000/saveMedia/", contentDetails, { withCredentials: true });
   };
 
   useEffect(() => {
-    fetchContentData();
-    fetchVideo();
     fetchCast();
+    fetchVideo();
+    fetchContentData();
+    onList();
   }, []);
 
   if (Object.keys(contentDetails).length === 0){
@@ -155,7 +168,7 @@ export default function Detail() {
               </div>
 
             </div>
-            <section className="mx-auto my-6 grid max-w-7xl gap-x-8 gap-y-8 grid-cols-4 grid-rows-2 items-start">
+            <section className="mx-auto my-6 grid max-w-7xl gap-x-8 gap-y-8 grid-cols-4 grid-rows-[auto, auto] items-start">
                 <div className="col-start-4 row-span-2 p-4 space-y-4">
                   <h2 className="text-3xl font-bold truncate">
                     Relevent Information
@@ -164,27 +177,23 @@ export default function Detail() {
                 </div>
                 <div className='col-start-1 col-span-3 row-start-1'>
                   <h2 className="text-2xl font-bold mb-4">
-                    Cast & Crew
+                    Cast
                   </h2>
-                  {/*
-                    <CastSlider cast={contentDetails.cast}/>
-                  */}
+                  <CastSlider castCrew={contentCastCrew.cast}/>
                 </div>
                 <div className='col-start-1 col-span-3 row-start-2'>
                   <h2 className="text-2xl font-bold mb-4">
                     Trailers
                   </h2>
-                  
                   {
-                    contentVideos.map((trailer) => (
-                      <>
-                        {trailer.type === "Trailer" &&
-                          <TrailerIFrame key={trailer.key} link={`https://www.youtube.com/embed/${trailer.key}`}/>
-                        }
-                      </>
-                    ))
+                    contentVideos.map((trailer, index) => {
+                      if (trailer.type === "Trailer"){
+                        return (
+                          <TrailerIFrame key={index} link={`https://www.youtube.com/embed/${trailer.key}`}/>
+                        );
+                      }
+                    })
                   }
-
                 </div>
             </section>   
           </main>

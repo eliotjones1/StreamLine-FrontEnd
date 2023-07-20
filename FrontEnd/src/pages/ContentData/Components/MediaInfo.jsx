@@ -1,7 +1,27 @@
 // Import Libraries
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function MediaInfo({ info }){
+  const [contentKeywords, setKeywords] = useState([]);
+  const { type, id } = useParams();
+  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
+
+  const fetchKeywords = async () => {
+    if (type === "Movie") {
+      const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${id}/keywords?api_key=${APIKEY}`);
+      setKeywords(data.keywords);
+    } else {
+      const { data } = axios.get(`https://api.themoviedb.org/3/tv/${id}/keywords?api_key=${APIKEY}`);
+      setKeywords(data.keywords);
+    }
+  }
+
+  useEffect(() => {
+    fetchKeywords();
+  }, []);
+
   return(
     <>
       <div>
@@ -64,10 +84,10 @@ export default function MediaInfo({ info }){
         </h3>
         <p>
           {
-            info.budget === 0 || info.budget === undefined ?
+            info.budget === 0 ?
               "Currently Unknown"
             :
-              "$"+info.revenue
+              info.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
           }
         </p>
       </div>
@@ -78,26 +98,28 @@ export default function MediaInfo({ info }){
         </h3>
         <p>
           {
-            info.budget === 0 || info.budget === undefined ?
+            info.revenue === 0 ?
               "Currently Unknown"
             :
-              "$"+info.revenue
+              info.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
           }
         </p>
       </div>
       <div>
         <h3 className="font-bold text-xl">Producers:</h3>
-        <ul>
+        <ul className='space-y-2'>
           {info.production_companies.map((producer) => (
-            <li key={producer} className='flex space-x-2'>
-              <p>
-                {producer.name}
-              </p>
+            <li key={producer}>
               {
-                producer.logo_path && <img
-                  src={`https://image.tmdb.org/t/p/original${producer.logo_path}`}
-                  className='h-6'
-                />
+                producer.logo_path ?
+                  <img
+                    src={`https://image.tmdb.org/t/p/original${producer.logo_path}`}
+                    className='h-6'
+                  />
+                :
+                  <p>
+                    {producer.name}
+                  </p>
               }
             </li>
           ))}
@@ -112,6 +134,18 @@ export default function MediaInfo({ info }){
           </li>
         ))}
       </div>
+
+      {
+        contentKeywords !== undefined && 
+        <div>
+          <h3 className="font-bold text-xl">Keywords:</h3>
+          {contentKeywords.map((word, index) => (
+            <li key={word.id} className='ml-2'>
+              {word.name}
+            </li>
+          ))}
+        </div>
+      }
     </>
   );
 }

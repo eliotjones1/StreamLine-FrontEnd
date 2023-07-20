@@ -8,7 +8,6 @@ export default function TrailerIFrame({link}){
         title="Media Trailer"
         width={560}
         height={315}
-        frameborder="0" 
         src={link}
         allowFullScreen
       />
