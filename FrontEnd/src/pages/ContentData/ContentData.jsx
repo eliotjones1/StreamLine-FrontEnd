@@ -23,7 +23,7 @@ export default function Detail() {
   const [contentDetails, setContentDetails] = useState({});
   const [contentVideos, setContentVideos] = useState([]);
   const [contentCastCrew, setContentCastCrew] = useState({});
-  const [inList, setInList] = useState(true);
+  const [inList, setInList] = useState(false);
   const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
 
   const fetchContentData = async () => {
@@ -53,7 +53,7 @@ export default function Detail() {
 
   const onList = async () => {
     const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
-    if (data.media.find(item => item.id === id && item.type === type)){
+    if (data.media.find(item => (item.id === id && item.type === type))){
       setInList(true);
     } else {
       setInList(false);
@@ -61,7 +61,21 @@ export default function Detail() {
   }
 
   const addToUserList = () => {
-    axios.post("http://127.0.0.1:8000/saveMedia/", contentDetails, { withCredentials: true });
+    try {
+      axios.post("http://127.0.0.1:8000/saveMedia/", {id: id, type: type}, { withCredentials: true });
+      setInList(true);
+    } catch {
+
+    }
+  };
+
+  const removeFromUserList = () => {
+    try {
+      axios.post("http://127.0.0.1:8000/removeMedia/", {id: id, type: type}, { withCredentials: true });
+      setInList(false);
+    } catch {
+
+    }
   };
 
   useEffect(() => {
@@ -163,13 +177,13 @@ export default function Detail() {
                   {
                     isLoggedIn &&
                       inList ?
+                        <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => removeFromUserList()}>
+                          <MinusIcon className='h-6 text-white' />
+                        </button>
+                      :
                         <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
                           <PlusIcon className='h-6 text-white' />
                         </button>
-                      :
-                      <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
-                        <MinusIcon className='h-6 text-white' />
-                      </button>
                   }
 
                   <div className="mt-2 flex-rows flex-wrap text-sm leading-6 font-medium">

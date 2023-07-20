@@ -4,24 +4,6 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export default function MediaInfo({ info }){
-  const [contentKeywords, setKeywords] = useState([]);
-  const { type, id } = useParams();
-  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
-
-  const fetchKeywords = async () => {
-    if (type === "Movie") {
-      const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${id}/keywords?api_key=${APIKEY}`);
-      setKeywords(data.keywords);
-    } else {
-      const { data } = axios.get(`https://api.themoviedb.org/3/tv/${id}/keywords?api_key=${APIKEY}`);
-      setKeywords(data.keywords);
-    }
-  }
-
-  useEffect(() => {
-    fetchKeywords();
-  }, []);
-
   return(
     <>
       <div>
@@ -67,8 +49,8 @@ export default function MediaInfo({ info }){
           </h3>
 
           {
-            info.seasons.map(season => (
-              <li key={season.id} className='ml-2 font-semibold'>
+            info.seasons.map((season, index) => (
+              <li key={index} className='ml-2 font-semibold'>
                 {`Season ${season.season_number}: ${season.name}` }
                   <li className='ml-4 font-normal'>{`Aired: ${new Date(season.air_date).toLocaleString('en-US', {year:'numeric', month:'long', day:'numeric'})}`}</li>
                   <li className='ml-4 font-normal'>{`Episodes: ${season.episode_count}` }</li>
@@ -84,7 +66,7 @@ export default function MediaInfo({ info }){
         </h3>
         <p>
           {
-            info.budget === 0 ?
+            (info.budget === undefined || info.budget === 0 ) ?
               "Currently Unknown"
             :
               info.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
@@ -98,7 +80,7 @@ export default function MediaInfo({ info }){
         </h3>
         <p>
           {
-            info.revenue === 0 ?
+            (info.revenue === undefined || info.revenue === 0 )  ?
               "Currently Unknown"
             :
               info.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
@@ -108,8 +90,8 @@ export default function MediaInfo({ info }){
       <div>
         <h3 className="font-bold text-xl">Producers:</h3>
         <ul className='space-y-2'>
-          {info.production_companies.map((producer) => (
-            <li key={producer}>
+          {info.production_companies.map((producer, index) => (
+            <li key={index}>
               {
                 producer.logo_path ?
                   <img
@@ -134,18 +116,6 @@ export default function MediaInfo({ info }){
           </li>
         ))}
       </div>
-
-      {
-        contentKeywords !== undefined && 
-        <div>
-          <h3 className="font-bold text-xl">Keywords:</h3>
-          {contentKeywords.map((word, index) => (
-            <li key={word.id} className='ml-2'>
-              {word.name}
-            </li>
-          ))}
-        </div>
-      }
     </>
   );
 }
