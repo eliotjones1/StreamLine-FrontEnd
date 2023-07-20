@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 // Import Icons
-import { PlusIcon, LinkIcon } from '@heroicons/react/20/solid';
+import { PlusIcon, LinkIcon, MinusIcon } from '@heroicons/react/20/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
 
 // Import Components
@@ -23,6 +23,7 @@ export default function Detail() {
   const [contentDetails, setContentDetails] = useState({});
   const [contentVideos, setContentVideos] = useState([]);
   const [contentCastCrew, setContentCastCrew] = useState({});
+  const [inList, setInList] = useState(true);
   const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
 
   const fetchContentData = async () => {
@@ -52,6 +53,11 @@ export default function Detail() {
 
   const onList = async () => {
     const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
+    if (data.media.find(item => item.id === id && item.type === type)){
+      setInList(true);
+    } else {
+      setInList(false);
+    }
   }
 
   const addToUserList = () => {
@@ -93,7 +99,10 @@ export default function Detail() {
                     <p className="font-bold truncate text-4xl">
                       {contentDetails.title || contentDetails.name}
                     </p>
-                    <LinkIcon href={contentDetails.homepage} target="_blank" rel="noopener noreferrer" className='h-8 hover:text-sky-600 cursor-pointer text-slate-400'/>
+                    <a href={contentDetails.homepage} target="_blank" rel="noopener noreferrer">
+                      <LinkIcon  className='h-8 hover:text-sky-600 cursor-pointer text-slate-400'/>
+                    </a>
+                    
                   </div>
 
                   <p className="font-thin italic truncate pb-4">
@@ -153,9 +162,14 @@ export default function Detail() {
 
                   {
                     isLoggedIn &&
-                    <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
-                      <PlusIcon className='h-6 text-white' />
-                    </button>
+                      inList ?
+                        <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
+                          <PlusIcon className='h-6 text-white' />
+                        </button>
+                      :
+                      <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
+                        <MinusIcon className='h-6 text-white' />
+                      </button>
                   }
 
                   <div className="mt-2 flex-rows flex-wrap text-sm leading-6 font-medium">
