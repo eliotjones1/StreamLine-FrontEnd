@@ -29,6 +29,7 @@ export default function Detail() {
   const fetchContentData = async () => {
     const { data } = await axios.post("http://127.0.0.1:8000/returnInfo/", {type: type, id: id});
     setContentDetails(data);
+    console.log(data)
   };
 
   const fetchCast = async () => {
@@ -164,9 +165,14 @@ export default function Detail() {
                     <ClockIcon className='h-4'/>
                     {
                       contentDetails.episode_run_time ? 
-                        <p>
-                          {contentDetails.episode_run_time[0]}mins
-                        </p>
+                        contentDetails.episode_run_time.length === 0 ?
+                          <p>
+                            Unknown
+                          </p>
+                        :
+                          <p>
+                            {contentDetails.episode_run_time[0]}mins
+                          </p>
                       :
                         <p>
                           {contentDetails.runtime}mins
