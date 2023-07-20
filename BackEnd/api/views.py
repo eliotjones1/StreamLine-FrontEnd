@@ -237,6 +237,7 @@ def saveMedia(request):
     user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    # Expects a dict with "id" and "type" as keys
     object = request.data
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
