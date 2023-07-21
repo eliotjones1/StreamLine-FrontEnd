@@ -12,8 +12,7 @@ export default function WatchList() {
   const fetchList = async () => {
     const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
   
-    // Use map instead of for...in loop to skip index 0
-    const promises = data.media.slice(1).map(async (media) => {
+    const promises = data.media.map(async (media) => {
       const { data } = await axios.get(`https://api.themoviedb.org/3/${media.type.toLowerCase()}/${media.id}?api_key=${APIKEY}`);
       return data;
     });
@@ -21,7 +20,6 @@ export default function WatchList() {
     try {
       const results = await Promise.all(promises);
       setUserList(results);
-      console.log(results)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -43,7 +41,7 @@ export default function WatchList() {
       <h1 className="text-2xl font-bold mb-4">Current WatchList</h1>
       <div className="mb-20 md:mb-0 space-y-8">
         {userList.map((content) => (
-            <div className='bg-white dark:bg-slate-900 rounded-3xl ring-1 ring-slate-200 dark:ring-slate-600 p-2 px-4 flex w-full cursor-pointer space-x-6 shadow-md' onClick={() => nav(`/content-data/${content.type}/${content.id}`)} key={content.id}>
+            <div className='bg-slate-50 dark:bg-slate-900 rounded-3xl ring-1 ring-slate-200 dark:ring-slate-600 p-2 px-4 flex w-full space-x-6 shadow-md' key={content.id}>
                 <div className="relative w-24 rounded-md overflow-hidden">
                     {
                       content.poster_path === null ? 
@@ -75,7 +73,7 @@ export default function WatchList() {
                                                 <circle cx="1" cy="1" r="1" />
                                             </svg>
                                         }
-                                        <div className='font-normal bg-slate-100 dark:bg-slate-700 py-1 px-2 rounded-md ring-1 ring-slate-200 dark:ring-slate-600 truncate'>
+                                        <div className='font-normal bg-slate-300 dark:bg-slate-700 py-1 px-2 rounded-md ring-1 ring-slate-200 dark:ring-slate-600 truncate'>
                                             {genre.name}
                                         </div>
                                     </div>

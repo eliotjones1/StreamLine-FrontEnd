@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 
 const dummy = [
   {
@@ -40,7 +41,16 @@ const dummy = [
 
 
 export default function ScrollableSubscription(){
-  const [subscriptions, setSubscriptions] = useState(dummy);
+  const [subscriptions, setSubscriptions] = useState([]);
+
+  const fetchSubs = async () => {
+    const { data } = await axios.get("http://127.0.0.1:8000/api/user/subscriptions/view/", { withCredentials: true });
+    setSubscriptions(data);
+  };
+
+  useEffect(() => {
+    fetchSubs();
+  }, []);
 
   return (
     <div className="container mx-auto py-8">
@@ -52,11 +62,11 @@ export default function ScrollableSubscription(){
             <ul className="space-y-4">
               {subscriptions.map((subscription) => (
                 <li key={subscription.id} className="flex items-center space-x-4 text-gray-800">
-                  <img src={subscription.logo} alt={subscription.serviceName} className="w-12 h-12 rounded-full" />
+                  <img src={`https://image.tmdb.org/t/p/w500${subscription.subscription_image_path}`} alt={subscription.serviceName} className="w-12 h-12 rounded-full" />
                   <div>
-                    <p className="font-bold">{subscription.serviceName}</p>
-                    <p>End Date: {subscription.endDate}</p>
-                    <p>Price: {subscription.price}</p>
+                    <p className="font-bold">{subscription.subscription_name}</p>
+                    <p>End Date: {new Date(subscription.end_date).toLocaleString('en-US', {year:'numeric', month:'long', day:'numeric'})}</p>
+                    <p>Price: {"$" + subscription.subscription_price}</p>
                   </div>
                 </li>
               ))}

@@ -8,8 +8,8 @@ export default function Calendar() {
   const [releases, setReleases] = useState([]);
 
   const fetchNewlyReleased = async () => {
-    const { data } = await axios.get('http://127.0.0.1:8000/recent/');
-    setReleases(data);
+    const response = await axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true });
+    //setReleases(response);
   };
 
   useEffect(() => {
@@ -41,42 +41,50 @@ export default function Calendar() {
 
   return (
     <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold mb-4">Your Upcoming Releases</h1>
-      <div className="rounded-md border-0 px-3.5 pt-2 shadow-lg ring-1 ring-inset ring-slate-900/5 ">
+      <h1 className="text-2xl font-bold mb-4">Your Upcoming Releases</h1>
+      <div className="rounded-md border-0 px-3.5 pt-2 shadow-sm ring-1 ring-inset ring-slate-900/5 ">
         <div className="grid grid-cols-7 gap-2 mb-2">{nextSevenDays.map((day) => (
           <div key={day} className="bg-sky-600 text-white text-center py-2 rounded-md shadow-md">
             {day}
           </div>
         ))}
         </div>
-  
-        <div className="grid grid-cols-7 gap-2">
-          {nextSevenDays.map((day) => (
-            <div key={day} className="max-h-[75vh] overflow-y-auto">
-              {/* Wrap each column in a separate container with overflow-y-auto */}
-              {moviesByDay.map((movies, index) => {
-                if (movies.length === 0) return null; // If no movies for this day, return null to skip the column
-                if (day !== nextSevenDays[index]) return null; // Ensure we only render the column corresponding to the day
-                return (
-                  <div key={day + index}>
-                    {movies.map((movie, movieIndex) => (
-                      <div key={movieIndex} className="bg-white rounded-lg overflow-hidden shadow-md my-4">
-                        <img
-                          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                          alt={noimage}
-                          className="w-44 h-64 object-cover"
-                        />
-                        <div className="p-4">
-                          <p className="text-md font-semibold text-gray-800 truncate">{movie.title}</p>
-                        </div>
+        
+        {
+          releases.length === 0 ?
+            <p className="flex w-full justify-center py-4">
+              No new content this week.
+            </p>
+          :
+            <div className="grid grid-cols-7 gap-2">
+              {nextSevenDays.map((day) => (
+                <div key={day} className="max-h-[75vh] overflow-y-auto">
+                  {/* Wrap each column in a separate container with overflow-y-auto */}
+                  {moviesByDay.map((movies, index) => {
+                    if (movies.length === 0) return null; // If no movies for this day, return null to skip the column
+                    if (day !== nextSevenDays[index]) return null; // Ensure we only render the column corresponding to the day
+                    return (
+                      <div key={day + index}>
+                        {movies.map((movie, movieIndex) => (
+                          <div key={movieIndex} className="bg-white rounded-lg overflow-hidden shadow-md my-4">
+                            <img
+                              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                              alt={noimage}
+                              className="w-44 h-64 object-cover"
+                            />
+                            <div className="p-4">
+                              <p className="text-md font-semibold text-gray-800 truncate">{movie.title}</p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                );
-              })}
+                    );
+                  })}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+        }
+        
       </div>
     </div>
   );
