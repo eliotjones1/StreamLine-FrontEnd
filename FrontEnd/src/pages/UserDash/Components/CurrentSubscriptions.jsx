@@ -55,7 +55,7 @@ export default function ScrollableSubscription(){
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-2xl font-bold mb-4">Current Subscriptions</h1>
-      <div className="max-h-96 overflow-y-auto border rounded-lg p-4 bg-slate-50 dark:bg-slate-700">
+      <div className="h-96 overflow-y-auto border rounded-lg p-4 bg-slate-50 dark:bg-slate-700">
           {subscriptions.length === 0 ? (
             <p className="text-gray-500">No subscriptions found.</p>
           ) : (

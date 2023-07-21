@@ -11,10 +11,10 @@ export default function UserDash(){
   return(
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Header/>
-      <main className="grow mx-auto max-w-7xl mt-20">
-        <div className="grid grid-cols-3 gap-6">
-          <CurrentSubsriptions className="col-start-1"/>
-          <WatchList className="col-start-2 col-span-2"/>
+      <main className="grow mx-auto w-full mt-20">
+        <div className="grid grid-cols-3 max-w-7xl mx-auto gap-6">
+          <CurrentSubsriptions/>
+          <WatchList/>
         </div>
         <ReleaseCalendar/>
       </main>

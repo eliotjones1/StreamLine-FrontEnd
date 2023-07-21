@@ -2,6 +2,7 @@
 import React from 'react';
 
 export default function MediaInfo({ info }){
+  console.log(info);
   return(
     <>
       <div>
@@ -9,7 +10,7 @@ export default function MediaInfo({ info }){
           Media Type
         </h3>
         <p>
-          {info.type}
+          {info.media_type}
         </p>
       </div>
 
