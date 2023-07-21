@@ -3,7 +3,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('search/', ListMedia.as_view(), name='all-media'),
     path('search/all/', returnAll.as_view(), name='return-all'),
     path('optimize/', runOptimization, name='optimize'),
     path('saveBudget/', saveBudget, name='saveBudget'),
@@ -15,6 +14,5 @@ urlpatterns = [
     path('getProgress/', getProgress, name="get_progress"),
     path('returnInfo/', returnInfo, name="return_info"),
     path('recent/', newlyReleased.as_view(), name="recent"),
-    path('popularServices/', popularServices.as_view(), name="popularServices"),
     path('isAuthenticated/', isAuthenticated.as_view(), name='isAuthenticated'),
 ]

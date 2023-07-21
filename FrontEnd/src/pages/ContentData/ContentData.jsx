@@ -28,29 +28,20 @@ export default function Detail() {
   const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
 
   const fetchContentData = async () => {
-    const { data } = await axios.post("http://127.0.0.1:8000/returnInfo/", {type: type, id: id});
+    const { data } = await axios.post("http://127.0.0.1:8000/returnInfo/", {media_type: type, id: id});
     setContentDetails(data);
     console.log(data)
   };
 
   const fetchCast = async () => {
-    if (type === "Movie") {
-      const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${APIKEY}&language`);
+      const { data } = await axios.get(`https://api.themoviedb.org/3/${type}/${id}/credits?api_key=${APIKEY}&language`);
       setContentCastCrew(data);
-    } else {
-      const { data } = await axios.get(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${APIKEY}&language`);
-      setContentCastCrew(data);
-    }
   }
 
   const fetchVideo = async () => {
-    if (type === "Movie") {
-      const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${APIKEY}&language=en-US`);
+  
+      const { data } = await axios.get(`https://api.themoviedb.org/3/${type}/${id}/videos?api_key=${APIKEY}&language=en-US`);
       setContentVideos(data.results);
-    } else {
-      const { data } = await axios.get(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${APIKEY}&language=en-US`);
-      setContentVideos(data.results);
-    }
   }
 
   const onList = async () => {
@@ -64,7 +55,7 @@ export default function Detail() {
 
   const addToUserList = () => {
     try {
-      axios.post("http://127.0.0.1:8000/saveMedia/", {id: id, type: type}, { withCredentials: true });
+      axios.post("http://127.0.0.1:8000/saveMedia/", {id: id, media_type: type}, { withCredentials: true });
       setInList(true);
     } catch {
 
