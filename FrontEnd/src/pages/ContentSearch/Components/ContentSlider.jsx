@@ -4,7 +4,7 @@ import React from 'react';
 // Imprt Components
 import ContentCard from './ContentCard';
 
-function ContentSlider({ mediaContent }) {
+export default function ContentSlider({ mediaContent }) {
   return (
     <div className="flex overflow-x-auto space-x-4 scrollbar-hidden relative">
       {mediaContent.map((content, index) => (
@@ -28,5 +28,3 @@ function ContentSlider({ mediaContent }) {
     </div>
   );
 }
-
-export default ContentSlider;

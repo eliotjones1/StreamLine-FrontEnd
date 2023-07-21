@@ -13,7 +13,7 @@ import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
 import Bundles from './pages/Bundles';
-import UserDash from './pages/UserDash';
+import UserDash from './pages/UserDash/UserDash';
 import SecureReset from './pages/SecureReset/SecureReset';
 import SearchMedia from './pages/SearchMedia';
 import NotFound from './pages/404/NotFound';

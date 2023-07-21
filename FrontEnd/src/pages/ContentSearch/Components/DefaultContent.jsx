@@ -10,13 +10,9 @@ const queryClient = new QueryClient();
 
 const fetchNewlyReleased = async () => {
   const { data } = await axios.get('http://127.0.0.1:8000/recent/');
+  console.log(data)
   return data;
 };
-
-const fetchTrending = async () => {
-  const { data } = await axios.get('http://127.0.0.1:8000/trending/');
-  return data;
-}
 
 function Content() {
   const [trending, setTrending] = useState([]);
