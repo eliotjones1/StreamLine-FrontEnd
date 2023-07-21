@@ -361,7 +361,7 @@ class getMyUpcoming(generics.ListAPIView):
         df = df[df['service_name'].isin(subscriptions)]
         subscription_ids = []
         for subscription in subscriptions:
-            subscription_ids.append(df.loc[df['service_name'] == subscription]['service_id'].values[0])
+            subscription_ids.append(str(df.loc[df['service_name'] == subscription]['id'].values[0]))
 
         release_year = datetime.now().year
         separator = "|"
@@ -392,6 +392,7 @@ class getMyUpcoming(generics.ListAPIView):
                 # Check if it is on a subscription
                 output.append(show)
         for movie in new_movies:
+            print(movie['release_date'])
             # Check if it is released this week
             if movie['release_date'] is not None and movie['release_date'][:10] >= str(datetime.now().date()) and movie['release_date'][:10] <= str(datetime.now().date() + timedelta(days=7)):
                 # Check if it is on a subscription
