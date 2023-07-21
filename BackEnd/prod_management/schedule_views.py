@@ -17,7 +17,11 @@ import stripe
 import sendgrid
 from sendgrid.helpers.mail import Mail
 import json
+import pandas as pd
 from api.functions import *
+from datetime import datetime
+from datetime import timedelta
+
 
 
 # Create your views here.
@@ -70,9 +74,12 @@ def createSubscription(request):
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     subscription_info = request.data
-
+    # import dataframe from api/random/serviceImages.csv
+    df = pd.read_csv('api/random/serviceImages.csv')
+    # find image that corresponds to subscription_info['name']
+    image_path = df.loc[df['service_name'] == subscription_info['name']]['logo_path'].values[0]
     user = CustomUser.objects.get(email=user_email)
-    this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'], end_date=subscription_info['date'][:10], num_months=1, num_cancellations=0, is_active=True)
+    this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'], end_date=subscription_info['date'][:10], num_months=1, num_cancellations=0, is_active=True, subscription_price=subscription_info['price'], subscription_image_path=image_path)
     this_subscription.save()
     return Response(SubscriptionSerializer(this_subscription).data, status=status.HTTP_200_OK)
 
@@ -97,6 +104,7 @@ def cancelSubscription(request):
 
 class getSubscriptions(generics.ListAPIView):
     def get(self, request):
+        # NAME, LOGO, END DATE, PRICE
         sessionid = request.COOKIES.get('sessionid')
         # print(sessionid)
         # Check if session is active
@@ -333,4 +341,61 @@ def generateBundle(request):
     return Response(status=status.HTTP_200_OK)
 
 
+
+## UPCOMING RELEASES ON PLATFORMS A USER IS SUBSCRIBED TO NEEDED
+## A VERSION OF THIS THAT ISN'T LIMITED TO A USER'S SUBSCRIPTIONS NEEDED
+
+class getMyUpcoming(generics.ListAPIView):
+    def get(self, request):
+        sessionid = request.COOKIES.get('sessionid')
+        if isSessionActive(sessionid) == False:
+            return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+        if user_email is None:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        user = CustomUser.objects.get(email=user_email)
+        subscriptions = Subscription.objects.filter(user=user)
+        subscriptions = list(subscriptions.values_list('subscription_name', flat=True))
+        # Get subscription ids from subscription names
+        df = pd.read_csv('api/random/serviceImages.csv')
+        df = df[df['service_name'].isin(subscriptions)]
+        subscription_ids = []
+        for subscription in subscriptions:
+            subscription_ids.append(df.loc[df['service_name'] == subscription]['service_id'].values[0])
+
+        release_year = datetime.now().year
+        separator = "|"
+        subscription_ids = separator.join(subscription_ids)
+        # TV SHOWS
+        url = "https://api.themoviedb.org/3/discover/tv?first_air_date_year=" + str(release_year) + "&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&watch_region=US&with_watch_providers=" + subscription_ids
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
+        }
+        response = requests.get(url, headers=headers)
+        new_shows = response.json()['results']
+
+        # MOVIES
+        url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=" + str(release_year) + "&sort_by=popularity.desc&watch_region=US"
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
+        }
+        response = requests.get(url, headers=headers)
+        new_movies = response.json()['results']
+
+        # NEED TO FIND SHOWS BEING RELEASED THIS WEEK
+        output = []
+        for show in new_shows:
+            # Check if it is released this week
+            if show['first_air_date'] is not None and show['first_air_date'][:10] >= str(datetime.now().date()) and show['first_air_date'][:10] <= str(datetime.now().date() + timedelta(days=7)):
+                # Check if it is on a subscription
+                output.append(show)
+        for movie in new_movies:
+            # Check if it is released this week
+            if movie['release_date'] is not None and movie['release_date'][:10] >= str(datetime.now().date()) and movie['release_date'][:10] <= str(datetime.now().date() + timedelta(days=7)):
+                # Check if it is on a subscription
+                output.append(movie)
+        return Response(output, status=status.HTTP_200_OK)
+                
 

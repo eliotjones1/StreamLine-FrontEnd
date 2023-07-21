@@ -1,4 +1,5 @@
 import requests
+import threading
 from django.shortcuts import render
 from datetime import datetime
 from rest_framework import generics, status
@@ -36,7 +37,6 @@ class returnAll(generics.ListAPIView):
         if response.status_code != 200:
             return None
         data = response.json()['results']
-        print(data)
         return Response(data, status=status.HTTP_200_OK)
 
 
@@ -60,24 +60,9 @@ def isSessionActive(sessionid):
 class isAuthenticated(generics.ListAPIView):
     def get(self, request):
         sessionid = request.COOKIES.get('sessionid')
-        print("AUTH")
-        print(sessionid)
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Status": "OK"})
-
-@api_view(['POST'])
-def runOptimization(request):
-    data = request.data
-    # remove "budget" from data
-    budget = data[-1]
-    data = data[:-1]
-
-    providers, prices, services = modify_input(data)
-    streamLine = optimize1(providers, prices, services, budget, data)
-    maximal = optimize2(providers, prices, services, data)
-    minimal = optimize3(providers, prices, services, budget, data)
-    return Response([minimal, streamLine, maximal])
 
 
 @api_view(['POST'])
@@ -110,15 +95,15 @@ def saveMedia(request):
     user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    
     # Expects a dict with "id" and "type" as keys
     object = request.data
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     cur_list = current.media
-    print(cur_list)
-    print(object)
     cur_list.append(object)
-    print(cur_list)
+    background_thread = threading.Thread(target=optimizeInTheBackground, args=([cur_list, user_email],))
+    background_thread.start()
     current.save()
     return Response({"Status": "OK"})
 
@@ -184,8 +169,6 @@ class returnUserData(generics.ListAPIView):
     def get(self, request):
         # # get sessionid from request cookie
         sessionid = request.COOKIES.get('sessionid')
-        print("DATA")
-        print(sessionid)
         # Check if session is active
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
@@ -289,3 +272,79 @@ class newlyReleased(generics.ListAPIView):
         return Response(recent_dicts, status=status.HTTP_200_OK)
 
 
+
+def optimizeInTheBackground(media_list):
+    url = "http://localhost:8000/optimize/"
+    requests.post(url, json=media_list)
+
+@api_view(['POST'])
+def runOptimization(request):
+    media_list = request.data[0]
+    user_email = request.data[1]
+    # get sessionid from request cookie
+    user = CustomUser.objects.get(email=user_email)
+    current = UserData.objects.get(user_id=user)
+    budget = current.budget
+    # Get info from media_list
+    data = []
+    for media in media_list:
+        if media['media_type'] == "movie":
+            id = media['id']
+            api_key = "95cd5279f17c6593123c72d04e0bedfa"
+            base_url = "https://api.themoviedb.org/3/"
+            endpoint = "movie/"
+            full_url = base_url + endpoint + \
+                str(id) + "?api_key=" + api_key + "&language=en-US"
+            response = requests.get(full_url)
+            if response.status_code != 200:
+                return None
+            movie_data = response.json()
+            temp = {}
+            temp['title'] = movie_data['title']
+            temp['release_date'] = movie_data['release_date']
+            temp['poster_path'] = movie_data['poster_path']
+            temp['backdrop'] = movie_data['backdrop_path']
+            temp['rating'] = movie_data['vote_average']
+            temp['genres'] = movie_data['genres']
+            temp['overview'] = movie_data['overview']
+            temp['media_type'] = "movie"
+            temp['id'] = movie_data['id']
+            streaming_providers = getStreamingProviderMovie(id)
+            temp['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
+            data.append(temp)
+        else:
+            id = media['id']
+            api_key = "95cd5279f17c6593123c72d04e0bedfa"
+            base_url = "https://api.themoviedb.org/3/"
+            endpoint = "tv/"
+            full_url = base_url + endpoint + \
+                str(id) + "?api_key=" + api_key + "&language=en-US"
+            response = requests.get(full_url)
+            if response.status_code != 200:
+                return None
+            show_data = response.json()
+            temp = {}
+            temp['title'] = show_data['name']
+            temp['release_date'] = show_data['first_air_date']
+            temp['poster_path'] = show_data['poster_path']
+            temp['backdrop'] = show_data['backdrop_path']
+            temp['rating'] = show_data['vote_average']
+            temp['genres'] = show_data['genres']
+            temp['overview'] = show_data['overview']
+            temp['media_type'] = "tv"
+            temp['id'] = show_data['id']
+            streaming_providers = getStreamingProviderShow(id)
+            temp['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
+            data.append(temp)
+
+    providers, prices, services = modify_input(data)
+    print(providers)
+    print(prices)
+    print(services)
+    print(budget)
+    streamLine = optimize1(providers, prices, services, budget, data)
+    maximal = optimize2(providers, prices, services, data)
+    minimal = optimize3(providers, prices, services, budget, data)
+    current.bundle = [streamLine, maximal, minimal]
+    current.save()
+    return Response({"Status": "OK"})

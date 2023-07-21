@@ -5,78 +5,6 @@ from rest_framework import generics, status
 import pandas as pd
 import cvxpy as cp
 
-# This function takes in a string parameter which is a movie title, and uses 
-# the TMDB API to return a top five list of movies that match
-def getMovies(title):
-    # This is the API key for TMDB
-    api_key = "95cd5279f17c6593123c72d04e0bedfa"
-
-    # This is the base URL for the TMDB API
-    base_url = "https://api.themoviedb.org/3/"
-
-    # This is the endpoint for the TMDB API
-    endpoint = "search/movie?"
-
-    # This is the query parameter for the TMDB API
-
-    query = title
-
-    # This is the full URL for the TMDB API
-    full_url = base_url + endpoint + "api_key=" + api_key + "&language=en-US&query=" + query + "&page=1&include_adult=false"
-
-    # This is the response from the TMDB API
-    response = requests.get(full_url)
-
-    if response.status_code != 200:
-        return None
-
-    # This is the JSON data from the response
-    data = response.json()
-
-    # This is a list of the top five movies that match the query
-    popularity = {}
-    for i, result in enumerate(data["results"]):
-        popularity[result["popularity"]] = i
-    sorted_popularity = dict(sorted(popularity.items(), key=lambda x: x[0], reverse = True))
-    indices = list(sorted_popularity.values())[0:4]
-    top_five = [data["results"][index] for index in indices]
-    
-    return top_five
-
-# This function operates similarly to the getMovies function, but it returns a top five list of TV shows that match
-def getShows(title):
-    # This is the API key for TMDB
-    api_key = "95cd5279f17c6593123c72d04e0bedfa"
-
-    # This is the base URL for the TMDB API
-    base_url = "https://api.themoviedb.org/3/"
-
-    # This is the endpoint for the TMDB API
-    endpoint = "search/tv?"
-
-    # This is the query parameter for the TMDB API
-    query = title
-
-    # This is the full URL for the TMDB API
-    full_url = base_url + endpoint + "api_key=" + api_key + "&language=en-US&query=" + query + "&include_adult=false"
-
-    # Operates as above
-    response = requests.get(full_url)
-
-    if response.status_code != 200:
-        return None
-    
-    data = response.json()
-    
-    popularity = {}
-    for i, result in enumerate(data["results"]):
-        popularity[result["popularity"]] = i
-    sorted_popularity = dict(sorted(popularity.items(), key=lambda x: x[0], reverse = True))
-    indices = list(sorted_popularity.values())[0:4]
-    top_five = [data["results"][index] for index in indices]
-
-    return top_five
-
 # This function takes in a movie title and returns the TMDB ID for that movie
 def getIDMovie(title):
     api_key = "95cd5279f17c6593123c72d04e0bedfa"
@@ -301,7 +229,7 @@ def getServiceImages(output):
         media_index = output["Movies_and_TV_Shows"].index(media) if media in output["Movies_and_TV_Shows"] else -1
         #print(media + " index is: " + str(media_index))
         if media_index != -1:
-            if output["Type"][media_index] == "TV Series":
+            if output["Type"][media_index] == "tv":
                 id = getIDShow(media)
                 #print(media)
                 show_provider_images = getShowProvidersImages(id)
@@ -388,7 +316,7 @@ def optimize1(providers, prices, services, budget, data):
     for media in output["Movies_and_TV_Shows"]:
         for object in data:
             if media == object["title"]:
-                output["Type"].append(object["type"])
+                output["Type"].append(object["media_type"])
 
     realOutput = getServiceImages(output)
     return realOutput
@@ -429,7 +357,7 @@ def optimize2(providers, prices, services, data):
     for media in output["Movies_and_TV_Shows"]:
         for object in data:
             if media == object["title"]:
-                output["Type"].append(object["type"])
+                output["Type"].append(object["media_type"])
 
     realOutput = getServiceImages(output)
     return realOutput
@@ -477,7 +405,7 @@ def optimize3(providers, prices, services, budget, data):
     for media in output["Movies_and_TV_Shows"]:
         for object in data:
             if media == object["title"]:
-                output["Type"].append(object["type"])
+                output["Type"].append(object["media_type"])
 
     realOutput = getServiceImages(output)
     return realOutput

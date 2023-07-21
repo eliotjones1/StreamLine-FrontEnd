@@ -43,6 +43,8 @@ class UserSubscription(models.Model):
 class Subscription(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subscription')
     subscription_name = models.CharField(max_length=100)
+    subscription_price = models.DecimalField(max_digits=6, decimal_places=2)
+    subscription_image_path = models.CharField(max_length=100)
     end_date = models.DateField(null=True, blank=True)
     num_months = models.IntegerField(default = 0)
     num_cancellations = models.IntegerField(default = 0)
