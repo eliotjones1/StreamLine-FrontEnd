@@ -35,10 +35,10 @@ function ContentSearch() {
                 </svg>
                 <div className="mx-auto w-full lg:mx-0 lg:flex-auto lg:py- lg:text-left text-white dark:text-slate-900">
                 <div className="max-w-3xl mx-auto text-center">
-                          <h1 className="h1 mb-4" data-aos="fade-up">
-                              <span className="text-sky-600">StreamLine</span> Content Discovery
-                          </h1>
-                      </div>
+                  <h1 className="h1 mb-4" data-aos="fade-up">
+                      <span className="text-sky-600">StreamLine</span> Content Discovery
+                  </h1>
+                </div>
                   <div className="mt-10">
                     <Searchbar/>
                   </div>

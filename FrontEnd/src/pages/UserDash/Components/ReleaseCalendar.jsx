@@ -42,7 +42,7 @@ export default function Calendar() {
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-2xl font-bold mb-4">Your Upcoming Releases</h1>
-      <div className="rounded-md border-0 px-3.5 pt-2 shadow-sm ring-1 ring-inset ring-slate-900/5 ">
+      <div className="rounded-md border-0 px-3.5 pt-2 shadow-sm ring-1 ring-inset ring-slate-900/5 bg-slate-50 dark:bg-slate-700">
         <div className="grid grid-cols-7 gap-2 mb-2">{nextSevenDays.map((day) => (
           <div key={day} className="bg-sky-600 text-white text-center py-2 rounded-md shadow-md">
             {day}

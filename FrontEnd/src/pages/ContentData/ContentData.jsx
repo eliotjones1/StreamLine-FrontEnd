@@ -46,7 +46,7 @@ export default function Detail() {
 
   const onList = async () => {
     const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
-    if (data.media.find(item => (item.id === id && item.type === type))){
+    if (data.media.find(item => (item.id === id && item.media_type === type))){
       setInList(true);
     } else {
       setInList(false);
@@ -63,12 +63,11 @@ export default function Detail() {
   };
 
   const removeFromUserList = () => {
-    try {
-      axios.post("http://127.0.0.1:8000/removeMedia/", {id: id, type: type}, { withCredentials: true });
+    axios.post("http://127.0.0.1:8000/removeMedia/", {id: id, media_type: type}, { withCredentials: true }).then(() => {
       setInList(false);
-    } catch {
+    }).catch(() => {
 
-    }
+    });
   };
 
   useEffect(() => {

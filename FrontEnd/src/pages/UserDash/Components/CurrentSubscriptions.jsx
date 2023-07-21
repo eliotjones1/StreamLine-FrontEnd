@@ -54,14 +54,14 @@ export default function ScrollableSubscription(){
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-4">Current Subscriptions</h1>
-      <div className="h-96 overflow-y-auto border rounded-lg p-4 bg-slate-50 dark:bg-slate-700">
+      <h1 className="text-2xl font-bold mb-4">Subscriptions</h1>
+      <div className="h-96 overflow-y-auto border dark:border-none rounded-lg p-4 bg-slate-50 dark:bg-slate-700">
           {subscriptions.length === 0 ? (
-            <p className="text-gray-500">No subscriptions found.</p>
+            <p>No subscriptions found.</p>
           ) : (
             <ul className="space-y-4">
               {subscriptions.map((subscription) => (
-                <li key={subscription.id} className="flex items-center space-x-4 text-gray-800">
+                <li key={subscription.id} className="flex items-center space-x-4">
                   <img src={`https://image.tmdb.org/t/p/w500${subscription.subscription_image_path}`} alt={subscription.serviceName} className="w-12 h-12 rounded-full" />
                   <div>
                     <p className="font-bold">{subscription.subscription_name}</p>
