@@ -1,4 +1,5 @@
 import requests
+import threading
 from django.shortcuts import render
 from datetime import datetime
 from rest_framework import generics, status
@@ -15,92 +16,6 @@ from django.utils import timezone
 from prod_management.models import Subscription
 # Create your views here.
 
-
-class ListMedia(generics.ListAPIView):
-    def get(self, request):
-        search_query = request.query_params.get('search', None)
-        if search_query is None:
-            return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-
-        title = search_query
-        movies = getMovies(title)
-        shows = getShows(title)
-
-        if movies == None and shows == None:
-            return Response({'error': 'Unable to fetch media'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        elif movies == None:
-            serialized_shows = []
-            for show in shows:
-                streaming_providers = getStreamingProviderShow(show['id'])
-                serialized_shows.append({
-                    'title': show['name'],
-                    'release_date': show['first_air_date'],
-                    'poster_path': show['poster_path'],
-                    'backdrop': show['backdrop_path'],
-                    'rating': show['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                    'genres': show['genre_ids'],
-                    'overview': show['overview'],
-                    'type': 'TV Series',
-                    'id': show['id']
-                })
-                return Response(serialized_shows)
-        elif shows == None:
-            serialized_movies = []
-            for movie in movies:
-                streaming_providers = getStreamingProviderMovie(movie['id'])
-                serialized_movies.append({
-                    'title': movie['title'],
-                    'release_date': movie['release_date'],
-                    'poster_path': movie['poster_path'],
-                    'backdrop': movie['backdrop_path'],
-                    'rating': movie['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                    'genres': movie['genre_ids'],
-                    'overview': movie['overview'],
-                    'type': 'Movie',
-                    'id': movie['id']
-                })
-                return Response(serialized_movies)
-        else:
-            serialized_movies = []
-            serialized_shows = []
-            # For each movie, we want to include title, image, rating, release date, and streaming providers
-            for movie in movies:
-                streaming_providers = getStreamingProviderMovie(movie['id'])
-
-                serialized_movies.append({
-                    'title': movie['title'],
-                    'release_date': movie['release_date'],
-                    'poster_path': movie['poster_path'],
-                    'backdrop': movie['backdrop_path'],
-                    'rating': movie['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                    'genres': movie['genre_ids'],
-                    'overview': movie['overview'],
-                    'type': 'Movie'
-                })
-            # For each show, we want to include title, image, rating, release date, and streaming providers
-            for show in shows:
-
-                streaming_providers = getStreamingProviderShow(show['id'])
-
-                serialized_shows.append({
-                    'title': show['name'],
-                    'release_date': show['first_air_date'],
-                    'poster_path': show['poster_path'],
-                    'backdrop': show['backdrop_path'],
-                    'rating': show['vote_average'],
-                    'streaming_providers': streaming_providers if streaming_providers != None else "Not Available",
-                    'genres': show['genre_ids'],
-                    'overview': show['overview'],
-                    'type': 'TV Series'
-                })
-
-        output = serialized_movies[0:2] + serialized_shows[0:2]
-        return Response(output)
-
-
 class returnAll(generics.ListAPIView):
     def get(self, request):
         search_query = request.query_params.get('search', None)
@@ -109,62 +24,20 @@ class returnAll(generics.ListAPIView):
 
         title = search_query
         # Get Movies
-        api_key = "95cd5279f17c6593123c72d04e0bedfa"
-        base_url = "https://api.themoviedb.org/3/"
-        endpoint = "search/movie?"
-        query = title
-        full_url = base_url + endpoint + "api_key=" + api_key + \
-            "&language=en-US&query=" + query + "&page=1&include_adult=false"
-        response = requests.get(full_url)
+        
 
+        url = "https://api.themoviedb.org/3/search/multi?query=Star%20Wars&include_adult=false&language=en-US&page=1"
+
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
+        }
+
+        response = requests.get(url, headers=headers)
         if response.status_code != 200:
             return None
-
-        movie_data = response.json()['results']
-
-        # Get shows
-        api_key = "95cd5279f17c6593123c72d04e0bedfa"
-        base_url = "https://api.themoviedb.org/3/"
-        endpoint = "search/tv?"
-        query = title
-        full_url = base_url + endpoint + "api_key=" + api_key + \
-            "&language=en-US&query=" + query + "&include_adult=false"
-        response = requests.get(full_url)
-
-        if response.status_code != 200:
-            return None
-
-        tv_data = response.json()['results']
-        serialized_output = []
-        for movie in movie_data:
-
-            serialized_output.append({
-                'title': movie['title'],
-                'release_date': movie['release_date'],
-                'poster_path': movie['poster_path'],
-                'backdrop': movie['backdrop_path'],
-                'rating': movie['vote_average'],
-                'genres': movie['genre_ids'],
-                'overview': movie['overview'],
-                'type': 'Movie',
-                'id': movie['id']
-            })
-        for show in tv_data:
-            serialized_output.append({
-                'title': show['name'],
-                'release_date': show['first_air_date'],
-                'poster_path': show['poster_path'],
-                'backdrop': show['backdrop_path'],
-                'rating': show['vote_average'],
-                'genres': show['genre_ids'],
-                'overview': show['overview'],
-                'type': 'TV Series',
-                'id': show['id']
-            })
-
-        to_be_returned = sorted(serialized_output, key=lambda k: fuzz.ratio(
-            k['title'], title), reverse=True)
-        return Response(to_be_returned)
+        data = response.json()['results']
+        return Response(data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -187,24 +60,9 @@ def isSessionActive(sessionid):
 class isAuthenticated(generics.ListAPIView):
     def get(self, request):
         sessionid = request.COOKIES.get('sessionid')
-        print("AUTH")
-        print(sessionid)
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Status": "OK"})
-
-@api_view(['POST'])
-def runOptimization(request):
-    data = request.data
-    # remove "budget" from data
-    budget = data[-1]
-    data = data[:-1]
-
-    providers, prices, services = modify_input(data)
-    streamLine = optimize1(providers, prices, services, budget, data)
-    maximal = optimize2(providers, prices, services, data)
-    minimal = optimize3(providers, prices, services, budget, data)
-    return Response([minimal, streamLine, maximal])
 
 
 @api_view(['POST'])
@@ -237,12 +95,15 @@ def saveMedia(request):
     user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    
     # Expects a dict with "id" and "type" as keys
     object = request.data
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     cur_list = current.media
     cur_list.append(object)
+    background_thread = threading.Thread(target=optimizeInTheBackground, args=([cur_list, user_email],))
+    background_thread.start()
     current.save()
     return Response({"Status": "OK"})
 
@@ -308,8 +169,6 @@ class returnUserData(generics.ListAPIView):
     def get(self, request):
         # # get sessionid from request cookie
         sessionid = request.COOKIES.get('sessionid')
-        print("DATA")
-        print(sessionid)
         # Check if session is active
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
@@ -326,7 +185,7 @@ class returnUserData(generics.ListAPIView):
 @api_view(['POST'])
 def returnInfo(request):
     object = request.data
-    if object["type"] == "Movie":
+    if object["media_type"] == "movie":
         id = object['id']
         api_key = "95cd5279f17c6593123c72d04e0bedfa"
         base_url = "https://api.themoviedb.org/3/"
@@ -337,7 +196,7 @@ def returnInfo(request):
         if response.status_code != 200:
             return None
         movie_data = response.json()
-        movie_data['type'] = object['type']
+        movie_data['media_type'] = object['media_type']
         streaming_providers = getStreamingProviderMovie(id)
         movie_data['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
         return Response(movie_data)
@@ -352,7 +211,7 @@ def returnInfo(request):
         if response.status_code != 200:
             return None
         show_data = response.json()
-        show_data['type'] = object['type']
+        show_data['media_type'] = object['media_type']
         streaming_providers = getStreamingProviderShow(id)
         show_data['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
         return Response(show_data)
@@ -413,53 +272,79 @@ class newlyReleased(generics.ListAPIView):
         return Response(recent_dicts, status=status.HTTP_200_OK)
 
 
-class popularServices(generics.ListAPIView):
-    def get(self, request):
 
-        # Movie providers
-        url = "https://api.themoviedb.org/3/watch/providers/movie?language=en-US&watch_region=US"
-        headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
-        }
-        response = requests.get(url, headers=headers)
-        movie_providers = response.json()['results']
-        # TV providers
-        url = "https://api.themoviedb.org/3/watch/providers/tv?language=en-US&watch_region=US"
-        headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
-        }
-        response = requests.get(url, headers=headers)
-        tv_providers = response.json()['results']
-        providers = []
-        for provider in movie_providers:
-            providers.append(
-                {
-                    'title': provider['provider_name'],
-                    'poster_path': provider['logo_path'],
-                    'num': 0
-                }
-            )
-        for provider in tv_providers:
-            if provider['provider_name'] not in providers:
-                providers.append(
-                    {
-                        'title': provider['provider_name'],
-                        'poster_path': provider['logo_path'],
-                        'num': 0
-                    }
-                )
+def optimizeInTheBackground(media_list):
+    url = "http://localhost:8000/optimize/"
+    requests.post(url, json=media_list)
 
-        all_subs = Subscription.objects.all()
-        all_subs = list(all_subs)
-        all_subs = [x.subscription_name for x in all_subs]
-        for sub in all_subs:
-            for provider in providers:
-                if provider['title'] == sub:
-                    provider['num'] += 1
-        sorted_providers = sorted(
-            providers, key=lambda x: x['num'], reverse=False)
-        temp = set(tuple(item.items()) for item in sorted_providers)
-        out = [dict(item) for item in temp]
-        return Response(out[:10], status=status.HTTP_200_OK)
+@api_view(['POST'])
+def runOptimization(request):
+    media_list = request.data[0]
+    user_email = request.data[1]
+    # get sessionid from request cookie
+    user = CustomUser.objects.get(email=user_email)
+    current = UserData.objects.get(user_id=user)
+    budget = current.budget
+    # Get info from media_list
+    data = []
+    for media in media_list:
+        if media['media_type'] == "movie":
+            id = media['id']
+            api_key = "95cd5279f17c6593123c72d04e0bedfa"
+            base_url = "https://api.themoviedb.org/3/"
+            endpoint = "movie/"
+            full_url = base_url + endpoint + \
+                str(id) + "?api_key=" + api_key + "&language=en-US"
+            response = requests.get(full_url)
+            if response.status_code != 200:
+                return None
+            movie_data = response.json()
+            temp = {}
+            temp['title'] = movie_data['title']
+            temp['release_date'] = movie_data['release_date']
+            temp['poster_path'] = movie_data['poster_path']
+            temp['backdrop'] = movie_data['backdrop_path']
+            temp['rating'] = movie_data['vote_average']
+            temp['genres'] = movie_data['genres']
+            temp['overview'] = movie_data['overview']
+            temp['media_type'] = "movie"
+            temp['id'] = movie_data['id']
+            streaming_providers = getStreamingProviderMovie(id)
+            temp['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
+            data.append(temp)
+        else:
+            id = media['id']
+            api_key = "95cd5279f17c6593123c72d04e0bedfa"
+            base_url = "https://api.themoviedb.org/3/"
+            endpoint = "tv/"
+            full_url = base_url + endpoint + \
+                str(id) + "?api_key=" + api_key + "&language=en-US"
+            response = requests.get(full_url)
+            if response.status_code != 200:
+                return None
+            show_data = response.json()
+            temp = {}
+            temp['title'] = show_data['name']
+            temp['release_date'] = show_data['first_air_date']
+            temp['poster_path'] = show_data['poster_path']
+            temp['backdrop'] = show_data['backdrop_path']
+            temp['rating'] = show_data['vote_average']
+            temp['genres'] = show_data['genres']
+            temp['overview'] = show_data['overview']
+            temp['media_type'] = "tv"
+            temp['id'] = show_data['id']
+            streaming_providers = getStreamingProviderShow(id)
+            temp['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
+            data.append(temp)
+
+    providers, prices, services = modify_input(data)
+    print(providers)
+    print(prices)
+    print(services)
+    print(budget)
+    streamLine = optimize1(providers, prices, services, budget, data)
+    maximal = optimize2(providers, prices, services, data)
+    minimal = optimize3(providers, prices, services, budget, data)
+    current.bundle = [streamLine, maximal, minimal]
+    current.save()
+    return Response({"Status": "OK"})
