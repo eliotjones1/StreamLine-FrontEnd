@@ -185,6 +185,7 @@ class returnUserData(generics.ListAPIView):
 @api_view(['POST'])
 def returnInfo(request):
     object = request.data
+    print(object)
     if object["media_type"] == "movie":
         id = object['id']
         api_key = "95cd5279f17c6593123c72d04e0bedfa"
@@ -250,7 +251,7 @@ class newlyReleased(generics.ListAPIView):
                     'rating': show['vote_average'],
                     'genres': show['genre_ids'],
                     'overview': show['overview'],
-                    'type': 'TV Series',
+                    'type': 'tv',
                     'id': show['id']
                 })
         for movie in new_movies:
@@ -263,7 +264,7 @@ class newlyReleased(generics.ListAPIView):
                     'rating': movie['vote_average'],
                     'genres': movie['genre_ids'],
                     'overview': movie['overview'],
-                    'type': 'Movie',
+                    'type': 'movie',
                     'id': movie['id']
                 })
         sorted_data = sorted(
