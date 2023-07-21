@@ -11,7 +11,6 @@ export default function WatchList() {
 
   const fetchList = async () => {
     const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
-    console.log(data.media)
     const promises = data.media.map(async (media) => {
       let { data } = await axios.get(`https://api.themoviedb.org/3/${media.media_type}/${media.id}?api_key=${APIKEY}`);
       data.media_type = media.media_type;

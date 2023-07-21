@@ -1,61 +1,34 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const dummy = [
-  {
-    "id": 1,
-    "logo": "https://example.com/logo1.png",
-    "serviceName": "Service A",
-    "endDate": "2023-12-31",
-    "price": "$9.99"
-  },
-  {
-    "id": 2,
-    "logo": "https://example.com/logo2.png",
-    "serviceName": "Service B",
-    "endDate": "2023-11-30",
-    "price": "$14.99"
-  },
-  {
-    "id": 3,
-    "logo": "https://example.com/logo3.png",
-    "serviceName": "Service C",
-    "endDate": "2024-02-28",
-    "price": "$19.99"
-  },
-  {
-    "id": 4,
-    "logo": "https://example.com/logo4.png",
-    "serviceName": "Service D",
-    "endDate": "2023-10-15",
-    "price": "$24.99"
-  },
-  {
-    "id": 5,
-    "logo": "https://example.com/logo5.png",
-    "serviceName": "Service E",
-    "endDate": "2024-01-31",
-    "price": "$29.99"
-  }
-]
-
-
 export default function ScrollableSubscription(){
   const [subscriptions, setSubscriptions] = useState([]);
+  const [budget, setBudget] = useState("0");
 
   const fetchSubs = async () => {
     const { data } = await axios.get("http://127.0.0.1:8000/api/user/subscriptions/view/", { withCredentials: true });
     setSubscriptions(data);
   };
 
+  const fetchBudget = async () => {
+    const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
+    setBudget(data.budget);
+  };
+
   useEffect(() => {
     fetchSubs();
+    fetchBudget();
   }, []);
 
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-2xl font-bold mb-4">Subscriptions</h1>
       <div className="h-96 overflow-y-auto border dark:border-none rounded-lg p-4 bg-slate-50 dark:bg-slate-700">
+        <div className="flex w-full mb-2 font-semibold">
+          <p>Budget:</p>
+          <p className="ml-auto">{`$${parseFloat(budget).toFixed(2)}`}</p>
+        </div>
+        <hr className="m-2"/>
           {subscriptions.length === 0 ? (
             <p>No subscriptions found.</p>
           ) : (
