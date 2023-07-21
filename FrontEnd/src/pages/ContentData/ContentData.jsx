@@ -1,10 +1,10 @@
 // Import Libraries
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 // Import Icons
-import { PlusIcon, LinkIcon, MinusIcon } from '@heroicons/react/20/solid';
+import { PlusIcon, LinkIcon, MinusIcon, ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
 
 // Import Components
@@ -18,6 +18,7 @@ import TrailerIFrame from './Components/Trailer';
 import { LoginContext } from '../../contexts/LoginContext';
 
 export default function Detail() {
+  const nav = useNavigate();
   const { isLoggedIn } = useContext(LoginContext);
   const { type, id } = useParams();
   const [contentDetails, setContentDetails] = useState({});
@@ -105,6 +106,10 @@ export default function Detail() {
                   <img className="object-cover object-top w-full h-[40rem]" src={`https://image.tmdb.org/t/p/original/${contentDetails.backdrop_path}`} />
                 </div>
               </div>
+              
+              <button className='absolute top-2 left-2 z-20 text-white' onClick={() => nav('/content-search')}>
+                <ArrowLeftIcon className='h-8'/>
+              </button>
 
               {/* Foreground */}
               <div className="relative z-10 flex max-w-5xl mx-auto space-x-6 text-white h-[40rem] justify-center items-center">
@@ -202,10 +207,11 @@ export default function Detail() {
               </div>
 
             </div>
+
             <section className="mx-auto my-6 grid max-w-7xl gap-x-8 gap-y-8 grid-cols-4 grid-rows-[auto, auto] items-start">
-                <div className="col-start-4 row-span-2 p-4 space-y-4">
+                <div className="col-start-4 row-span-2 p-4 space-y-4 overflow-scroll max-h-screen">
                   <h2 className="text-3xl font-bold truncate">
-                    Relevent Information
+                    Information
                   </h2>
                   <MediaInfo info={contentDetails}/>
                 </div>
@@ -219,6 +225,7 @@ export default function Detail() {
                   <h2 className="text-2xl font-bold mb-4">
                     Trailers
                   </h2>
+                  <div className='flex overflow-x-auto'>
                   {
                     contentVideos.map((trailer, index) => {
                       if (trailer.type === "Trailer"){
@@ -228,6 +235,7 @@ export default function Detail() {
                       }
                     })
                   }
+                  </div>
                 </div>
             </section>   
           </main>
