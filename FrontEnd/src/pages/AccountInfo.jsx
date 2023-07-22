@@ -11,13 +11,12 @@ import { useNavigate } from 'react-router-dom'
 
 function EditAccount() {
   const [profileData, setProfileData] = useState({ user: "", Email: "", First_Name: "", Last_Name: "", Street_Address: "", City: "", State_Province: "", Country: "", Postal_Code: "", Newsletter: false, Promotions: false, Push_Notifications: "" });
-  const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
   const [showConfirmation, setShowConfirmation] = useState(false);
   const nav = useNavigate();
   function handleSubmit(event) {
     event.preventDefault();
     const curData = JSON.stringify(profileData);
-    axios.post("http://127.0.0.1:8000/api/user/settings/update/", [curData, session.email], {
+    axios.post("http://127.0.0.1:8000/api/user/settings/update/", curData, {
       withCredentials: true, headers: {
         'Content-Type': 'application/json'
       }
@@ -42,7 +41,7 @@ function EditAccount() {
 
   function loadData() {
 
-    axios.get('http://127.0.0.1:8000/api/user/settings/?email=' + session.email, { withCredentials: true }).then(response => {
+    axios.get('http://127.0.0.1:8000/api/user/settings/', { withCredentials: true }).then(response => {
       setProfileData({
         user: response.data.user, Email: response.data.Email, First_Name: response.data.First_Name, Last_Name: response.data.Last_Name,
         Street_Address: response.data.Street_Address, City: response.data.City, State_Province: response.data.State_Province, Country: response.data.Country,
@@ -72,7 +71,7 @@ function EditAccount() {
 
   function handleConfirmDelete() {
     // Placeholder Axios request for account deletion
-    axios.post("http://127.0.0.1:8000/api/user/settings/delete/", {Email:profileData.Email}, { withCredentials: true })
+    axios.post("http://127.0.0.1:8000/api/user/settings/delete/", { withCredentials: true })
       .then(response => {
         console.log("Account deleted successfully!");
         document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
