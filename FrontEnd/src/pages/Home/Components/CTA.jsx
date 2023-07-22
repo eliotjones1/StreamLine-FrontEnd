@@ -7,7 +7,7 @@ export default function CTA() {
 
   return (
     <div>
-      <div className="mx-auto dark:text-slate-900 max-w-7xl pb-10 sm:px-6 lg:px-8">
+      <div className="mx-auto dark:text-slate-900 max-w-7xl">
         <div className="relative isolate overflow-hidden bg-slate-900 dark:bg-white px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
           <svg
             viewBox="0 0 1024 1024"
@@ -22,10 +22,8 @@ export default function CTA() {
               </radialGradient>
             </defs>
           </svg>
-          <div className="mx-auto w-full lg:mx-0 lg:flex-auto lg:py-32 lg:text-left text-white dark:text-slate-900">
+          <div className="mx-auto w-full py-6 text-white dark:text-slate-900">
             <h2 className="text-center text-3xl font-bold tracking-tight sm:text-4xl">
-              <span className="text-sky-600">StreamLine</span> Your Subscriptions
-              <br />
               Start using our service today!
             </h2>
             <p className="mt-6 text-lg text-center leading-8">

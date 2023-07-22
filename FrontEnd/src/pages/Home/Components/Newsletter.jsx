@@ -5,6 +5,8 @@ import axios from 'axios';
 // Import Icons
 import { CalendarDaysIcon, HandRaisedIcon } from '@heroicons/react/24/outline';
 
+import CTA from './CTA';
+
 export default function Newsletter() {
   const inputEmail = useRef("");
 
@@ -48,7 +50,10 @@ export default function Newsletter() {
                   </button>
                 </div>
               </div>
-              <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
+              <dl>
+              {/*<dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">*/}
+                <CTA/>
+                {/*
                 <div className="flex flex-col items-start">
                   <div className="rounded-md bg-slate-500/5 dark:bg-white/5 p-2 ring-1 ring-white/10">
                     <CalendarDaysIcon className="h-6 w-6" aria-hidden="true" />
@@ -71,6 +76,7 @@ export default function Newsletter() {
                     Rest assured, we value your privacy and promise a spam-free newsletter experience.
                   </dd>
                 </div>
+                */}
               </dl>
             </div>
           </div>
