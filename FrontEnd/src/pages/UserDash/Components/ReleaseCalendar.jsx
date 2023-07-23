@@ -8,8 +8,8 @@ export default function Calendar() {
   const [releases, setReleases] = useState([]);
 
   const fetchNewlyReleased = async () => {
-    const response = await axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true });
-    //setReleases(response);
+    const {data} = await axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true });
+    setReleases(data);
   };
 
   useEffect(() => {
@@ -25,18 +25,10 @@ export default function Calendar() {
     return daysOfWeek[date.getDay()];
   };
 
-  // Filter movies for the next 7 days starting from the current day of the week
-  const filteredMovies = releases.filter((movie) => {
-    const movieDayOfWeek = getDayOfWeek(movie.release_date);
-    const daysUntilRelease = (daysOfWeek.indexOf(movieDayOfWeek) + 7 - todayIndex) % 7;
-    const isWithinNextSevenDays = daysUntilRelease < 7;
-    const isReleaseTodayOrLater = daysUntilRelease >= 0;
-    return isWithinNextSevenDays && isReleaseTodayOrLater;
-  });
 
   // Organize movies by their release day, starting from the current day of the week
   const moviesByDay = nextSevenDays.map((day) =>
-    filteredMovies.filter((movie) => getDayOfWeek(movie.release_date) === day)
+    releases.filter((movie) => getDayOfWeek(movie.release_date) === day)
   );
 
   return (
