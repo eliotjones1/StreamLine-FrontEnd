@@ -108,7 +108,7 @@ export default function SignUp() {
                     </div>
                   </div>
                   <div className="text-sm text-slate-700 dark:text-gray-500 text-center">
-                    I agree to be contacted by StreamLine about this offer as per the StreamLine <Link to="#" className="underline text-slate-600 dark:text-gray-400 dark:hover:text-gray-200 hover:text-slate-200 hover:no-underline transition duration-150 ease-in-out">Privacy Policy</Link>.
+                    I agree to be contacted by StreamLine about this offer as per the StreamLine <a to="#" className="underline cursor-pointer text-slate-600 dark:text-gray-400 dark:hover:text-gray-200 hover:text-slate-200 hover:no-underline transition duration-150 ease-in-out">Privacy Policy</a>.
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
