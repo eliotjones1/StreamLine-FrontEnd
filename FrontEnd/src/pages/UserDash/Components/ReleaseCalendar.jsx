@@ -60,7 +60,7 @@ export default function Calendar() {
                               className="object-cover"
                             />
                             <div className="p-4">
-                              <p className="text-md font-semibold text-gray-800 truncate">{movie.title}</p>
+                              <p className="text-md font-semibold truncate">{movie.title}</p>
                             </div>
                           </div>
                         ))}
