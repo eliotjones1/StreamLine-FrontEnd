@@ -6,30 +6,26 @@ import { useNavigate } from "react-router-dom";
 
 export default function Calendar() {
   const [releases, setReleases] = useState([]);
-
-  const fetchNewlyReleased = async () => {
-    const {data} = await axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true });
-    setReleases(data);
-  };
-
-  useEffect(() => {
-    fetchNewlyReleased();
-  }, []);
-
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const todayIndex = new Date().getDay();
   const nextSevenDays = daysOfWeek.slice(todayIndex).concat(daysOfWeek.slice(0, todayIndex));
+
+  const fetchNewlyReleased = async () => {
+    const { data } = await axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true });
+    const releasesByDay = nextSevenDays.map((day) =>
+      data.filter((movie) => getDayOfWeek(movie.release_date) === day)
+    );
+    setReleases(releasesByDay);
+  };
 
   const getDayOfWeek = (dateString) => {
     const date = new Date(dateString);
     return daysOfWeek[date.getDay()];
   };
 
-
-  // Organize movies by their release day, starting from the current day of the week
-  const moviesByDay = nextSevenDays.map((day) =>
-    releases.filter((movie) => getDayOfWeek(movie.release_date) === day)
-  );
+  useEffect(() => {
+    fetchNewlyReleased();
+  }, []);
 
   return (
     <div className="container mx-auto px-4">
@@ -51,8 +47,7 @@ export default function Calendar() {
             <div className="grid grid-cols-7 gap-2">
               {nextSevenDays.map((day) => (
                 <div key={day} className="max-h-[75vh] overflow-y-auto">
-                  {/* Wrap each column in a separate container with overflow-y-auto */}
-                  {moviesByDay.map((movies, index) => {
+                  {releases.map((movies, index) => {
                     if (movies.length === 0) return null; // If no movies for this day, return null to skip the column
                     if (day !== nextSevenDays[index]) return null; // Ensure we only render the column corresponding to the day
                     return (
