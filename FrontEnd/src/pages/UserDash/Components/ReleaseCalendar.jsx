@@ -53,11 +53,11 @@ export default function Calendar() {
                     return (
                       <div key={day + index}>
                         {movies.map((movie, movieIndex) => (
-                          <div key={movieIndex} className="bg-white rounded-lg overflow-hidden shadow-md my-4">
+                          <div key={movieIndex} className="bg-white dark:bg-slate-900 rounded-lg overflow-hidden shadow-md my-4">
                             <img
                               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                               alt={noimage}
-                              className="w-44 h-64 object-cover"
+                              className="object-cover"
                             />
                             <div className="p-4">
                               <p className="text-md font-semibold text-gray-800 truncate">{movie.title}</p>
