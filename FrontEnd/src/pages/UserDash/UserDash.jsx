@@ -21,7 +21,7 @@ export default function UserDash(){
           <CurrentSubsriptions/>
           <WatchList/>
         </div>
-        <ReleaseCalendar/>
+        <ReleaseCalendar className="max-w-7xl"/>
       </main>
       <Footer />
     </div>
