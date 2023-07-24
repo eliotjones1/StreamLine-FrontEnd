@@ -11,17 +11,17 @@ export default function UserDash(){
   return(
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Header/>
-      <main className="grow mx-auto w-full">
+      <main className="grow max-w-7xl mx-auto w-full">
         <div className="mt-20 max-w-3xl mx-auto text-center">
           <h1 className="h1" data-aos="fade-up">
               <span className="text-sky-600">StreamLine</span> Dashboard
           </h1>
         </div>
-        <div className="grid grid-cols-3 max-w-7xl mx-auto gap-6">
+        <div className="grid grid-cols-3 gap-6">
           <CurrentSubsriptions/>
           <WatchList/>
         </div>
-        <ReleaseCalendar className="max-w-7xl"/>
+        <ReleaseCalendar />
       </main>
       <Footer />
     </div>
