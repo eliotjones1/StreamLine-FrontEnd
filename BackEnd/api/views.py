@@ -15,6 +15,7 @@ from django.contrib.sessions.models import Session
 from django.utils import timezone
 from prod_management.models import Subscription
 from .models import StaffPick
+import pandas as pd
 # Create your views here.
 
 
@@ -413,3 +414,27 @@ class StaffPicks(generics.ListAPIView):
                 })
     
         return Response(serialized_list, status=status.HTTP_200_OK)
+
+class seeServices(generics.ListAPIView):
+    def get(self, request):
+        service_images = pd.read_csv('api/random/serviceImages.csv')
+        service_info = pd.read_csv('api/random/pricing - Sheet2-3.csv')
+
+        # For each row in service_info, find the corresponding image in service_images by matching service_name in serviceImages to Name in service_info
+        # Output the title, price, image, and link into a dict to return
+
+        output = []
+        for index, row in service_info.iterrows():
+            service_name = row['Name']
+            service_price = row['Price']
+            service_link = row['Link']
+            service_image = service_images.loc[service_images['Service'] == service_name]['Image'].values[0]
+            output.append({
+                'title': service_name,
+                'price': service_price,
+                'image': service_image,
+                'link': service_link
+            })
+        return Response(output, status=status.HTTP_200_OK)
+        
+        

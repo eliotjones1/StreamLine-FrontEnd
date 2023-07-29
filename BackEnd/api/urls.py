@@ -16,4 +16,5 @@ urlpatterns = [
     path('recent/', newlyReleased.as_view(), name="recent"),
     path('isAuthenticated/', isAuthenticated.as_view(), name='isAuthenticated'),
     path('staffpicks/', StaffPicks.as_view(), name='staffpicks'),
+    path('showServices/', seeServices.as_view(), name='showServices'),
 ]
