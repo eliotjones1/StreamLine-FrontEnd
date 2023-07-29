@@ -251,7 +251,7 @@ class newlyReleased(generics.ListAPIView):
                     'rating': show['vote_average'],
                     'genres': show['genre_ids'],
                     'overview': show['overview'],
-                    'type': 'tv',
+                    'media_type': 'tv',
                     'id': show['id']
                 })
         for movie in new_movies:
@@ -264,7 +264,7 @@ class newlyReleased(generics.ListAPIView):
                     'rating': movie['vote_average'],
                     'genres': movie['genre_ids'],
                     'overview': movie['overview'],
-                    'type': 'movie',
+                    'media_type': 'movie',
                     'id': movie['id']
                 })
         sorted_data = sorted(
