@@ -15,4 +15,5 @@ urlpatterns = [
     path('returnInfo/', returnInfo, name="return_info"),
     path('recent/', newlyReleased.as_view(), name="recent"),
     path('isAuthenticated/', isAuthenticated.as_view(), name='isAuthenticated'),
+    path('staffpicks/', StaffPicks.as_view(), name='staffpicks'),
 ]
