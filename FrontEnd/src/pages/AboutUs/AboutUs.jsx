@@ -4,8 +4,10 @@ import React from "react";
 // Import Components
 import Header from '../../partials/Header';
 import Footer from "../../partials/Footer";
-import Founders from "../../partials/Founders";
-import About from "./Components/LearnMore";
+import Mission from "./Components/Mission";
+import Story from "./Components/Story";
+import Founders from "./Components/Founders";
+import CTA from "./Components/CTA";
 
 export default function AboutUs() {
   return (
@@ -17,8 +19,10 @@ export default function AboutUs() {
             About <span className="text-sky-600">StreamLine</span> 
           </h1>
         </div>
-        <About />
+        <Mission/>
+        <Story/>
         <Founders />
+        <CTA />
       </main>
       <Footer />
     </div>

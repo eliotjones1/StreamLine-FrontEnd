@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import noimage from '../../../images/no-image.jpg';
-import { useNavigate } from "react-router-dom";
 
 export default function Calendar() {
   const [releases, setReleases] = useState([]);
@@ -59,9 +58,9 @@ export default function Calendar() {
                               alt={noimage}
                               className="object-cover"
                             />
-                            <div className="p-4">
-                              <p className="text-md font-semibold truncate">{movie.title}</p>
-                            </div>
+                            <p className="p-4 text-md font-semibold truncate">
+                              {movie.title}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -71,7 +70,6 @@ export default function Calendar() {
               ))}
             </div>
         }
-        
       </div>
     </div>
   );

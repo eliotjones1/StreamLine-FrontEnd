@@ -14,9 +14,13 @@ export default function News() {
   const [expandedPosts, setExpandedPosts] = useState([]);
   const numPerPage = 6;
 
-  useEffect(async () => {
+  const fetchPosts = async () => {
     const response = await axios.get('http://127.0.0.1:8000/api/newsletter/getAllPosts/');
     setPosts(response.data);
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
 
   const handleChangeBaseIndex = (newBaseIndex) => {
