@@ -14,7 +14,9 @@ from fuzzywuzzy import fuzz
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from prod_management.models import Subscription
+from .models import StaffPick
 # Create your views here.
+
 
 class returnAll(generics.ListAPIView):
     def get(self, request):
@@ -24,7 +26,6 @@ class returnAll(generics.ListAPIView):
 
         title = search_query
         # Get Movies
-        
 
         url = "https://api.themoviedb.org/3/search/multi?query=Star%20Wars&include_adult=false&language=en-US&page=1"
 
@@ -57,6 +58,7 @@ def isSessionActive(sessionid):
     else:
         return False
 
+
 class isAuthenticated(generics.ListAPIView):
     def get(self, request):
         sessionid = request.COOKIES.get('sessionid')
@@ -74,9 +76,10 @@ def saveBudget(request):
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
 
     budget = request.data
-    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    user_email = Session.objects.get(
+        session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
-        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)        
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
@@ -92,20 +95,23 @@ def saveMedia(request):
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    user_email = Session.objects.get(
+        session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
-    
+
     # Expects a dict with "id" and "type" as keys
     object = request.data
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     cur_list = current.media
     cur_list.append(object)
-    background_thread = threading.Thread(target=optimizeInTheBackground, args=([cur_list, user_email],))
+    background_thread = threading.Thread(
+        target=optimizeInTheBackground, args=([cur_list, user_email],))
     background_thread.start()
     current.save()
     return Response({"Status": "OK"})
+
 
 @api_view(['POST'])
 def clearMedia(request):
@@ -115,7 +121,8 @@ def clearMedia(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     object = request.data
-    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    user_email = Session.objects.get(
+        session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     user_exists = CustomUser.objects.get(email=user_email)
@@ -124,6 +131,7 @@ def clearMedia(request):
     current.save()
     return Response({"Status": "OK"})
 
+
 @api_view(['POST'])
 def removeMedia(request):
     # get sessionid from request cookie
@@ -131,7 +139,8 @@ def removeMedia(request):
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    user_email = Session.objects.get(
+        session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     # Expect email to be at 0
@@ -152,7 +161,8 @@ def saveBundle(request):
     # Check if session is active
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+    user_email = Session.objects.get(
+        session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     # Expect email to be at 0
@@ -173,7 +183,8 @@ class returnUserData(generics.ListAPIView):
         if isSessionActive(sessionid) == False:
             return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
         # Get user from session
-        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
+        user_email = Session.objects.get(
+            session_key=sessionid).get_decoded()['user_email']
         if user_email is None:
             return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         user_exists = CustomUser.objects.get(email=user_email)
@@ -273,10 +284,10 @@ class newlyReleased(generics.ListAPIView):
         return Response(recent_dicts, status=status.HTTP_200_OK)
 
 
-
 def optimizeInTheBackground(media_list):
     url = "http://localhost:8000/optimize/"
     requests.post(url, json=media_list)
+
 
 @api_view(['POST'])
 def runOptimization(request):
@@ -349,3 +360,57 @@ def runOptimization(request):
     current.bundle = [streamLine, maximal, minimal]
     current.save()
     return Response({"Status": "OK"})
+
+
+class StaffPicks(generics.ListAPIView):
+    def get(self, request):
+        staff_picks = StaffPick.objects.all()
+        serialized_list = []
+        for pick in staff_picks:
+            if pick.Media_Type == "movie":
+                id = pick.Media_ID
+                api_key = "95cd5279f17c6593123c72d04e0bedfa"
+                base_url = "https://api.themoviedb.org/3/"
+                endpoint = "movie/"
+                full_url = base_url + endpoint + \
+                str(id) + "?api_key=" + api_key + "&language=en-US"
+                response = requests.get(full_url)
+                if response.status_code != 200:
+                    continue
+                movie_data = response.json()
+                serialized_list.append({
+                'title': movie_data['title'],
+                'release_date': movie_data['release_date'],
+                'poster_path': movie_data['poster_path'],
+                'backdrop': movie_data['backdrop_path'],
+                'rating': movie_data['vote_average'],
+                'genres': movie_data['genres'],
+                'overview': movie_data['overview'],
+                'media_type': pick.Media_Type,
+                'id': pick.Media_ID
+                })  
+
+            else:
+                id = object['id']
+                api_key = "95cd5279f17c6593123c72d04e0bedfa"
+                base_url = "https://api.themoviedb.org/3/"
+                endpoint = "tv/"
+                full_url = base_url + endpoint + \
+                    str(id) + "?api_key=" + api_key + "&language=en-US"
+                response = requests.get(full_url)
+                if response.status_code != 200:
+                    continue
+                show_data = response.json()
+                serialized_list.append({
+                'title': show_data['name'],
+                'release_date': show_data['first_air_date'],
+                'poster_path': show_data['poster_path'],
+                'backdrop': show_data['backdrop_path'],
+                'rating': show_data['vote_average'],
+                'genres': show_data['genres'],
+                'overview': show_data['overview'],
+                'media_type': show_data['media_type'],
+                'id': pick.Media_ID
+                })
+    
+        return Response(serialized_list, status=status.HTTP_200_OK)
