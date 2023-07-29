@@ -23,11 +23,10 @@ class returnAll(generics.ListAPIView):
         search_query = request.query_params.get('search', None)
         if search_query is None:
             return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
-
         title = search_query
         # Get Movies
 
-        url = "https://api.themoviedb.org/3/search/multi?query=Star%20Wars&include_adult=false&language=en-US&page=1"
+        url = "https://api.themoviedb.org/3/search/multi?query=" + title + "&include_adult=false&language=en-US&page=1"
 
         headers = {
             "accept": "application/json",
