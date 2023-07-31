@@ -19,8 +19,8 @@ export default function NotFound() {
             >
               Go back home
             </button>
-            <button onClick={() => nav("/")} className="text-sm font-semibold">
-              Contact support <span aria-hidden="true">&rarr;</span>
+            <button onClick={() => nav("/support")} className="text-sm font-semibold">
+              Contact Support <span aria-hidden="true">&rarr;</span>
             </button>
           </div>
         </div>
