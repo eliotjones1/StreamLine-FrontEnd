@@ -25,6 +25,7 @@ import NewSub from './pages/NewSub';
 import ContentSearch from './pages/ContentSearch/ContentSearch';
 import ContentData from './pages/ContentData/ContentData';
 import Payment from './pages/Payment/Payment';
+import ContactSupport from './pages/ContactSupport/ContactSupport';
 
 // Import Context
 import ContextWrapper from './contexts/Index';
@@ -55,6 +56,7 @@ export default function App() {
     { path: '/search', component: SearchMedia },
     { path: '/bundles', component: Bundles },
     { path: '/user-dash', component: UserDash },
+    { path: '/support', component: ContactSupport },
     { path: '/secure-reset', component: SecureReset },
     { path: '/pricing', component: Pricing },
     { path: '/news', component: News },

@@ -15,7 +15,7 @@ const products = [
 ]
 const callsToAction = [
   { name: 'Watch demo', href: '/34567', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '/345678', icon: PhoneIcon },
+  { name: 'Contact Us', href: '/support', icon: PhoneIcon },
 ]
 
 function classNames(...classes) {

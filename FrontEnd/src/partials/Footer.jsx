@@ -46,7 +46,7 @@ function Footer() {
                 <h2 className="pb-2 font-semibold">Resources</h2>
                 <ul className='grid gap-y-2'>
                   <li className="mb-1">
-                    <button onClick={() => nav('/4657689')} className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out"></button>
+                    <button onClick={() => nav('/support')} className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out">Contact Us</button>
                   </li>
                 </ul>
               </div>
