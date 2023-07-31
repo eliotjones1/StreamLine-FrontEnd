@@ -149,7 +149,7 @@ function Founders() {
                         <h2 className="font-bold truncate pr-20 text-lg cursor-pointer" onClick={() => nav(favMovieLink)}>
                           {person.favMovie}
                         </h2>
-                        <p className='inline-block text-sm px-1 py-1/2 rounded-md text-gray-600 ring-2 ring-slate-200 dark:ring-slate-600'>
+                        <p className='inline-block text-sm px-1 py-1/2 rounded-md text-gray-600 dark:text-gray-300 ring-2 ring-slate-200 dark:ring-slate-600'>
                           {person.movieRating}
                         </p>
                         <p className='text-sm'>
@@ -166,7 +166,7 @@ function Founders() {
                         <h2 className="font-bold truncate pr-20 text-lg cursor-pointer" onClick={() => nav(favShowLink)}>
                           {person.favShow}
                         </h2>
-                        <p className='inline-block text-sm px-1 py-1/2 rounded-md text-gray-600 ring-2 ring-slate-200 dark:ring-slate-600'>
+                        <p className='inline-block text-sm px-1 py-1/2 rounded-md text-gray-600 dark:text-gray-300 ring-2 ring-slate-200 dark:ring-slate-600'>
                           {person.showRating}
                         </p>
                         <p className='text-sm'>
