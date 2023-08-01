@@ -50,3 +50,10 @@ class Subscription(models.Model):
     num_cancellations = models.IntegerField(default = 0)
     is_active = models.BooleanField(default = "True")
     
+
+class UserContactRequest(models.Model):
+    user_email = models.CharField(max_length=100)
+    user_first_name = models.CharField(max_length=100)
+    user_last_name = models.CharField(max_length=100)
+    user_message = models.CharField(max_length=1000)
+    user_phone_number = models.CharField(max_length=100)

@@ -21,5 +21,5 @@ urlpatterns = [
     path('tosCompliance/update/', agreeTOS, name='update-tos-compliance'),
     path('subscriptions/generateBundle/', generateBundle, name='create-bundle'),
     path('subscriptions/upcoming/', getMyUpcoming.as_view(), name='get-upcoming'),
-
+    path('contact/', ContactFormSub, name='contact-us'),
 ]
