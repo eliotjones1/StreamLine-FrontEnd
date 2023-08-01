@@ -82,7 +82,7 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Modal 
-          header={"401: Internal Server Error"} 
+          header={"500: Internal Server Error"} 
           body={"An internal server error occured. Please retry. If the error continues to occur please contact support."} 
           mainButtonText={"Support"}
           mainButtonFunction={() => {nav('/support'); setOpen401Modal(false);}}
