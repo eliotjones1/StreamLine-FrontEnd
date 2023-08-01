@@ -292,7 +292,12 @@ def optimizeInTheBackground(media_list):
 @api_view(['POST'])
 def runOptimization(request):
     media_list = request.data[0]
-    user_email = request.data[1]
+    print(media_list)
+    sessionid = request.COOKIES.get('sessionid')
+    user_email = Session.objects.get(
+            session_key=sessionid).get_decoded()['user_email']
+    if user_email is None:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     # get sessionid from request cookie
     user = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user)
@@ -350,16 +355,12 @@ def runOptimization(request):
             data.append(temp)
 
     providers, prices, services = modify_input(data)
-    print(providers)
-    print(prices)
-    print(services)
-    print(budget)
     streamLine = optimize1(providers, prices, services, budget, data)
     maximal = optimize2(providers, prices, services, data)
     minimal = optimize3(providers, prices, services, budget, data)
     current.bundle = [streamLine, maximal, minimal]
     current.save()
-    return Response({"Status": "OK"})
+    return Response(status = status.HTTP_200_OK)
 
 
 class StaffPicks(generics.ListAPIView):
