@@ -112,10 +112,6 @@ export default function Detail() {
                   <img className="object-cover object-top w-full h-[40rem]" src={`https://image.tmdb.org/t/p/original/${contentDetails.backdrop_path}`} />
                 </div>
               </div>
-              
-              <button className='absolute top-2 left-2 z-20 text-white' onClick={() => nav('/content-search')}>
-                <ArrowLeftIcon className='h-8'/>
-              </button>
 
               {/* Foreground */}
               <div className="relative z-10 flex max-w-5xl mx-auto space-x-6 text-white h-[40rem] justify-center items-center">
