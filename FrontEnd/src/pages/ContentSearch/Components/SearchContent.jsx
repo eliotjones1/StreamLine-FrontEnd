@@ -8,7 +8,7 @@ import ContentCard from './ContentCard';
 // Import Contexts
 import { SearchContext } from '../../../contexts/SearchContext';
 
-function Content() {
+export default function Content() {
     const { content, lastSearch, returnToMain, getGenreById } = useContext(SearchContext)
     const nav = useNavigate();
 
@@ -95,5 +95,3 @@ function Content() {
         </section>
     )
 }
-
-export default Content

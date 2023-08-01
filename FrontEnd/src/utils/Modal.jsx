@@ -7,15 +7,15 @@ export default function Example({
   setOpen,
   mainButtonText,
   mainButtonFunction,
+  secondaryButtonText,
+  secondaryButtonFunction,
   colorPalete,
   header, 
   body,
 }) {
-  const cancelButtonRef = useRef(null)
-
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpen}>
+      <Dialog as="div" className="relative z-50" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -67,11 +67,20 @@ export default function Example({
                       {mainButtonText}
                     </button>
                   }
+                  {
+                    secondaryButtonText && 
+                    <button
+                      type="button"
+                      className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:ml-3 sm:mt-0 sm:w-auto"
+                      onClick={secondaryButtonFunction}
+                    >
+                      {secondaryButtonText}
+                    </button>
+                  }
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                     onClick={() => setOpen(false)}
-                    ref={cancelButtonRef}
                   >
                     Close
                   </button>

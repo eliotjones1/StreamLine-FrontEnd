@@ -2,7 +2,6 @@
 import React from 'react';
 
 export default function MediaInfo({ info }){
-  console.log(info);
   return(
     <>
       <div>

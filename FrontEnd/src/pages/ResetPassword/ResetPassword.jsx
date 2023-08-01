@@ -1,19 +1,28 @@
 // Import Libraries
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // Import Components
 import Header from '../../partials/Header';
 
+// Import Contexts
+import { ModalContext } from '../../contexts/ModalContext';
+
 function ResetPassword() {
   const nav = useNavigate();
   const email = useRef("");
+  const { setOpen500Modal } = useContext(ModalContext);
   
-  const reset_pwd = async (event) => {
+  const reset_pwd = (event) => {
     event.preventDefault();
-    await axios.post('http://127.0.0.1:8000/api/password_reset/', {email: email.current.value}, { withCredentials: true });
-    nav('/signin');
+    axios.post('http://127.0.0.1:8000/api/password_reset/', {email: email.current.value}, { withCredentials: true })
+    .then(response => {
+      nav('/signin');
+    }).catch(error => {
+      setOpen500Modal(true);
+    });
+    
   }
 
   return (

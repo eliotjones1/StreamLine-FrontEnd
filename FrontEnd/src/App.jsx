@@ -17,7 +17,7 @@ import UserDash from './pages/UserDash/UserDash';
 import SecureReset from './pages/SecureReset/SecureReset';
 import SearchMedia from './pages/SearchMedia';
 import NotFound from './pages/404/NotFound';
-import AccountInfo from './pages/AccountInfo';
+import AccountInfo from './pages/AccountInfo/AccountInfo';
 import Pricing from './pages/Pricing/Pricing';
 import News from './pages/News/News';
 import AboutUs from './pages/AboutUs/AboutUs';
@@ -36,7 +36,7 @@ import { ModalContext } from './contexts/ModalContext';
 export default function App() {
   const location = useLocation();
   const nav = useNavigate();
-  const { open401Modal, setOpen401Modal } = useContext(ModalContext);
+  const { open500Modal, setOpen500Modal } = useContext(ModalContext);
 
   useEffect(() => {
     AOS.init({
@@ -83,12 +83,14 @@ export default function App() {
       </Routes>
       <Modal 
           header={"500: Internal Server Error"} 
-          body={"An internal server error occured. Please retry. If the error continues to occur please contact support."} 
-          mainButtonText={"Support"}
-          mainButtonFunction={() => {nav('/support'); setOpen401Modal(false);}}
+          body={"An internal server error occured during this action. We are aware of the issue and working to fix it momentarily. The current page will not include certain functionality. Please reload the page or try again at a later time. If the error continues to occur please contact support."}
+          mainButtonText={"Refresh"}
+          mainButtonFunction={() => window.location.reload()}
+          secondaryButtonText={"Support"}
+          secondaryButtonFunction={() => { nav('/support'); setOpen500Modal(false); }}
           colorPalete={"sky"}
-          isOpen={open401Modal} 
-          setOpen={setOpen401Modal}
+          isOpen={open500Modal} 
+          setOpen={setOpen500Modal}
         />
     </>
   );

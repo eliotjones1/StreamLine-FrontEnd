@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 
 import axios from 'axios';
 
-import Header from '../partials/Header';
-import PageTopIllustration from "../partials/PageTopIllustration";
+import Header from '../../partials/Header';
+import PageTopIllustration from "../../partials/PageTopIllustration";
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom'
+import { ModalContext } from '../../contexts/ModalContext';
 
 
 function EditAccount() {
   const [profileData, setProfileData] = useState({ user: "", Email: "", First_Name: "", Last_Name: "", Street_Address: "", City: "", State_Province: "", Country: "", Postal_Code: "", Newsletter: false, Promotions: false, Push_Notifications: "" });
   const [showConfirmation, setShowConfirmation] = useState(false);
   const nav = useNavigate();
+  const { setOpen500Modal } = useContext(ModalContext);
+
   function handleSubmit(event) {
     event.preventDefault();
     const curData = JSON.stringify(profileData);
@@ -34,13 +37,12 @@ function EditAccount() {
         sameSite: 'strict',
       });    
     }).catch(error => {
-      // Show Error Modal
+      setOpen500Modal(true);
     })
 
   }
 
   function loadData() {
-
     axios.get('http://127.0.0.1:8000/api/user/settings/', { withCredentials: true }).then(response => {
       setProfileData({
         user: response.data.user, Email: response.data.Email, First_Name: response.data.First_Name, Last_Name: response.data.Last_Name,
@@ -48,7 +50,7 @@ function EditAccount() {
         Postal_Code: response.data.Postal_Code, Newsletter: response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications: response.data.Push_Notifications
       });
     }).catch(error => {
-      // Show error modal
+      setOpen500Modal(true);
     });
 
   }
@@ -61,7 +63,6 @@ function EditAccount() {
   const handleButtonValueChange = (event) => {
     const { name, checked } = event.target;
     const value = checked;
-
     setProfileData(prevData => ({ ...prevData, [name]: value }));
   };
 
@@ -71,15 +72,14 @@ function EditAccount() {
 
   function handleConfirmDelete() {
     // Placeholder Axios request for account deletion
-    axios.post("http://127.0.0.1:8000/api/user/settings/delete/", { withCredentials: true })
-      .then(response => {
-        console.log("Account deleted successfully!");
-        document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-        nav('/')
-      })
-      .catch(error => {
-        // Show Error Modal or handle errors
-      });
+    axios.post("http://127.0.0.1:8000/api/user/settings/delete/", { withCredentials: true }).then(response => {
+      console.log("Account deleted successfully!");
+      document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      nav('/')
+    })
+    .catch(error => {
+      setOpen500Modal(true);
+    });
   }
 
   function handleCancelDelete() {

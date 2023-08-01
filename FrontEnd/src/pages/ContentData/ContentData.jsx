@@ -16,10 +16,12 @@ import TrailerIFrame from './Components/Trailer';
 
 // Import Contexts
 import { LoginContext } from '../../contexts/LoginContext';
+import { ModalContext } from '../../contexts/ModalContext';
 
 export default function Detail() {
   const nav = useNavigate();
   const { isLoggedIn } = useContext(LoginContext);
+  const { setOpen500Modal } = useContext(ModalContext);
   const { type, id } = useParams();
   const [contentDetails, setContentDetails] = useState({});
   const [contentVideos, setContentVideos] = useState([]);
@@ -28,28 +30,42 @@ export default function Detail() {
   const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
 
   const fetchContentData = async () => {
-    const { data } = await axios.post("http://127.0.0.1:8000/returnInfo/", {media_type: type, id: id});
-    setContentDetails(data);
-    console.log(data)
+    try {
+      const { data } = await axios.post("http://127.0.0.1:8000/returnInfo/", { media_type: type, id: id });
+      setContentDetails(data);
+    } catch (error) {
+      setOpen500Modal(true);
+    }
   };
 
   const fetchCast = async () => {
+    try {
       const { data } = await axios.get(`https://api.themoviedb.org/3/${type}/${id}/credits?api_key=${APIKEY}&language`);
       setContentCastCrew(data);
+    } catch (error) {
+      setOpen500Modal(true);
+    }  
   }
 
   const fetchVideo = async () => {
-  
+    try {
       const { data } = await axios.get(`https://api.themoviedb.org/3/${type}/${id}/videos?api_key=${APIKEY}&language=en-US`);
       setContentVideos(data.results);
+    } catch (error) {
+      setOpen500Modal(true);
+    }
   }
 
   const onList = async () => {
-    const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
-    if (data.media.find(item => (item.id === id && item.media_type === type))){
-      setInList(true);
-    } else {
-      setInList(false);
+    try {
+      const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
+      if (data.media.find(item => (item.id === id && item.media_type === type))){
+        setInList(true);
+      } else {
+        setInList(false);
+      }
+    } catch (error) {
+      setOpen500Modal(true);
     }
   }
 
@@ -57,8 +73,8 @@ export default function Detail() {
     try {
       axios.post("http://127.0.0.1:8000/saveMedia/", {id: id, media_type: type}, { withCredentials: true });
       setInList(true);
-    } catch {
-
+    } catch (error) {
+      setOpen500Modal(true);
     }
   };
 
@@ -66,7 +82,7 @@ export default function Detail() {
     axios.post("http://127.0.0.1:8000/removeMedia/", {id: id, media_type: type}, { withCredentials: true }).then(() => {
       setInList(false);
     }).catch(() => {
-
+      setOpen500Modal(true);
     });
   };
 

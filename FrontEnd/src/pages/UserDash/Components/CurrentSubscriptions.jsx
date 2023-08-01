@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from 'axios';
+
+import { ModalContext } from "../../../contexts/ModalContext";
 
 export default function ScrollableSubscription(){
   const [subscriptions, setSubscriptions] = useState([]);
   const [budget, setBudget] = useState("0");
+  const { setOpen500Modal } = useContext(ModalContext);
 
-  const fetchSubs = async () => {
-    const { data } = await axios.get("http://127.0.0.1:8000/api/user/subscriptions/view/", { withCredentials: true });
-    setSubscriptions(data);
+  const fetchSubs = () => {
+    axios.get("http://127.0.0.1:8000/api/user/subscriptions/view/", { withCredentials: true }).then(response => {
+      setSubscriptions(response.data);
+    }).catch(error => {
+      setOpen500Modal(true);
+    });
   };
 
-  const fetchBudget = async () => {
-    const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
-
-    setBudget(data.budget);
+  const fetchBudget = () => {
+    axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true }).then(response => {
+      setBudget(response.data.budget);
+    }).catch(error => {
+      setOpen500Modal(true);
+    }); 
   };
 
   useEffect(() => {

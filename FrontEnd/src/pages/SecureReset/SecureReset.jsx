@@ -1,25 +1,30 @@
 // Import Libraries
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ModalContext } from '../../contexts/ModalContext';
 
 export default function ResetPassword() {
   const nav = useNavigate();
   const password = useRef("");
   const confirm_pswd = useRef("");
+  const { setOpen500Modal } = useContext(ModalContext);
 
   const reset_pwd = async (event) => {
     event.preventDefault();
     if (pswd !== confirm_pswd) {
-      // Add Error Modal
+      alert("Passwords do not match!");
     } else {
       let data = {
         token: window.location.search.substring(1),
         password: password.current.value
       };
-      await axios.post('http://127.0.0.1:8000/api/password_reset/confirm/', data);
-      nav('/signin');
-    }
+      axios.post('http://127.0.0.1:8000/api/password_reset/confirm/', data).then(() => {
+        nav('/signin');
+      }).catch(error => {
+        setOpen500Modal(true);
+      });
+    };
   };
 
   return (

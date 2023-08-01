@@ -20,7 +20,7 @@ export default function SignUp() {
   const confirmPasswordMatch = (event) => {
     event.preventDefault();
     if (password.current.value !== confirmPassword.current.value) {
-      // Add Error Modal
+      alert("Passwords do not match!");
     } else {
       signUp({
         email: email.current.value,

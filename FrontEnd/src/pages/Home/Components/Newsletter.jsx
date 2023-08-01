@@ -1,18 +1,22 @@
 // Import Libraries
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import axios from 'axios';
 
-// Import Icons
-import { CalendarDaysIcon, HandRaisedIcon } from '@heroicons/react/24/outline';
-
+// Import Components
 import CTA from './CTA';
+
+// Import Contexts
+import { ModalContext } from '../../../contexts/ModalContext';
 
 export default function Newsletter() {
   const inputEmail = useRef("");
+  const { setOpen500Modal } = useContext(ModalContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios.post("http://127.0.0.1:8000/api/recommendations/saveEmail/", {email: inputEmail.current.value}, {withCredentials: true})
+    axios.post("http://127.0.0.1:8000/api/recommendations/saveEmail/", {email: inputEmail.current.value}, {withCredentials: true}).catch(error => {
+      setOpen500Modal(true);
+    })
     inputEmail.current.value = "";
   }
 

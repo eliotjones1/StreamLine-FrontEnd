@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { MinusIcon } from '@heroicons/react/24/solid';
 
+import { ModalContext } from '../../../contexts/ModalContext';
+
 export default function WatchList() {
   const nav = useNavigate()
   const [userList, setUserList] = useState([]);
+  const { setOpen500Modal } = useContext(ModalContext); 
   const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
 
   const fetchList = async () => {
-    const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
+    const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true }).catch(error => {
+      setOpen500Modal(true);
+    });
     const promises = data.media.map(async (media) => {
       let { data } = await axios.get(`https://api.themoviedb.org/3/${media.media_type}/${media.id}?api_key=${APIKEY}`);
       data.media_type = media.media_type;
@@ -21,13 +26,15 @@ export default function WatchList() {
       const results = await Promise.all(promises);
       setUserList(results);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      setOpen500Modal(true);
     }
   };
   
   const removeFromUserList = (media) => {
     axios.post("http://127.0.0.1:8000/removeMedia/", {id: media.id.toString(), media_type: media.media_type}, { withCredentials: true }).then(() => {
       fetchList();
+    }).catch(error => {
+      setOpen500Modal(true);
     });
   };
 

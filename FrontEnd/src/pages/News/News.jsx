@@ -1,5 +1,5 @@
 // Import Libraries
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 // Import Components
@@ -8,15 +8,22 @@ import Footer from '../../partials/Footer';
 import PageTopIllustration from '../../partials/PageTopIllustration';
 import PageSelection from './Components/PageSelection';
 
+// Import Context
+import { ModalContext } from "../../contexts/ModalContext";
+
 export default function News() {
   const [posts, setPosts] = useState([]);
   const [baseIndex, setBaseIndex] = useState(0);
   const [expandedPosts, setExpandedPosts] = useState([]);
+  const { setOpen500Modal } = useContext(ModalContext);
   const numPerPage = 6;
 
-  const fetchPosts = async () => {
-    const response = await axios.get('http://127.0.0.1:8000/api/newsletter/getAllPosts/');
-    setPosts(response.data);
+  const fetchPosts = () => {
+    axios.get('http://127.0.0.1:8000/api/newsletter/getAllPosts/').then(response => {
+      setPosts(response.data);
+    }).catch(error => {
+      setOpen500Modal(true);
+    });
   };
 
   useEffect(() => {

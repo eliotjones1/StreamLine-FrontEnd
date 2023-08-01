@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import noimage from '../../../images/no-image.jpg';
+import { ModalContext } from "../../../contexts/ModalContext";
 
 export default function Calendar() {
   const [releases, setReleases] = useState([]);
+  const { setOpen500Modal } = useContext(ModalContext);
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const todayIndex = new Date().getDay();
   const nextSevenDays = daysOfWeek.slice(todayIndex).concat(daysOfWeek.slice(0, todayIndex));
 
   const fetchNewlyReleased = async () => {
-    const { data } = await axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true });
-    const releasesByDay = nextSevenDays.map((day) =>
-      data.filter((movie) => getDayOfWeek(movie.release_date) === day)
-    );
-    setReleases(releasesByDay);
+    axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true }).then(response => {
+      const releasesByDay = nextSevenDays.map((day) =>
+        response.data.filter((movie) => getDayOfWeek(movie.release_date) === day)
+      );
+      setReleases(releasesByDay);
+    }).catch(error => {
+      setOpen500Modal(true);
+    });
   };
 
   const getDayOfWeek = (dateString) => {

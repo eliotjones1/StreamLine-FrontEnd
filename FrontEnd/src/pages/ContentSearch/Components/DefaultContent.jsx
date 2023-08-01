@@ -1,30 +1,37 @@
 // Import Libraries
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
 
 // Import Components
 import ContentSlider from './ContentSlider';
+import { ModalContext } from '../../../contexts/ModalContext';
 
 const queryClient = new QueryClient();
 
-const fetchNewlyReleased = async () => {
-  const { data } = await axios.get('http://127.0.0.1:8000/recent/');
-  return data;
-};
-
 function Content() {
+  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
   const [trending, setTrending] = useState([]);
-  const { data: newlyReleased } = useQuery('newlyReleased', fetchNewlyReleased);
+  const { setOpen500Modal } = useContext(ModalContext);
 
   const fetchTrending = () => {
-    axios.get(
-        `https://api.themoviedb.org/3/trending/all/week?api_key=95cd5279f17c6593123c72d04e0bedfa&language=en-US&region=US`
-    ).then((response) => {
+    axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=US`).then(response => {
       setTrending(response.data.results);
+    }).catch(error => {
+      setOpen500Modal(true);
     });
   };
 
+  const fetchNewlyReleased = () => {
+    return axios.get('http://127.0.0.1:8000/recent/').then(response => {
+      return response.data;
+    }).catch(error => {
+      setOpen500Modal(true);
+      return Promise.reject(error);
+    });
+  };
+  const { data: newlyReleased } = useQuery('newlyReleased', fetchNewlyReleased);
+  
   useEffect(() => {
     fetchTrending();
   }, []);

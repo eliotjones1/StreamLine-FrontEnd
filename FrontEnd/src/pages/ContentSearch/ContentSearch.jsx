@@ -11,7 +11,7 @@ import Footer from "../../partials/Footer";
 // Import Contexts
 import { SearchContext } from "../../contexts/SearchContext";
 
-function ContentSearch() {
+export default function ContentSearch() {
   const { showDefault } = useContext(SearchContext);
 
   return (
@@ -57,5 +57,3 @@ function ContentSearch() {
       </section>
   );
 }
-
-export default ContentSearch;
