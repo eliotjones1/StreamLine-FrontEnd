@@ -13,10 +13,14 @@ export default function Calendar() {
 
   const fetchNewlyReleased = async () => {
     axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true }).then(response => {
-      const releasesByDay = nextSevenDays.map((day) =>
-        response.data.filter((movie) => getDayOfWeek(movie.release_date) === day)
-      );
-      setReleases(releasesByDay);
+      if (response.data.length !== 0) {
+        const releasesByDay = nextSevenDays.map((day) =>
+          response.data.filter((movie) => getDayOfWeek(movie.release_date) === day)
+        );
+        setReleases(releasesByDay);
+      } else {
+        setReleases(response.data);
+      }
     }).catch(error => {
       setOpen500Modal(true);
     });
