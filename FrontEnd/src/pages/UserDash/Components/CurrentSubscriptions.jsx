@@ -12,6 +12,7 @@ export default function ScrollableSubscription(){
 
   const fetchBudget = async () => {
     const { data } = await axios.get("http://127.0.0.1:8000/returnData/", { withCredentials: true });
+
     setBudget(data.budget);
   };
 

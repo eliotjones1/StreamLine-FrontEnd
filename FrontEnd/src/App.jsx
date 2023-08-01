@@ -1,6 +1,6 @@
 // Basic Imports
-import React, { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 
 // Import CSS
@@ -27,11 +27,16 @@ import ContentData from './pages/ContentData/ContentData';
 import Payment from './pages/Payment/Payment';
 import ContactSupport from './pages/ContactSupport/ContactSupport';
 
+// Import Utils
+import Modal from './utils/Modal';
+
 // Import Context
-import ContextWrapper from './contexts/Index';
+import { ModalContext } from './contexts/ModalContext';
 
 export default function App() {
   const location = useLocation();
+  const nav = useNavigate();
+  const { open401Modal, setOpen401Modal } = useContext(ModalContext);
 
   useEffect(() => {
     AOS.init({
@@ -69,13 +74,22 @@ export default function App() {
   ];
 
   return (
-    <ContextWrapper>
+    <>
       <Routes>
         {routesConfig.map(route => (
           <Route key={route.path} path={route.path} element={<route.component />} />
         ))}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </ContextWrapper>
+      <Modal 
+          header={"401: Internal Server Error"} 
+          body={"An internal server error occured. Please retry. If the error continues to occur please contact support."} 
+          mainButtonText={"Support"}
+          mainButtonFunction={() => {nav('/support'); setOpen401Modal(false);}}
+          colorPalete={"sky"}
+          isOpen={open401Modal} 
+          setOpen={setOpen401Modal}
+        />
+    </>
   );
 }
