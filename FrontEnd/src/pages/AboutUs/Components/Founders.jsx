@@ -29,7 +29,7 @@ const founders = [
   {
     name: 'Eliot Jones',
     role: 'Co-Founder / Role Undetermined',
-    location: 'Hartford, Connecticut',
+    location: 'New Britain, Connecticut',
     imageUrl: EliotHeadshot,
     favMovie: "The Martian",
     favMovieLink: '/content-data/movie/286217',
