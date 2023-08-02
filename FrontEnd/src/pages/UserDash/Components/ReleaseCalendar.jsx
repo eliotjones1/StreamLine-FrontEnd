@@ -24,13 +24,14 @@ export default function Calendar() {
         setReleases(response.data);
       }
     }).catch(error => {
+      console.log(error);
       setOpen500Modal(true);
     });
   };
 
   const getDayOfWeek = (dateString) => {
     const date = new Date(dateString);
-    return daysOfWeek[date.getDay()];
+    return daysOfWeek[date.getUTCDay()];
   };
 
   useEffect(() => {
