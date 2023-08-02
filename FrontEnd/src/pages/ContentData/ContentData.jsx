@@ -3,8 +3,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 // Import Icons
-import { PlusIcon, LinkIcon, MinusIcon, ArrowLeftIcon } from '@heroicons/react/20/solid';
+import { PlusIcon, LinkIcon, MinusIcon } from '@heroicons/react/20/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
 
 // Import Components
@@ -85,6 +87,14 @@ export default function Detail() {
       setOpen500Modal(true);
     });
   };
+
+  const addTooltip = (
+    <Tooltip className='bg-slate-900 dark:bg-slate-600 rounded-md py-1 px-2 text-white'>Add to watch list.</Tooltip>
+  );
+
+  const removeTooltip = (
+    <Tooltip className='bg-slate-900 dark:bg-slate-600 rounded-md py-1 px-2 text-white'>Remove from watch list.</Tooltip>
+  );
 
   useEffect(() => {
     fetchCast();
@@ -190,13 +200,18 @@ export default function Detail() {
                   {
                     isLoggedIn &&
                       inList ?
-                        <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => removeFromUserList()}>
-                          <MinusIcon className='h-6 text-white' />
-                        </button>
+                        <OverlayTrigger placement='right' overlay={removeTooltip}>
+                          <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => removeFromUserList()}>
+                            <MinusIcon className='h-6 text-white' />
+                          </button>
+                        </OverlayTrigger>
+                        
                       :
-                        <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
-                          <PlusIcon className='h-6 text-white' />
-                        </button>
+                        <OverlayTrigger placement='right' overlay={addTooltip}>
+                          <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
+                            <PlusIcon className='h-6 text-white' />
+                          </button>
+                        </OverlayTrigger>
                   }
 
                   <div className="mt-2 flex-rows flex-wrap text-sm leading-6 font-medium">
