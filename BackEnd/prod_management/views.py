@@ -59,7 +59,7 @@ def UpdateSettings(request):
     if isSessionActive(sessionid) == False:
         return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
     # Get user from session
-    data = json.loads(request.data)
+    data = request.data
     user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
     if user_email is None:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
