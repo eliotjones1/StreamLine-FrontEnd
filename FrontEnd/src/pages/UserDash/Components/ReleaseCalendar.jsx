@@ -3,8 +3,10 @@ import axios from "axios";
 
 import noimage from '../../../images/no-image.jpg';
 import { ModalContext } from "../../../contexts/ModalContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Calendar() {
+  const nav = useNavigate();
   const [releases, setReleases] = useState([]);
   const { setOpen500Modal } = useContext(ModalContext);
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -61,7 +63,7 @@ export default function Calendar() {
                     return (
                       <div key={day + index}>
                         {movies.map((movie, movieIndex) => (
-                          <div key={movieIndex} className="bg-white dark:bg-slate-900 rounded-lg overflow-hidden shadow-md my-4">
+                          <div key={movieIndex} onClick={() => nav(`/content-data/movie/${movie.id}`)} className="bg-white dark:bg-slate-900 rounded-lg overflow-hidden shadow-md my-4 cursor-pointer">
                             <img
                               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                               alt={noimage}
