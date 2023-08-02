@@ -89,11 +89,11 @@ export default function Detail() {
   };
 
   const addTooltip = (
-    <Tooltip className='bg-slate-900 dark:bg-slate-600 rounded-md py-1 px-2 text-white'>Add to watch list.</Tooltip>
+    <Tooltip className='bg-slate-900 dark:bg-slate-600 rounded-md py-1 px-2 text-white'>Add to Watchlist</Tooltip>
   );
 
   const removeTooltip = (
-    <Tooltip className='bg-slate-900 dark:bg-slate-600 rounded-md py-1 px-2 text-white'>Remove from watch list.</Tooltip>
+    <Tooltip className='bg-slate-900 dark:bg-slate-600 rounded-md py-1 px-2 text-white'>Remove from Watchlist</Tooltip>
   );
 
   useEffect(() => {
