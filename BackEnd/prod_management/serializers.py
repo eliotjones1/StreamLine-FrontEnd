@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserSettings, UserSubscription, Subscription
+from .models import UserSettings, UserSubscription, Subscription, TOSChecked, UserContactRequest
 
 class UserSettingsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,3 +16,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         model = Subscription
         fields = '__all__'
 
+class UserContactRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserContactRequest
+        fields = '__all__'

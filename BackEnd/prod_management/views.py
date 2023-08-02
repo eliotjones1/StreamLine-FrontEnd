@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import requests
 from rest_framework import viewsets, status
-from .models import UserSettings, UserSubscription
+from .models import UserSettings, UserSubscription, UserContactRequest
 from .serializers import UserSettingsSerializer, UserSubscriptionSerializer
 from api.views import isSessionActive
 from user_auth.models import CustomUser, UserData
@@ -382,3 +382,36 @@ def CancelSubscription(request):
 def UpgradeSubscription(request):
     pass
 #prob has to be done once we've figured our shit out
+
+
+@api_view(['POST'])
+def ContactFormSub(request):
+    data = request.data
+    user_email = data[0]
+    user_first_name = data[1]
+    user_last_name = data[2]
+    user_phone = data[3]
+    user_message = data[4]
+
+    new_contact_sub = UserContactRequest(user_email = user_email, user_first_name = user_first_name, user_last_name = user_last_name, user_message = user_message, user_phone_number = user_phone)
+    new_contact_sub.save()
+
+    # Send Contact Email
+    message = Mail(
+    from_email='ekj0512@gmail.com',
+    to_emails= ['ekj0512@gmail.com', 'rycdunn01@stanford.edu'], 
+    content = [user_email, user_message, user_first_name]
+    )
+    
+    try:
+        sg = sendgrid.SendGridAPIClient(api_key='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')  # Replace with your SendGrid API key
+        response = sg.send(message)
+        print(response)
+        if response.status_code == 202:
+            pass
+        else:
+            return Response({})
+    except Exception as e:
+        print(str(e))
+        pass
+    return Response(status=status.HTTP_200_OK)
