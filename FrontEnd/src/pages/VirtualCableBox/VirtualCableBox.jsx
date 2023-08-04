@@ -11,6 +11,7 @@ import { ModalContext } from '../../contexts/ModalContext';
 
 export default function CableBox() {
   const [myList, setMyList] = useState([]);
+  const [services, setServices] = useState([]);
   const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
   const { setOpen500Modal } = useContext(ModalContext); 
 
@@ -37,7 +38,7 @@ export default function CableBox() {
   const fetchRecs = () => {
     // Get recs here: change link accordingly
     axios.get("#", {withCredentials: true}).then(response => {
-      setRecs(/*Something here not sure your response structure. */)
+      setServices(/*Something here not sure your response structure. */)
     }).catch(error => {
       setOpen500Modal(true);
     })
@@ -45,16 +46,8 @@ export default function CableBox() {
 
   useEffect(()=> {
     fetchMyList();
+    fetchRecs();
   }, [])
-
-  const services = [
-    { 
-      name: "Netflix",
-      logo_link: "https://1000logos.net/wp-content/uploads/2017/05/Netflix_logo_PNG5.png", 
-      web_link: "https://www.netflix.com/",
-      reccomendations: myList
-    }
-  ];
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">

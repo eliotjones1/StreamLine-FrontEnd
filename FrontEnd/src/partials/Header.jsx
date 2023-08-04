@@ -1,7 +1,7 @@
 import { Fragment, useContext, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon, TvIcon } from '@heroicons/react/20/solid'
 import Logo from '../images/StreamLine_Transparent_Logo.png'
 import { useNavigate } from 'react-router-dom'
 
@@ -10,8 +10,20 @@ import AccountActions from './AccountActions';
 import { LoginContext } from '../contexts/LoginContext';
 
 const products = [
-  { name: 'Discover Content', description: 'Search for movies and television in the U.S.', href: '/content-search', icon: MagnifyingGlassIcon },
-  { name: 'Bundle Optimization', description: 'Let our algorithm work for you.', href: '/bundles', icon: ChartPieIcon },
+  { 
+    name: 'Discover Content', 
+    description: 'Search for movies and television in the U.S.', 
+    href: '/content-search', 
+    userOnly: false,
+    icon: MagnifyingGlassIcon 
+  },
+  { 
+    name: 'Virtual Cable Box', 
+    description: 'See content recommendations across all subscriptions.', 
+    href:'/virtual-cable-box',
+    userOnly: true,
+    icon: TvIcon
+  }
 ]
 const callsToAction = [
   { name: 'Watch demo', href: '/34567', icon: PlayCircleIcon },
@@ -73,23 +85,29 @@ export default function Header({ flipColors=false }) {
             >
               <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white text-slate-900 shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
-                  {products.map((item) => (
-                    <div
-                    key={item.name}
-                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
-                  >
-                    <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                      <item.icon className="h-6 w-6 text-slate-700 group-hover:text-sky-600" aria-hidden="true" />
-                    </div>
-                    <div className="flex-auto">
-                      <button onClick={() => nav(item.href)} className="block font-semibold">
-                        {item.name}
-                        <span className="absolute inset-0" />
-                      </button>
-                      <p className="mt-1 text-gray-600">{item.description}</p>
-                    </div>
-                  </div>
-                  ))}
+                  {
+                    products.map((item) => {
+                      if (isLoggedIn || !item.userOnly) {
+                        return (
+                          <div
+                            key={item.name}
+                            className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
+                          >
+                            <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                              <item.icon className="h-6 w-6 text-slate-700 group-hover:text-sky-600" aria-hidden="true" />
+                            </div>
+                            <div className="flex-auto">
+                              <button onClick={() => nav(item.href)} className="block font-semibold">
+                                {item.name}
+                                <span className="absolute inset-0" />
+                              </button>
+                              <p className="mt-1 text-gray-600">{item.description}</p>
+                            </div>
+                          </div>
+                        );
+                      }
+                    })
+                  }
                 </div>
                 <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
                   {callsToAction.map((item) => (
