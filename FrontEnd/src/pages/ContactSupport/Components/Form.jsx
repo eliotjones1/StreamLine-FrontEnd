@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Switch } from '@headlessui/react'
+
+import { ModalContext } from '../../../contexts/ModalContext';
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -8,6 +11,32 @@ function classNames(...classes) {
 
 export default function Form() {
   const [agreed, setAgreed] = useState(false);
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  const emailRef = useRef();
+  const phoneNumberRef = useRef();
+  const messageRef = useRef();
+
+  const { setOpen500Modal } = useContext(ModalContext)
+
+  const sendInfo = (event) => {
+    event.preventDefault();
+    if (agreed) {
+      const postData = {
+        'first-name': firstNameRef.current.value,
+        'last-name': lastNameRef.current.value,
+        'email': emailRef.current.value,
+        'phone-number': phoneNumberRef.current.value,
+        'message': messageRef.current.value,
+      };
+      /*
+      axios.post("url", postData).catch(error => {
+        setOpen500Modal(true);
+      });*/
+    } else {
+      alert("Please agree to the privacy policy!");
+    }
+  }
 
   return (
     <div className="isolate px-6 py-24 sm:py-32 lg:px-8">
@@ -29,7 +58,7 @@ export default function Form() {
           Reach out to our dedicated team for all your support and sales inquiries - we're here to assist you every step of the way!
         </p>
       </div>
-      <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <form className="mx-auto mt-16 max-w-xl sm:mt-20" onSubmit={sendInfo}>
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label htmlFor="first-name" className="block text-sm font-semibold leading-6">
@@ -40,6 +69,8 @@ export default function Form() {
                 type="text"
                 name="first-name"
                 id="first-name"
+                ref={firstNameRef}
+                required
                 autoComplete="given-name"
                 className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
               />
@@ -54,6 +85,8 @@ export default function Form() {
                 type="text"
                 name="last-name"
                 id="last-name"
+                ref={lastNameRef}
+                required
                 autoComplete="family-name"
                 className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
               />
@@ -68,6 +101,8 @@ export default function Form() {
                 type="email"
                 name="email"
                 id="email"
+                ref={emailRef}
+                required
                 autoComplete="email"
                 className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
               />
@@ -98,6 +133,8 @@ export default function Form() {
                 type="tel"
                 name="phone-number"
                 id="phone-number"
+                ref={phoneNumberRef}
+                required
                 autoComplete="tel"
                 className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 pl-20 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
               />
@@ -109,8 +146,10 @@ export default function Form() {
             </label>
             <div className="mt-2.5">
               <textarea
+                required
                 name="message"
                 id="message"
+                ref={messageRef}
                 rows={4}
                 className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
                 defaultValue={''}
