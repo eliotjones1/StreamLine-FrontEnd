@@ -6,7 +6,8 @@ class MediaRatings(models.Model):
     media_id = models.IntegerField()
     user_id = models.JSONField(CustomUser)
     rating = models.FloatField()
-    type = models.CharField(max_length=10)
+    media_type = models.CharField(max_length=10)
+    streaming_providers = models.JSONField(type = list, default = list)
 
 
 class UserEmail(models.Model):
