@@ -36,8 +36,9 @@ export default function CableBox() {
   };
 
   const fetchRecs = () => {
-    // Get recs here: change link accordingly
-    axios.get("#", {withCredentials: true}).then(response => {
+    // Get recs here: change link accordingly ##### NEED TO GENERATE DATA TO TEST ####
+    axios.get("http://127.0.0.1:8000/api/recommendations/getRecommendations/", {withCredentials: true}).then(response => {
+      console.log(response.data)
       setServices(/*Something here not sure your response structure. */)
     }).catch(error => {
       setOpen500Modal(true);

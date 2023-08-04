@@ -10,11 +10,10 @@ export default function ServicesSearchProvider({ children }){
   const [filter, setFilter] = useState("");
 
   const fetchServices = () => {
-    /*
-    axios.get(`#`).then(response => {
+    axios.get(`http://127.0.0.1:8000/showServices/`).then(response => {
       setFilteredContent(response.data);
       setContent(response.data);
-    });*/
+    });
   }
 
   const updateFilter = (filterString) => {

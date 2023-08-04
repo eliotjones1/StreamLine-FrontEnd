@@ -400,10 +400,12 @@ class seeServices(generics.ListAPIView):
             service_name = row['Name']
             service_price = row['Price']
             service_link = row['Link']
-            service_image = service_images.loc[service_images['Service'] == service_name]['Image'].values[0]
+            if service_name not in service_images['service_name'].values:
+                continue
+            service_image = service_images.loc[service_images['service_name'] == service_name]['logo_path'].values[0]
             output.append({
                 'title': service_name,
-                'price': service_price,
+                'price': service_price if service_price != "-" else None,
                 'image': service_image,
                 'link': service_link
             })
