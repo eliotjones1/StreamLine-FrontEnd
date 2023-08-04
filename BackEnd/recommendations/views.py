@@ -37,19 +37,19 @@ def saveRating(request):
         return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     user_exists = CustomUser.objects.get(email = user_email).id
     print(user_exists)
-    if object["type"] == "TV Series":
-        object_id = getIDShow(object["title"])
-    else:
-        object_id = getIDMovie(object["title"])
 
     # If there is a MediaRatings entry with the same object_id and user, we want to override it with new information. 
     # Else, create a new entry
-    if MediaRatings.objects.filter(media_id = object_id, user_id = user_exists).exists():
-        current = MediaRatings.objects.get(media_id = object_id, user_id = user_exists)
+    if MediaRatings.objects.filter(media_id = object["id"], user_id = user_exists).exists():
+        current = MediaRatings.objects.get(media_id = object["id"], user_id = user_exists)
         current.rating = rating
         current.save()
     else:
-        new = MediaRatings(media_id = object_id, user_id = user_exists, rating = rating, type = object["type"])
+        if object["media_type"] == "tv":
+            services = getStreamingProviderShow(object["id"])
+        else:
+            services = getStreamingProviderMovie(object["id"])
+        new = MediaRatings(media_id = object["id"], user_id = user_exists, rating = rating, type = object["media_type"], streaming_providers = services)
         new.save()
 
     return Response({"Status":"OK"})
@@ -68,10 +68,10 @@ class returnRecommendations(generics.ListAPIView):
         if not user_exists:
             return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            recs = returnData(user_exists.id)
-            sorted_recs = sorted(recs, key = lambda k: k['vote_average'], reverse = True)
-            top_five = sorted_recs[:5]
-            return Response(top_five, status=status.HTTP_200_OK)
+            subscriptions = Subscription.objects.filter(user=user_exists)
+            subscriptions = list(subscriptions.values_list('subscription_name', flat=True))
+            recs = returnRecs(user_exists.id, subscriptions)
+            return Response(recOutput(recs, subscriptions), status=status.HTTP_200_OK)
 
 
 class generate(generics.ListAPIView):

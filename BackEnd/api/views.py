@@ -197,36 +197,7 @@ class returnUserData(generics.ListAPIView):
 def returnInfo(request):
     object = request.data
     print(object)
-    if object["media_type"] == "movie":
-        id = object['id']
-        api_key = "95cd5279f17c6593123c72d04e0bedfa"
-        base_url = "https://api.themoviedb.org/3/"
-        endpoint = "movie/"
-        full_url = base_url + endpoint + \
-            str(id) + "?api_key=" + api_key + "&language=en-US"
-        response = requests.get(full_url)
-        if response.status_code != 200:
-            return None
-        movie_data = response.json()
-        movie_data['media_type'] = object['media_type']
-        streaming_providers = getStreamingProviderMovie(id)
-        movie_data['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
-        return Response(movie_data)
-    else:
-        id = object['id']
-        api_key = "95cd5279f17c6593123c72d04e0bedfa"
-        base_url = "https://api.themoviedb.org/3/"
-        endpoint = "tv/"
-        full_url = base_url + endpoint + \
-            str(id) + "?api_key=" + api_key + "&language=en-US"
-        response = requests.get(full_url)
-        if response.status_code != 200:
-            return None
-        show_data = response.json()
-        show_data['media_type'] = object['media_type']
-        streaming_providers = getStreamingProviderShow(id)
-        show_data['streaming_providers'] = streaming_providers if streaming_providers != None else "Not Available"
-        return Response(show_data)
+    return Response(getData(object))
 
 
 class newlyReleased(generics.ListAPIView):
