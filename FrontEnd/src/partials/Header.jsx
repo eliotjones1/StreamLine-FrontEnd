@@ -1,7 +1,7 @@
 import { Fragment, useContext, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
-import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { ChartPieIcon, ChevronDownIcon, PhoneIcon, PlayCircleIcon, TvIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon, FilmIcon,  } from '@heroicons/react/24/outline'
+import { ChevronDownIcon, PhoneIcon, PlayCircleIcon, TvIcon } from '@heroicons/react/20/solid'
 import Logo from '../images/StreamLine_Transparent_Logo.png'
 import { useNavigate } from 'react-router-dom'
 
@@ -14,6 +14,13 @@ const products = [
     name: 'Discover Content', 
     description: 'Search for movies and television in the U.S.', 
     href: '/content-search', 
+    userOnly: false,
+    icon: FilmIcon 
+  },
+  { 
+    name: 'Explore Services', 
+    description: 'Find services we support and optimize.', 
+    href: '/services-search', 
     userOnly: false,
     icon: MagnifyingGlassIcon 
   },
