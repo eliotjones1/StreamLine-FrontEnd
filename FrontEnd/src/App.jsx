@@ -26,6 +26,7 @@ import ContentSearch from './pages/ContentSearch/ContentSearch';
 import ContentData from './pages/ContentData/ContentData';
 import Payment from './pages/Payment/Payment';
 import ContactSupport from './pages/ContactSupport/ContactSupport';
+import VirtualCableBox from './pages/VirtualCableBox/VirtualCableBox';
 
 // Import Utils
 import Modal from './utils/Modal';
@@ -71,6 +72,7 @@ export default function App() {
     { path: '/content-search', component: ContentSearch },
     { path: '/content-data/:type/:id/', component: ContentData },
     { path: '/payment', component: Payment},
+    { path: '/virtual-cable-box', component: VirtualCableBox }
   ];
 
   return (

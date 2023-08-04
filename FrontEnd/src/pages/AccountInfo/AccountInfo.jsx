@@ -10,13 +10,14 @@ import { useNavigate } from 'react-router-dom'
 import { ModalContext } from '../../contexts/ModalContext';
 
 
-function EditAccount() {
+export default function EditAccount() {
   const [profileData, setProfileData] = useState({ user: "", Email: "", First_Name: "", Last_Name: "", Street_Address: "", City: "", State_Province: "", Country: "", Postal_Code: "", Newsletter: false, Promotions: false, Push_Notifications: "" });
   const [showConfirmation, setShowConfirmation] = useState(false);
   const nav = useNavigate();
   const { setOpen500Modal } = useContext(ModalContext);
 
   function handleSubmit(event) {
+    console.log("submitting");
     event.preventDefault();
     const curData = JSON.stringify(profileData);
     axios.post("http://127.0.0.1:8000/api/user/settings/update/", curData, {
@@ -66,18 +67,10 @@ function EditAccount() {
     setProfileData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  function handleDeleteAccount() {
-    setShowConfirmation(true);
-  }
-
   function handleConfirmDelete() {
-    // Placeholder Axios request for account deletion
     axios.post("http://127.0.0.1:8000/api/user/settings/delete/", { withCredentials: true }).then(response => {
-      console.log("Account deleted successfully!");
-      document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      nav('/')
-    })
-    .catch(error => {
+      nav('/');
+    }).catch(error => {
       setOpen500Modal(true);
     });
   }
@@ -351,21 +344,23 @@ function EditAccount() {
                 </div>
               </div>
               <div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
-              <h2 className="text-base font-semibold leading-7">Account Deletion</h2>
-              <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
-                This will delete your account and all of your information permanently.                </p>
+                <h2 className="text-base font-semibold leading-7">Account Deletion</h2>
+                <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
+                  This will delete your account and all of your information permanently.                
+                </p>
 
-              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="flex justify-center mt-8">
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full"
-                    onClick={handleDeleteAccount}
-                  >
-                    Delete Account
-                  </button>
+                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                  <div className="flex justify-center mt-8">
+                    <button
+                      type="button"
+                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full"
+                      onClick={() => setShowConfirmation(true)}
+                    >
+                      Delete Account
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
 
 
@@ -382,7 +377,9 @@ function EditAccount() {
             </div>
           </form>
         </div>
-        {showConfirmation && (
+
+        { 
+          showConfirmation && 
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
             <div className="bg-white rounded-lg p-8">
               <p className='text-black'>Are you sure you want to delete your account?</p>
@@ -390,16 +387,15 @@ function EditAccount() {
                 <button className="px-4 py-2 bg-red-500 text-white rounded mr-2" onClick={handleConfirmDelete}>
                   Yes
                 </button>
-                <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded" onClick={handleCancelDelete}>
+                <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded" onClick={() => setShowConfirmation(false)}>
                   No
                 </button>
               </div>
             </div>
           </div>
-        )}
+        
+        }
       </main>
     </div>
   )
 }
-
-export default EditAccount;
