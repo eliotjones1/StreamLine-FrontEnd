@@ -4,6 +4,7 @@ import React from "react";
 // Import Contexts
 import LoginProvider from './LoginContext';
 import SearchProvider from './SearchContext';
+import ServicesSearchProvider from "./servicesSearchContext";
 import ModalProvider from "./ModalContext";
 
 export default function ContextWrapper({ children }) {
@@ -11,9 +12,11 @@ export default function ContextWrapper({ children }) {
   return (
     <LoginProvider>
       <SearchProvider>
-        <ModalProvider>
-          {children}
-        </ModalProvider>
+        <ServicesSearchProvider>
+          <ModalProvider>
+            {children}
+          </ModalProvider>
+        </ServicesSearchProvider>
       </SearchProvider>
     </LoginProvider>
   );
