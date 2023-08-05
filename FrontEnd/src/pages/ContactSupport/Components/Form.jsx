@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Switch } from '@headlessui/react'
+import axios from 'axios';
 
 import { ModalContext } from '../../../contexts/ModalContext';
 
@@ -29,10 +30,10 @@ export default function Form() {
         'phone-number': phoneNumberRef.current.value,
         'message': messageRef.current.value,
       };
-      /*
-      axios.post("url", postData).catch(error => {
+      console.log(postData)
+      axios.post("http://127.0.0.1:8000/api/user/contact/", postData).catch(error => {
         setOpen500Modal(true);
-      });*/
+      });
     } else {
       alert("Please agree to the privacy policy!");
     }

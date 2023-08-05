@@ -14,7 +14,8 @@ from django.contrib.sessions.models import Session
 from django.utils import timezone
 import stripe
 import sendgrid
-from sendgrid.helpers.mail import Mail
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, HtmlContent
 import json
 
 stripe.api_key = "sk_test_51NPcYzLPNbsO0xpZ3ypmarjukmXpUaySegVecBCiZEcfbiUrBxeuXBQU8QiafXpARoIUKdU2uqzdifzly9DlWedt00aO6ZevFh"
@@ -169,11 +170,11 @@ def deleteAccount(request):
     user_settings.delete()
     user.delete()
     user_data.delete()
-    if stripe.Customer.list(email=user_email).data:
-        customer = stripe.Customer.list(email=user_email).data[0]
-        if stripe.Subscription.list(customer=customer['id']).data:
-            stripe.Subscription.delete(user_sub.stripe_subscription_id)
-        stripe.Customer.delete(customer['id'])
+    # if stripe.Customer.list(email=user_email).data:
+    #     customer = stripe.Customer.list(email=user_email).data[0]
+    #     if stripe.Subscription.list(customer=customer['id']).data:
+    #         stripe.Subscription.delete(user_sub.stripe_subscription_id)
+    #     stripe.Customer.delete(customer['id'])
     user_sub.delete()
     return Response(status=status.HTTP_200_OK)
 
@@ -387,31 +388,35 @@ def UpgradeSubscription(request):
 @api_view(['POST'])
 def ContactFormSub(request):
     data = request.data
-    user_email = data[0]
-    user_first_name = data[1]
-    user_last_name = data[2]
-    user_phone = data[3]
-    user_message = data[4]
+    user_email = data['email']
+    user_first_name = data['first-name']
+    user_last_name = data['last-name']
+    user_phone = data['phone-number']
+    user_message = data['message']
 
     new_contact_sub = UserContactRequest(user_email = user_email, user_first_name = user_first_name, user_last_name = user_last_name, user_message = user_message, user_phone_number = user_phone)
     new_contact_sub.save()
-
+    email_content = f"User {user_first_name} has the following problem: \n\n{user_message}\n\n You can email them with a response at: {user_email}"
     # Send Contact Email
     message = Mail(
     from_email='ekj0512@gmail.com',
     to_emails= ['ekj0512@gmail.com', 'rycdunn01@stanford.edu'], 
-    content = [user_email, user_message, user_first_name]
+    subject = 'Contact Form Submission',
+    html_content = HtmlContent(email_content)
     )
-    
-    try:
-        sg = sendgrid.SendGridAPIClient(api_key='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')  # Replace with your SendGrid API key
-        response = sg.send(message)
-        print(response)
-        if response.status_code == 202:
-            pass
-        else:
-            return Response({})
-    except Exception as e:
-        print(str(e))
-        pass
+    # try:
+    #     sg = SendGridAPIClient(api_key='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')  # Replace with your SendGrid API key
+    #     response = sg.send(message)
+    #     if response.status_code == 202:
+    #         return Response(status=status.HTTP_200_OK)
+    #     else:
+    #         print("fail")
+    #         return Response({})
+    # except Exception as e:
+    #     print(str(e))
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
+    sg = SendGridAPIClient(api_key='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')  
+    response = sg.send(message)
+    print(response)
     return Response(status=status.HTTP_200_OK)
+    
