@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { LoginContext } from '../contexts/LoginContext';
 
 function Footer() {
   const nav = useNavigate();
+  const { isLoggedIn } = useContext(LoginContext);
 
   return (
     <footer>
@@ -30,14 +32,20 @@ function Footer() {
 
               {/* 2nd block */}
               <div className="text-sm">
-                <h2 className="pb-2 font-semibold">Products</h2>
+                <h2 className="pb-2 font-semibold">Features</h2>
                 <ul className='grid gap-y-2'>
                   <li className="mb-1">
-                    <button onClick={() => nav('/search')} className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out">Discover Content</button>
+                    <button onClick={() => nav('/content-search')} className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out">Discover Content</button>
                   </li>
                   <li className="mb-1">
-                    <button onClick={() => nav('/bundles')} className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out">Bundle Optimization</button>
+                    <button onClick={() => nav('/services-search')} className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out">Explore Services</button>
                   </li>
+                  {
+                    isLoggedIn && 
+                    <li className="mb-1">
+                      <button onClick={() => nav('/virtual-cable-box')} className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out">Virtual Cable Box</button>
+                    </li>
+                  }
                 </ul>
               </div>
 
