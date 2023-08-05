@@ -37,18 +37,20 @@ function Content() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto relative">
+    <div className="max-w-7xl mx-auto relative z-0">
       <div className="pb-4">
         <p className="font-bold pb-2 text-2xl">Trending Content</p>
         <ContentSlider mediaContent={trending} />
       </div>
-      <div className="pb-4">
-        <p className="font-bold pb-2 text-2xl">Newly Released</p>
-        {
-          newlyReleased !== undefined &&
+      {
+        newlyReleased !== undefined &&
+        <div className="pb-4">
+          <p className="font-bold pb-2 text-2xl">
+            Newly Released
+          </p>
           <ContentSlider mediaContent={newlyReleased} />
-        }
-      </div>
+        </div>
+      }
     </div>
   );
 }

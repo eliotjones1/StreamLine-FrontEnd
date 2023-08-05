@@ -13,7 +13,11 @@ export default function Content() {
     const nav = useNavigate();
 
     if (content.length === 0) {
-        return <></>
+        return (
+            <p className='w-full flex items-center justify-center'>
+                No Content matches this query. Please enter new search enquiry.
+            </p>
+        );
     }
 
     return (
@@ -31,7 +35,7 @@ export default function Content() {
                 if (content.media_type !== "person"){
                     return(
                         <div className='bg-white dark:bg-slate-900 rounded-3xl ring-1 ring-slate-200 dark:ring-slate-600 p-2 px-4 flex w-full cursor-pointer space-x-6 shadow-md' onClick={() => nav(`/content-data/${content.media_type}/${content.id}`)} key={content.id}>
-                            <div>
+                            <div className='flex items-center'>
                                 <ContentCard key={content.id} content={content} />
                             </div>
                             <div className="w-full relative flex-auto">
