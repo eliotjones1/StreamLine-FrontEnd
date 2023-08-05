@@ -390,11 +390,13 @@ class getMyUpcoming(generics.ListAPIView):
             # Check if it is released this week
             if show['first_air_date'] is not None and show['first_air_date'][:10] >= str(datetime.now().date()) and show['first_air_date'][:10] <= str(datetime.now().date() + timedelta(days=7)):
                 # Check if it is on a subscription
+                show['media_type'] = "tv"
                 output.append(show)
         for movie in new_movies:
             # Check if it is released this week
             if movie['release_date'] is not None and movie['release_date'][:10] >= str(datetime.now().date()) and movie['release_date'][:10] <= str(datetime.now().date() + timedelta(days=7)):
                 # Check if it is on a subscription
+                movie['media_type'] = "movie"
                 output.append(movie)
         return Response(output, status=status.HTTP_200_OK)
                 
