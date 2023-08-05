@@ -8,6 +8,7 @@ import PageTopIllustration from "../../partials/PageTopIllustration";
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom'
 import { ModalContext } from '../../contexts/ModalContext';
+import { LoginContext } from '../../contexts/LoginContext';
 
 
 export default function EditAccount() {
@@ -15,6 +16,7 @@ export default function EditAccount() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const nav = useNavigate();
   const { setOpen500Modal } = useContext(ModalContext);
+  const { logout } = useContext(LoginContext);
 
   function handleSubmit(event) {
     console.log("submitting");
@@ -68,16 +70,13 @@ export default function EditAccount() {
   };
 
   function handleConfirmDelete() {
-    axios.post("http://127.0.0.1:8000/api/user/settings/delete/", { withCredentials: true }).then(response => {
-      nav('/');
+    axios.post("http://127.0.0.1:8000/api/user/settings/delete/", [], { withCredentials: true }).then(response => {
+      logout();
     }).catch(error => {
       setOpen500Modal(true);
     });
   }
 
-  function handleCancelDelete() {
-    setShowConfirmation(false);
-  }
 
   useEffect(() => {
     loadData();
