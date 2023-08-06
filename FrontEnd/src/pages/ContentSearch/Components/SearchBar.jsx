@@ -13,9 +13,16 @@ export default function Searchbar() {
   const [autosuggestions, setAutoSuggestions] = useState([]);
 
   const fetchAutoSuggestions = () => {
+    setAutoSuggestions([
+      "Star Wars",
+      "Star Wars",
+      "Star Wars",
+      "Star Wars"
+    ]);
+    /*
     axios.get("#").then(response => {
       setAutoSuggestions(response);
-    });
+    });*/
   }
 
   useEffect(() => {
@@ -45,7 +52,7 @@ export default function Searchbar() {
 
   const onSuggestionsFetchRequested = ({ value }) => {
     const filteredSuggestions = fuse.search(value).map((result) => result.item);
-    const limitedSuggestions = filteredSuggestions.slice(0, 4);
+    const limitedSuggestions = filteredSuggestions.slice(0, 2);
     setSuggestions(limitedSuggestions);
   };
 
@@ -65,7 +72,7 @@ export default function Searchbar() {
   const renderSuggestion = useMemo(
     () => (suggestion, { isHighlighted }) => (
       <div
-        className={`suggestion-item text-lg text-slate-900 py-2 w-full pl-3 ${isHighlighted ? 'bg-slate-200' : "bg-white"} hover:bg-slate-200 cursor-pointer`}
+        className={`relative text-lg text-slate-900 py-2 w-full pl-3 ${isHighlighted ? 'bg-slate-200' : 'bg-white'} hover:bg-slate-200 cursor-pointer`}
       >
         {suggestion}
       </div>
@@ -84,7 +91,7 @@ export default function Searchbar() {
 
   return (
     <form className="max-w-4xl mx-auto relative h-16" onSubmit={handleSubmit}>
-      <div className={`container max-w-4xl mx-auto w-full relative ${suggestions.length > 0 && 'suggestion-wrapper'}`}>
+      <div className={`container max-w-4xl mx-auto w-full relative`}>
         <button className="absolute left-3 top-3" type="button">
           <svg className="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M22 22l-6-6" />

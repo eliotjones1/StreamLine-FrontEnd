@@ -9,12 +9,9 @@ export default function ContentCard({ content }) {
   const nav = useNavigate();
   
   return (
-    <div className="card relative w-44 mx-4 md:mx-0 cursor-pointer rounded-xl overflow-hidden">
-      <button onClick={() => nav(`/content-data/${content.media_type}/${content.id}`)} className='h-full w-full shadow absolute'/>
-      <div>
-        {content.poster_path === null ? <img className='img object-cover' src={noimage} /> :
-        <img className='img object-cover' src={`https://image.tmdb.org/t/p/w500${content.poster_path}`} />}
-      </div>
+    <div className="relative w-44 overflow-hidden">
+      {content.poster_path === null ? <img className='rounded-xl' src={noimage} /> :
+      <img onClick={() => nav(`/content-data/${content.media_type}/${content.id}`)} className='rounded-xl' src={`https://image.tmdb.org/t/p/w500${content.poster_path}`} />}
     </div>
-  )
+  );
 }
