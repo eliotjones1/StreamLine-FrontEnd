@@ -13,3 +13,6 @@ class StaffPick(models.Model):
     Media_ID = models.CharField(max_length=100)
     Media_Type = models.CharField(max_length=20, choices=CHOICES)
     
+class searchQuery(models.Model):
+    searchQuery = models.CharField(max_length=100, primary_key=True)
+    searchCount = models.IntegerField(default=0)

@@ -31,6 +31,17 @@ function Content() {
     });
   };
   const { data: newlyReleased } = useQuery('newlyReleased', fetchNewlyReleased);
+
+
+  const fetchStaffPicks = () => {
+    return axios.get('http://127.0.0.1:8000/staffpicks/').then(response => {
+      return response.data;
+    }).catch(error => {
+      setOpen500Modal(true);
+      return Promise.reject(error);
+    });
+  };
+  const { data: staffPicks } = useQuery('staffPicks', fetchStaffPicks);
   
   useEffect(() => {
     fetchTrending();
@@ -49,6 +60,15 @@ function Content() {
             Newly Released
           </p>
           <ContentSlider mediaContent={newlyReleased} />
+        </div>
+      }
+      {
+        staffPicks !== undefined &&
+        <div className="pb-2">
+          <p className="font-bold pb-2 text-2xl">
+            Staff Picks
+          </p>
+          <ContentSlider mediaContent={staffPicks} />
         </div>
       }
     </div>
