@@ -1,6 +1,6 @@
-import { Fragment, useRef } from 'react'
+import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { ExclamationTriangleIcon, CheckIcon } from '@heroicons/react/24/outline'
 
 export default function Example({ 
   isOpen, 
@@ -12,6 +12,7 @@ export default function Example({
   colorPalete,
   header, 
   body,
+  centerContent
 }) {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -41,11 +42,16 @@ export default function Example({
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-${colorPalete}-100 sm:mx-0 sm:h-10 sm:w-10`}>
-                      <ExclamationTriangleIcon className={`h-6 w-6 text-${colorPalete}-600`} aria-hidden="true" />
+                <div className={`${centerContent && "flex flex-col space-y-2 w-full md:items-center md:justify-center lg:items-center lg:justify-center"} sm:flex sm:items-start `}>
+                    <div className={`${centerContent === false && "mx-auto sm:mx-0 sm:h-10 sm:w-10"} flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-${colorPalete}-100`}>
+                      {
+                        header === "Success" ?
+                        <CheckIcon className={`h-6 w-6 text-${colorPalete}-600`} aria-hidden="true" />
+                        :
+                        <ExclamationTriangleIcon className={`h-6 w-6 text-${colorPalete}-600`} aria-hidden="true" />
+                      }
                     </div>
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <div className={`mt-3 ${centerContent ? "flex w-full justify-center" : "text-center sm:ml-4"} sm:mt-0 sm:text-left`}>
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
                         {header}
                       </Dialog.Title>

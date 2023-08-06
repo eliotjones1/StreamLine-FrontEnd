@@ -18,11 +18,12 @@ export default function Form() {
   const phoneNumberRef = useRef();
   const messageRef = useRef();
 
-  const { setOpen500Modal } = useContext(ModalContext)
+  const { setOpen500Modal, setOpenSuccessModal } = useContext(ModalContext)
 
   const sendInfo = (event) => {
     event.preventDefault();
     if (agreed) {
+      /*
       const postData = {
         'first-name': firstNameRef.current.value,
         'last-name': lastNameRef.current.value,
@@ -30,13 +31,29 @@ export default function Form() {
         'phone-number': phoneNumberRef.current.value,
         'message': messageRef.current.value,
       };
-      console.log(postData)
-      axios.post("http://127.0.0.1:8000/api/user/contact/", postData).catch(error => {
+      axios.post("http://127.0.0.1:8000/api/user/contact/", postData).then(() => {
+        setOpenSuccessModal(true);
+        firstNameRef.current.value = "";
+        lastNameRef.current.value = "";
+        emailRef.current.value = "";
+        phoneNumberRef.current.value = "";
+        messageRef.current.value = "";
+        setAgreed(false);
+      }).catch(error => {
         setOpen500Modal(true);
       });
+      */
+      setOpenSuccessModal(true);
+      firstNameRef.current.value = "";
+      lastNameRef.current.value = "";
+      emailRef.current.value = "";
+      phoneNumberRef.current.value = "";
+      messageRef.current.value = "";
+      setAgreed(false);
     } else {
       alert("Please agree to the privacy policy!");
     }
+    
   }
 
   return (
