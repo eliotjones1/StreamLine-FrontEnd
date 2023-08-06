@@ -38,13 +38,13 @@ function Content() {
 
   return (
     <div className="max-w-7xl mx-auto relative z-0">
-      <div className="pb-4">
+      <div className="pb-2">
         <p className="font-bold pb-2 text-2xl">Trending Content</p>
         <ContentSlider mediaContent={trending} />
       </div>
       {
         newlyReleased !== undefined &&
-        <div className="pb-4">
+        <div className="pb-2">
           <p className="font-bold pb-2 text-2xl">
             Newly Released
           </p>

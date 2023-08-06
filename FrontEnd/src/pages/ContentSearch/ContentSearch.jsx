@@ -19,7 +19,7 @@ export default function ContentSearch() {
           <Header flipColors={true}/>
           <main className="grow">
             <div className="mx-auto w-full pb-10">
-              <div className="relative isolate bg-slate-900 dark:bg-slate-50 px-6 pt-16 shadow-2xl pb-8">
+              <div className="relative isolate bg-slate-900 dark:bg-slate-50 px-6 pt-28 shadow-2xl pb-8">
                 <div className="mx-auto w-full lg:mx-0 lg:flex-auto lg:py- lg:text-left text-white dark:text-slate-900">
                 <div className="max-w-3xl mx-auto text-center">
                   <h1 className="h1 mb-4" data-aos="fade-up">
