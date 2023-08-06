@@ -36,7 +36,8 @@
     "react-slick": "^0.29.0",
     "react-transition-group": "^4.4.5",
     "slick-carousel": "^1.8.1",
-    "stripe": "^8.222.0"
+    "stripe": "^8.222.0",
+    "vite-plugin": "^0.0.0"
   },
   "devDependencies": {
     "@headlessui/react": "^1.7.15",
