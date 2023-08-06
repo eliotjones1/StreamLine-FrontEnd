@@ -19,10 +19,11 @@ export default function Searchbar() {
       "Star Wars",
       "Star Wars"
     ]);
-    /*
-    axios.get("#").then(response => {
+    
+    axios.get("http://127.0.0.1:8000/getAutofill/").then(response => {
+      console.log(response);
       setAutoSuggestions(response);
-    });*/
+    });
   }
 
   useEffect(() => {
