@@ -46,6 +46,15 @@ export default function Header({ flipColors=false }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { isLoggedIn } = useContext(LoginContext);
 
+  const accountOptions = [
+    {name: "Sign Out", action: (event) => {
+      event.preventDefault();
+      logout();
+    }},
+    {name: "Edit Account", action: () => nav('/account-settings')},
+    {name: "My Dashboard", action: () => nav('/user-dash')}
+  ];
+
   return (
     <header className="absolute w-full z-30">
       <nav className="mx-auto flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -62,7 +71,7 @@ export default function Header({ flipColors=false }) {
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
             onClick={() => setMobileMenuOpen(true)}
           >
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            <Bars3Icon className={`h-6 w-6 ${flipColors && !mobileMenuOpen && "text-white dark:text-slate-900"}`} aria-hidden="true" />
           </button>
         </div>
 
@@ -132,71 +141,37 @@ export default function Header({ flipColors=false }) {
             </Transition>
           </Popover>
 
-          {
-            flipColors ?
-            <>
-              <button onClick={() => nav('/pricing')} className="text-sm font-semibold leading-6 text-white dark:text-slate-900">
-                Pricing
-              </button>
-              <button onClick={() => nav('/news')} className="text-sm font-semibold leading-6 text-white dark:text-slate-900">
-                News
-              </button>
-              <button onClick={() => nav('/aboutus')} className="text-sm font-semibold leading-6 text-white dark:text-slate-900">
-                About Us
-              </button>
-            </>
-            :
-            <>
-              <button onClick={() => nav('/pricing')} className="text-sm font-semibold leading-6">
-                Pricing
-              </button>
-              <button onClick={() => nav('/news')} className="text-sm font-semibold leading-6">
-                News
-              </button>
-              <button onClick={() => nav('/aboutus')} className="text-sm font-semibold leading-6">
-                About Us
-              </button>
-            </>
-          }
+          <button onClick={() => nav('/pricing')} className={`text-sm font-semibold leading-6 ${flipColors && "text-white dark:text-slate-900"}`}>
+            Pricing
+          </button>
+          <button onClick={() => nav('/news')} className={`text-sm font-semibold leading-6 ${flipColors && "text-white dark:text-slate-900"}`}>
+            News
+          </button>
+          <button onClick={() => nav('/aboutus')} className={`text-sm font-semibold leading-6 ${flipColors && "text-white dark:text-slate-900"}`}>
+            About Us
+          </button>
         </Popover.Group>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           { isLoggedIn ? (
             <AccountActions flipColors={flipColors}/>
           ) : (
-            flipColors ?
-              <div className='flex gap-x-6 text-white dark:text-slate-900'>
-                <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">
-                  Sign in
-                </button>
-                <button onClick={() => nav('/signup')} className="text-sm font-semibold leading-6">
-                  Sign up
-                </button>
-              </div>
-            :
-              <div className='flex gap-x-6'>
-                <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">
-                  Sign in
-                </button>
-                <button onClick={() => nav('/signup')} className="text-sm font-semibold leading-6">
-                  Sign up
-                </button>
-              </div>
+            <div className={`flex gap-x-6 ${flipColors && "text-white dark:text-slate-900"}`}>
+              <button onClick={() => nav('/signin')} className="text-sm font-semibold leading-6">
+                Sign in
+              </button>
+              <button onClick={() => nav('/signup')} className="text-sm font-semibold leading-6">
+                Sign up
+              </button>
+            </div>
           )}
         </div>
       </nav>
-      <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+
+      <Dialog as="div" className={`lg:hidden`} open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
-            </a>
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -213,7 +188,7 @@ export default function Header({ flipColors=false }) {
                   {({ open }) => (
                     <>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Product
+                        Features
                         <ChevronDownIcon
                           className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
                           aria-hidden="true"
@@ -224,8 +199,8 @@ export default function Header({ flipColors=false }) {
                           <Disclosure.Button
                             key={item.name}
                             as="a"
-                            href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                            onClick={() => nav(item.href)}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
                           >
                             {item.name}
                           </Disclosure.Button>
@@ -234,33 +209,53 @@ export default function Header({ flipColors=false }) {
                     </>
                   )}
                 </Disclosure>
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Features
-                </a>
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Marketplace
-                </a>
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Company
-                </a>
+                <button onClick={() => nav('/pricing')} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  Pricing
+                </button>
+                <button onClick={() => nav('/news')} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  News
+                </button>
+                <button onClick={() => nav('/aboutus')} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  About Us
+                </button>
               </div>
-              <div className="py-6">
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </a>
-              </div>
+              {
+                isLoggedIn ?
+                <Disclosure as="div" className="-mx-3">
+                  {({ open }) => (
+                    <>
+                      <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                        Account
+                        <ChevronDownIcon
+                          className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
+                          aria-hidden="true"
+                        />
+                      </Disclosure.Button>
+                      <Disclosure.Panel className="mt-2 space-y-2">
+                        {[...accountOptions].map((item) => (
+                          <Disclosure.Button
+                            key={item.name}
+                            as="a"
+                            onClick={item.action}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
+                          >
+                            {item.name}
+                          </Disclosure.Button>
+                        ))}
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
+                :
+                <div className="py-6">
+                  <button onClick={() => nav('/signin')} className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                    Sign in
+                  </button>
+                  <button onClick={() => nav('/signup')} className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                    Sign up
+                  </button>
+                </div>
+              }
             </div>
           </div>
         </Dialog.Panel>

@@ -24,7 +24,6 @@ import AboutUs from './pages/AboutUs/AboutUs';
 import NewSub from './pages/NewSub';
 import ContentSearch from './pages/ContentSearch/ContentSearch';
 import ContentData from './pages/ContentData/ContentData';
-import Payment from './pages/Payment/Payment';
 import ContactSupport from './pages/ContactSupport/ContactSupport';
 import VirtualCableBox from './pages/VirtualCableBox/VirtualCableBox';
 import ServicesSearch from './pages/ServicesSearch/ServicesSearch';
@@ -72,7 +71,6 @@ export default function App() {
     { path: '/new-sub', component: NewSub },
     { path: '/content-search', component: ContentSearch },
     { path: '/content-data/:type/:id/', component: ContentData },
-    { path: '/payment', component: Payment},
     { path: '/virtual-cable-box', component: VirtualCableBox },
     { path: '/services-search', component: ServicesSearch}
   ];
