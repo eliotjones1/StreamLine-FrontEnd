@@ -14,10 +14,25 @@ from fuzzywuzzy import fuzz
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from prod_management.models import Subscription
-from .models import StaffPick
+from .models import StaffPick, searchQuery
 import pandas as pd
 # Create your views here.
 
+def runSaveQuery(query):
+    url = "http://localhost:8000/saveQuery/"
+    requests.post(url, json=query)
+
+@api_view(['POST'])
+def saveQuery(request):
+    query = request.data
+    try:
+        search = searchQuery.objects.get(searchQuery=query)
+        search.searchCount += 1
+        search.save()
+    except:
+        search = searchQuery(searchQuery=query, searchCount=1)
+        search.save()
+    return Response(status=status.HTTP_200_OK)
 
 class returnAll(generics.ListAPIView):
     def get(self, request):
@@ -25,6 +40,11 @@ class returnAll(generics.ListAPIView):
         if search_query is None:
             return Response({'error': 'Missing search query'}, status=status.HTTP_400_BAD_REQUEST)
         title = search_query
+        
+        background_thread = threading.Thread(
+            target=runSaveQuery, args=(title,))
+        background_thread.start()
+        
         # Get Movies
 
         url = "https://api.themoviedb.org/3/search/multi?query=" + title + "&include_adult=false&language=en-US&page=1"
@@ -39,6 +59,14 @@ class returnAll(generics.ListAPIView):
             return None
         data = response.json()['results']
         return Response(data, status=status.HTTP_200_OK)
+
+
+
+class returnAutoFillSuggestions(generics.ListAPIView):
+    def get(self, request):
+        suggestions = searchQuery. objects.all()
+        suggestions = list(suggestions.values_list('searchQuery', flat=True))
+        return Response(suggestions, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -363,7 +391,7 @@ class StaffPicks(generics.ListAPIView):
                 })  
 
             else:
-                id = object['id']
+                id = pick.Media_ID
                 api_key = "95cd5279f17c6593123c72d04e0bedfa"
                 base_url = "https://api.themoviedb.org/3/"
                 endpoint = "tv/"
@@ -381,7 +409,7 @@ class StaffPicks(generics.ListAPIView):
                 'rating': show_data['vote_average'],
                 'genres': show_data['genres'],
                 'overview': show_data['overview'],
-                'media_type': show_data['media_type'],
+                'media_type': pick.Media_Type,
                 'id': pick.Media_ID
                 })
     
