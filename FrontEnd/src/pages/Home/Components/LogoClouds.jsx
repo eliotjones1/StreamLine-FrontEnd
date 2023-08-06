@@ -6,7 +6,7 @@ export default function LogoClouds() {
   const nav = useNavigate();
 
   return (
-    <div className="grid gap-y-3 mx-auto py-40 max-w-7xl px-6 lg:px-8">
+    <section className="grid gap-y-3 mx-auto pt-40 pb-20 max-w-7xl px-6 lg:px-8 ">
       <h2 className="text-center text-lg font-semibold leading-8">
         Unlock the Best of Popular Platforms
       </h2>
@@ -62,21 +62,20 @@ export default function LogoClouds() {
         />
       </div>
       <div className="flex flex-col items-center w-full pt-10">
-      <div className="relative isolate flex items-center rounded-full gap-x-6 overflow-hidden bg-slate-900/5 dark:bg-white/5 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+      <div onClick={() => nav('/services-search')} className="z-30 relative cursor-pointer isolate flex items-center rounded-full gap-x-6 overflow-hidden bg-slate-900/5 dark:bg-white/5 px-6 py-2.5 sm:px-3.5 sm:before:flex-1 leading-6 ring-1 bg-slate-900/5 dark:bg-white/5 p-2 ring-white/10 hover:ring-gray-900/20">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <p className="text-sm leading-6">
-          <strong className="font-semibold">Streaming Optimization Perfected: </strong>
+            <strong className="font-semibold">Streaming Optimization Perfected: </strong>
             Harness the Power of <strong className="font-semibold">150+</strong> Platforms and More!
           </p>
-          <button
+          <p
             className="font-semibold text-sky-600 hover:text-sky-700 dark:hover:text-sky-500"
-            onClick={() => nav('/456789')}
           >
             See the full list <span aria-hidden="true">&rarr;</span>
-          </button>
+          </p>
         </div>
       </div>
       </div>
-    </div>
+    </section>
   );
 }
