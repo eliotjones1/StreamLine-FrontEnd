@@ -5,7 +5,7 @@ import axios from "axios";
 // Import Components
 import Header from "../organisms/header";
 import Footer from "../organisms/footer";
-import PageTopIllustration from '../organisms/PageTopIllustration';
+import PageTopIllustration from '../organisms/pageTopIllustration';
 import PageSelection from '../organisms/pageSelection';
 
 // Import Context

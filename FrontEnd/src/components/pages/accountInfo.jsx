@@ -4,7 +4,7 @@ import { UserCircleIcon } from '@heroicons/react/24/solid'
 import axios from 'axios';
 
 import Header from "../organisms/header";
-import PageTopIllustration from "../organisms/PageTopIllustration";
+import PageTopIllustration from "../organisms/pageTopIllustration";
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { ModalContext } from '../../contexts/ModalContext';
