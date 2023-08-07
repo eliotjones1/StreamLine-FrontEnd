@@ -70,6 +70,9 @@ class returnRecommendations(generics.ListAPIView):
         else:
             subscriptions = Subscription.objects.filter(user=user_exists)
             subscriptions = list(subscriptions.values_list('subscription_name', flat=True))
+            user_id = user_exists.id
+            if not MediaRatings.objects.filter(user_id = user_id).exists() or len(MediaRatings.objects.filter(user_id = user_id)) < 10:
+                return Response({'Oops! This User does not have enough ratings'}, status=status.HTTP_200_OK)
             recs = returnRecs(user_exists.id, subscriptions)
             return Response(recOutput(recs, subscriptions), status=status.HTTP_200_OK)
 
