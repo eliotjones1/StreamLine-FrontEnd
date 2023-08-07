@@ -64,9 +64,11 @@ class returnAll(generics.ListAPIView):
 
 class returnAutoFillSuggestions(generics.ListAPIView):
     def get(self, request):
-        suggestions = searchQuery. objects.all()
+        suggestions = searchQuery.objects.all()
         suggestions = list(suggestions.values_list('searchQuery', flat=True))
-        return Response(suggestions, status=status.HTTP_200_OK)
+        counts = list(suggestions.values_list('searchCount', flat=True))
+        return Response({'suggestions':suggestions,
+                         'count' : counts}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -176,8 +178,8 @@ def removeMedia(request):
     object = request.data
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
-    cur_list = current.media
-    cur_list.remove(object)
+    temp = current.media
+    current.media = [item for item in temp if item != object]
     current.save()
     return Response({"Status": "OK"})
 

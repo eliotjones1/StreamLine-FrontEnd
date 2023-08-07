@@ -15,18 +15,16 @@ DATA_HAS_BEEN_GENERATED = 0
 
 def returnRecs(target_user_id, subscriptions):
     cur_ratings = MediaRatings.objects.all().values()
-    print(cur_ratings)
     data = pd.DataFrame.from_records(cur_ratings)
     data = data.drop(columns = ['id'])
     reader = Reader(rating_scale=(1, 10))
-
+    
 
     movie_data = data[data['media_type'] == 'movie']
-    movie_data = movie_data[lambda a: any(service in subscriptions for service in a['streaming_providers'])]
+    movie_data = movie_data[movie_data['streaming_providers'].apply(lambda providers: any(service in subscriptions for service in providers))]
 
     tv_data = data[data['media_type'] == 'tv']
-    tv_data = tv_data[lambda a: any(service in subscriptions for service in a['streaming_providers'])]
-
+    tv_data = tv_data[tv_data['streaming_providers'].apply(lambda providers: any(service in subscriptions for service in providers))]
     data_movies = Dataset.load_from_df(movie_data[["media_id", "rating", "user_id", "streaming_providers"]], reader)
     trainset_movies = data_movies.build_full_trainset()
 
