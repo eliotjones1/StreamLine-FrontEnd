@@ -7,7 +7,7 @@ import SearchProvider from './SearchContext';
 import ServicesSearchProvider from "./servicesSearchContext";
 import ModalProvider from "./ModalContext";
 
-export default function ContextWrapper({ children }) {
+export default function GlobalContextWrapper({ children }) {
   //element to wrap all context
   return (
     <LoginProvider>
