@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 
 // Import Components
-import ContentSlider from '../organisms/contentSlider';
+import ContentSlider from '../molecules/contentSlider';
 import Header from "../organisms/header";
 import Footer from "../organisms/footer";
 

@@ -9,7 +9,7 @@ export default function CastSlider({ castCrew }) {
           return (
             <div className='w-40 shadow-md rounded-xl ring-1 ring-slate-200 dark:ring-slate-600' key={index} >
               <div className="card w-40 relative mx-4 md:mx-0 rounded-t-xl overflow-hidden">
-                      <img className='img object-cover' src={`https://image.tmdb.org/t/p/original${person.profile_path}`}/>
+                <img className='img object-cover' src={`https://image.tmdb.org/t/p/original${person.profile_path}`}/>
               </div>
               <div className='p-3'>
                 <p className='font-semibold truncate'>

@@ -77,18 +77,10 @@ export default function Header({ flipColors=false }) {
 
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
-            {
-              flipColors ? 
-              <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-white dark:text-slate-900">
+              <Popover.Button className={`flex items-center gap-x-1 text-sm font-semibold leading-6 ${flipColors && "text-white dark:text-slate-900"}`}>
                 Features
                 <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
               </Popover.Button>
-              :
-              <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6">
-                Features
-                <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-              </Popover.Button>
-            }
 
             <Transition
               as={Fragment}
@@ -147,7 +139,7 @@ export default function Header({ flipColors=false }) {
           <button onClick={() => nav('/news')} className={`text-sm font-semibold leading-6 ${flipColors && "text-white dark:text-slate-900"}`}>
             News
           </button>
-          <button onClick={() => nav('/aboutus')} className={`text-sm font-semibold leading-6 ${flipColors && "text-white dark:text-slate-900"}`}>
+          <button onClick={() => nav('/about-us')} className={`text-sm font-semibold leading-6 ${flipColors && "text-white dark:text-slate-900"}`}>
             About Us
           </button>
         </Popover.Group>
@@ -215,7 +207,7 @@ export default function Header({ flipColors=false }) {
                 <button onClick={() => nav('/news')} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   News
                 </button>
-                <button onClick={() => nav('/aboutus')} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                <button onClick={() => nav('/about-us')} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   About Us
                 </button>
               </div>

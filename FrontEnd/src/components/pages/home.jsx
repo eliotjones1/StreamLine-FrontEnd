@@ -23,19 +23,18 @@ export default function Home() {
       <PageTopIllustration/>
       <main className="grow">
         <section>
-          <TwoColumnGrid
-            classNameMods={"pt-14"}
-            leftComponent={<HeroTitle/>}
-            rightComponent={<Image7Grid/>}
-          />
+          <TwoColumnGrid classNameMods={"pt-14"}>
+            <HeroTitle/>
+            <Image7Grid/>
+          </TwoColumnGrid>
           <PageRight2Illustration/>
         </section>
         <LogoClouds/>
         <FeaturesZigzag />
-        <TwoColumnGrid
-          leftComponent={<Newsletter />}
-          rightComponent={<CTA arrowBtnText={"Learn More"} newNavURL={"/about-us"}/>}
-        />
+        <TwoColumnGrid>
+          <Newsletter />
+          <CTA arrowBtnText={"Learn More"} newNavURL={"/about-us"}/>
+        </TwoColumnGrid>
       </main>
       <Footer />
     </div>

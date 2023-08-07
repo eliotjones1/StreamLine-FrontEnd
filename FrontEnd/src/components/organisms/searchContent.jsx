@@ -3,7 +3,7 @@ import React, {useContext} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 // Import Components
-import ContentCard from '../molecules/contentCard';
+import ContentCard from '../atoms/contentCard';
 
 // Import Contexts
 import { SearchContext } from '../../contexts/SearchContext';

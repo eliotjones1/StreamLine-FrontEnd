@@ -1,4 +1,3 @@
-// Import Libraries
 import React from 'react';
 
 export default function TrailerIFrame({ link }){

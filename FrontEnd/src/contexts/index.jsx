@@ -6,18 +6,21 @@ import LoginProvider from './LoginContext';
 import SearchProvider from './SearchContext';
 import ServicesSearchProvider from "./servicesSearchContext";
 import ModalProvider from "./ModalContext";
+import TMDBProvider from "./tmdbContext";
 
 export default function GlobalContextWrapper({ children }) {
   //element to wrap all context
   return (
     <LoginProvider>
-      <SearchProvider>
-        <ServicesSearchProvider>
-          <ModalProvider>
-            {children}
-          </ModalProvider>
-        </ServicesSearchProvider>
-      </SearchProvider>
+      <ModalProvider>
+        <SearchProvider>
+          <ServicesSearchProvider>
+            <TMDBProvider>
+              {children}
+            </TMDBProvider>
+          </ServicesSearchProvider>
+        </SearchProvider>
+      </ModalProvider>
     </LoginProvider>
   );
 }

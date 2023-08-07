@@ -1,6 +1,6 @@
 // Import Libraries
 import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -13,50 +13,24 @@ import { ClockIcon } from '@heroicons/react/24/outline';
 import Header from "../organisms/header";
 import Footer from "../organisms/footer";
 import MediaInfo from '../organisms/mediaInfo';
-import CastSlider from '../organisms/castSlider';
+import CastSlider from '../molecules/castSlider';
 import TrailerIFrame from '../atoms/trailer';
 
 // Import Contexts
 import { LoginContext } from '../../contexts/LoginContext';
 import { ModalContext } from '../../contexts/ModalContext';
+import { TMDBContext } from '../../contexts/tmdbContext';
 
 export default function Detail() {
-  const nav = useNavigate();
+  const { fetchContentData, fetchCast, fetchVideo } = useContext(TMDBContext);
   const { isLoggedIn } = useContext(LoginContext);
   const { setOpen500Modal } = useContext(ModalContext);
   const { type, id } = useParams();
+  
   const [contentDetails, setContentDetails] = useState({});
   const [contentVideos, setContentVideos] = useState([]);
   const [contentCastCrew, setContentCastCrew] = useState({});
   const [inList, setInList] = useState(false);
-  const APIKEY = "95cd5279f17c6593123c72d04e0bedfa";
-
-  const fetchContentData = async () => {
-    try {
-      const { data } = await axios.post("http://127.0.0.1:8000/returnInfo/", { media_type: type, id: id });
-      setContentDetails(data);
-    } catch (error) {
-      setOpen500Modal(true);
-    }
-  };
-
-  const fetchCast = async () => {
-    try {
-      const { data } = await axios.get(`https://api.themoviedb.org/3/${type}/${id}/credits?api_key=${APIKEY}&language`);
-      setContentCastCrew(data);
-    } catch (error) {
-      setOpen500Modal(true);
-    }  
-  }
-
-  const fetchVideo = async () => {
-    try {
-      const { data } = await axios.get(`https://api.themoviedb.org/3/${type}/${id}/videos?api_key=${APIKEY}&language=en-US`);
-      setContentVideos(data.results);
-    } catch (error) {
-      setOpen500Modal(true);
-    }
-  }
 
   const onList = async () => {
     try {
@@ -97,9 +71,15 @@ export default function Detail() {
   );
 
   useEffect(() => {
-    fetchCast();
-    fetchVideo();
-    fetchContentData();
+    fetchCast(type, id).then(data => {
+      setContentCastCrew(data);
+    });
+    fetchVideo(type, id).then(data => {
+      setContentVideos(data);
+    });
+    fetchContentData(type, id).then(data => {
+      setContentDetails(data);
+    });
     onList();
   }, []);
 
@@ -181,37 +161,22 @@ export default function Detail() {
                     }
                     <ClockIcon className='h-4'/>
                     {
-                      contentDetails.episode_run_time ? 
-                        contentDetails.episode_run_time.length === 0 ?
-                          <p>
-                            Unknown
-                          </p>
-                        :
-                          <p>
-                            {contentDetails.episode_run_time[0]}mins
-                          </p>
-                      :
-                        <p>
-                          {contentDetails.runtime}mins
-                        </p>
+                      contentDetails.episode_run_time && contentDetails.episode_run_time.length > 0 ? (
+                        <p>{contentDetails.episode_run_time[0]}mins</p>
+                      ) : (
+                        <p>{contentDetails.runtime}mins</p>
+                      )
                     }
                   </div>
 
                   {
-                    isLoggedIn &&
-                      inList ?
-                        <OverlayTrigger placement='right' overlay={removeTooltip}>
-                          <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => removeFromUserList()}>
-                            <MinusIcon className='h-6 text-white' />
-                          </button>
-                        </OverlayTrigger>
-                        
-                      :
-                        <OverlayTrigger placement='right' overlay={addTooltip}>
-                          <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={() => addToUserList()}>
-                            <PlusIcon className='h-6 text-white' />
-                          </button>
-                        </OverlayTrigger>
+                    isLoggedIn && (
+                      <OverlayTrigger placement='right' overlay={inList ? removeTooltip : addTooltip}>
+                        <button className='rounded-full p-2 bg-slate-900 hover:bg-sky-600' onClick={inList ? removeFromUserList : addToUserList}>
+                          {inList ? <MinusIcon className='h-6 text-white' /> : <PlusIcon className='h-6 text-white' />}
+                        </button>
+                      </OverlayTrigger>
+                    )
                   }
 
                   <div className="mt-2 flex-rows flex-wrap text-sm leading-6 font-medium">

@@ -4,7 +4,7 @@ import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
 
 // Import Components
-import ContentSlider from './contentSlider';
+import ContentSlider from '../molecules/contentSlider';
 import { ModalContext } from '../../contexts/ModalContext';
 
 const queryClient = new QueryClient();

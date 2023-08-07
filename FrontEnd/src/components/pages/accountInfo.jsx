@@ -6,7 +6,6 @@ import axios from 'axios';
 import Header from "../organisms/header";
 import PageTopIllustration from "../organisms/pageTopIllustration";
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 import { ModalContext } from '../../contexts/ModalContext';
 import { LoginContext } from '../../contexts/LoginContext';
 
@@ -14,7 +13,6 @@ import { LoginContext } from '../../contexts/LoginContext';
 export default function EditAccount() {
   const [profileData, setProfileData] = useState({ user: "", Email: "", First_Name: "", Last_Name: "", Street_Address: "", City: "", State_Province: "", Country: "", Postal_Code: "", Newsletter: false, Promotions: false, Push_Notifications: "" });
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const nav = useNavigate();
   const { setOpen500Modal } = useContext(ModalContext);
   const { logout } = useContext(LoginContext);
 
