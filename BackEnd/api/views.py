@@ -178,8 +178,8 @@ def removeMedia(request):
     object = request.data
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
-    cur_list = current.media
-    cur_list.remove(object)
+    temp = current.media
+    current.media = [item for item in temp if item != object]
     current.save()
     return Response({"Status": "OK"})
 
