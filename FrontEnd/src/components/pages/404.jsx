@@ -8,7 +8,7 @@ export default function NotFound() {
     <ErrorPage 
       errNum={"404"}
       errName={"Page not found"}
-      errMessage={"Sorry, we couldn&apos;t find the page you&apos;re looking for."}
+      errMessage={"Sorry, we couldn't find the page you're looking for."}
     />
   );
 }

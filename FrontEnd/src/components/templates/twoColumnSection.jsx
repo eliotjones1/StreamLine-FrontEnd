@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function twoColumnGrid({ children, classNameMods }){
+export default function TwoColumnGrid({ children, classNameMods }){
   const [leftComponent, rightComponent] = React.Children.toArray(children).slice(0, 2);
 
   return (

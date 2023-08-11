@@ -1,6 +1,6 @@
 // Basic Imports
 import React, { useContext, useEffect } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 
 // Import CSS
@@ -27,18 +27,13 @@ import ContactSupport from './components/pages/contactSupport';
 import VirtualCableBox from './components/pages/virtualCableBox';
 import ServicesSearch from './components/pages/servicesSearch';
 
-// Import Utils
-import Modal from './utils/Modal';
-
 // Import Context
-import { ModalContext } from './contexts/ModalContext';
 import { LoginContext } from './contexts/LoginContext';
 
 export default function App() {
   const location = useLocation();
   const nav = useNavigate();
   const { isLoggedIn } = useContext(LoginContext);
-  const { open500Modal, setOpen500Modal, openSuccessModal, setOpenSuccessModal } = useContext(ModalContext);
 
   useEffect(() => {
     AOS.init({
@@ -55,54 +50,50 @@ export default function App() {
     document.querySelector('html').style.scrollBehavior = '';
   }, [location.pathname]);
 
-  const routesConfig = [
+  const routes = [
     { path: '/', component: Home },
     { path: '/signin', component: SignIn },
     { path: '/signup', component: SignUp },
     { path: '/reset-password', component: ResetPassword },
     { path: '/bundles', component: Bundles },
-    { path: '/user-dash', component: UserDash },
     { path: '/support', component: ContactSupport },
-    { path: '/secure-reset', component: SecureReset },
     { path: '/pricing', component: Pricing },
     { path: '/news', component: News },
     { path: '/about-us', component: AboutUs },
-    { path: '/account-settings', component: AccountInfo },
     { path: '/new-sub', component: NewSub },
     { path: '/content-search', component: ContentSearch },
-    { path: '/content-data/:type/:id/', component: ContentData },
-    { path: '/virtual-cable-box', component: VirtualCableBox },
+    { path: '/content-data/:type/:id/', component: ContentData },    
     { path: '/services-search', component: ServicesSearch}
   ];
 
+  const protectedRoutes = [
+    { path: '/user-dash', component: UserDash },
+    { path: '/account-settings', component: AccountInfo },
+    { path: '/secure-reset', component: SecureReset },
+    { path: '/virtual-cable-box', component: VirtualCableBox },
+  ]
+
   return (
-    <>
-      <Routes>
-        {routesConfig.map(route => (
-          <Route key={route.path} path={route.path} element={<route.component />} />
-        ))}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Modal 
-        centerContent={false}
-        header={"500: Internal Server Error"} 
-        body={"An internal server error occured during this action. We are aware of the issue and working to fix it momentarily. The current page will not include certain functionality. Please reload the page or try again at a later time. If the error continues to occur please contact support."}
-        mainButtonText={"Refresh"}
-        mainButtonFunction={() => window.location.reload()}
-        secondaryButtonText={"Support"}
-        secondaryButtonFunction={() => { nav('/support'); setOpen500Modal(false); }}
-        colorPalete={"sky"}
-        isOpen={open500Modal} 
-        setOpen={setOpen500Modal}
-      />
-      <Modal 
-        centerContent={false}
-        header={"Success"}
-        body={"Your message has been recieved! Upon review the StreamLine team will be in contact. For urgent issues please contact our support line at: (###) ###-####."}
-        colorPalete={"green"}
-        isOpen={openSuccessModal} 
-        setOpen={setOpenSuccessModal}
-      />
-    </>
+    <Routes>
+      {
+        routes.map(route => (
+          <Route 
+            key={route.path} 
+            path={route.path} 
+            element={<route.component />} 
+          />
+        ))
+      }
+      {
+        protectedRoutes.map(route => (
+          <Route 
+            key={route.path} 
+            path={route.path} 
+            element={isLoggedIn ? <route.component /> : <Navigate to='/signin'/>} 
+          />
+        ))
+      }
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
