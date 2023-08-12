@@ -79,7 +79,7 @@ export default function CableBox() {
           </div>
           {services.map((service) => (
             <div className="pb-4" key={service}>
-              <a className="flex pb-2" href={service.web_link} target="_blank">
+              <a className="flex pb-2" href={service.web_link} target="_blank" rel="noreferrer">
                 <img src={service.logo_link} className="w-12 h-12 rounded-full" />
                 <p className="font-bold pb-2 text-3xl">{service.name}</p>
               </a>

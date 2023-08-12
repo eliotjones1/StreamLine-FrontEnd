@@ -1,9 +1,8 @@
-import React from 'react';
-
+import PropTypes from 'prop-types';
 import ContentCard from '../atoms/contentCard';
 import NameAndDate from '../atoms/nameAndDate';
 
-export default function ContentSlider({ mediaContent }) {
+function ContentSlider({ mediaContent }) {
   return (
     <div className="flex overflow-x-auto space-x-4 scrollbar-hidden relative">
       {mediaContent.map((content, index) => (
@@ -17,3 +16,9 @@ export default function ContentSlider({ mediaContent }) {
     </div>
   );
 }
+
+ContentSlider.propTypes = {
+  mediaContent: PropTypes.array.isRequired,
+};
+
+export default ContentSlider;

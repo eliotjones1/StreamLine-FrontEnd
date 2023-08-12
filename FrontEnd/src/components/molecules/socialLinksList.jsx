@@ -1,8 +1,7 @@
-import React from 'react';
-
+import PropTypes from 'prop-types';
 import SocialLink from '../atoms/socialLink';
 
-export default function SocialLinksList({ list, classNameMods }) {
+function SocialLinksList({ list, classNameMods }) {
   return (
     <ul className={`flex space-x-4 mb-4 ${classNameMods}`}>
       {list.map((link, index) => (
@@ -11,3 +10,10 @@ export default function SocialLinksList({ list, classNameMods }) {
     </ul>
   );
 }
+
+SocialLinksList.propTypes = {
+  list: PropTypes.arrayOf(PropTypes.string).isRequired,
+  classNameMods: PropTypes.string,
+};
+
+export default SocialLinksList;
