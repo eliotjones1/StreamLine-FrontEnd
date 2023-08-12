@@ -1,8 +1,11 @@
-import React from "react";
+import React from 'react';
 
-export default function Illustration(){
+export default function Illustration() {
   return (
-    <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
+    <div
+      className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6"
+      aria-hidden="true"
+    >
       <div
         className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-sky-600 to-sky-600 opacity-30"
         style={{
@@ -13,4 +16,3 @@ export default function Illustration(){
     </div>
   );
 }
-

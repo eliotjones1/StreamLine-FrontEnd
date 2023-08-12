@@ -29,8 +29,10 @@ function CurSubs({ onAddItem }) {
       axios
         .get('http://127.0.0.1:8000/api/user/subscriptions/search/?search=' + searchQuery)
         .then((response) => {
-            console.log(response.data.results);
-          setSearchResultsCache((prevCache) => new Map(prevCache).set(searchQuery, response.data.results));
+          console.log(response.data.results);
+          setSearchResultsCache((prevCache) =>
+            new Map(prevCache).set(searchQuery, response.data.results)
+          );
         })
         .catch((error) => {
           console.log(error);
@@ -74,11 +76,9 @@ function CurSubs({ onAddItem }) {
     <section>
       <div className="max-w-3xl mx-auto text-center pb-6 md:pt-32 md:pb-8">
         <h3 className="h3 mb-4" data-aos="fade-up">
-            Step 2: Current Subscriptions
+          Step 2: Current Subscriptions
         </h3>
-        <p className="text-xl mb-4">
-            Tell us what you're currently subscribed to!
-        </p>
+        <p className="text-xl mb-4">Tell us what you're currently subscribed to!</p>
       </div>
 
       <form className="max-w-4xl mx-auto relative" onSubmit={handleSubmit}>
@@ -93,7 +93,12 @@ function CurSubs({ onAddItem }) {
             autoComplete="off"
           />
           <button className="absolute left-3 h-full" type="submit">
-            <svg className="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <svg
+              className="h-5 w-5 text-gray-500"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
               <path d="M22 22l-6-6" />
               <path d="M16 11a6 6 0 1 1-12 0 6 6 0 0 1 12 0z" />
             </svg>
@@ -103,11 +108,17 @@ function CurSubs({ onAddItem }) {
           <ul className="relative w-full mt-1 bg-slate-200 dark:bg-white rounded-md">
             {dropdownOptions.map((option, index) => (
               <li
-                className={hoveredItemIndex === index ? 'flex flex-row p-2 bg-slate-300 text-slate-800 dark:bg-slate-700 dark:text-white rounded-md' : 'flex flex-row p-2 text-slate-900'}
+                className={
+                  hoveredItemIndex === index
+                    ? 'flex flex-row p-2 bg-slate-300 text-slate-800 dark:bg-slate-700 dark:text-white rounded-md'
+                    : 'flex flex-row p-2 text-slate-900'
+                }
                 key={index}
                 onClick={handleSubmit}
                 onMouseEnter={() => setHoveredItemIndex(index)}
-              >                <p className="flex-grow">{option}</p>
+              >
+                {' '}
+                <p className="flex-grow">{option}</p>
               </li>
             ))}
           </ul>

@@ -62,8 +62,8 @@ export default function App() {
     { path: '/about-us', component: AboutUs },
     { path: '/new-sub', component: NewSub },
     { path: '/content-search', component: ContentSearch },
-    { path: '/content-data/:type/:id/', component: ContentData },    
-    { path: '/services-search', component: ServicesSearch}
+    { path: '/content-data/:type/:id/', component: ContentData },
+    { path: '/services-search', component: ServicesSearch },
   ];
 
   const protectedRoutes = [
@@ -71,28 +71,20 @@ export default function App() {
     { path: '/account-settings', component: AccountInfo },
     { path: '/secure-reset', component: SecureReset },
     { path: '/virtual-cable-box', component: VirtualCableBox },
-  ]
+  ];
 
   return (
     <Routes>
-      {
-        routes.map(route => (
-          <Route 
-            key={route.path} 
-            path={route.path} 
-            element={<route.component />} 
-          />
-        ))
-      }
-      {
-        protectedRoutes.map(route => (
-          <Route 
-            key={route.path} 
-            path={route.path} 
-            element={isLoggedIn ? <route.component /> : <Navigate to='/signin'/>} 
-          />
-        ))
-      }
+      {routes.map((route) => (
+        <Route key={route.path} path={route.path} element={<route.component />} />
+      ))}
+      {protectedRoutes.map((route) => (
+        <Route
+          key={route.path}
+          path={route.path}
+          element={isLoggedIn ? <route.component /> : <Navigate to="/signin" />}
+        />
+      ))}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

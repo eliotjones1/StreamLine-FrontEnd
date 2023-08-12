@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default function SocialLink({ link }) {
@@ -66,4 +66,8 @@ export default function SocialLink({ link }) {
       </svg>
     </Link>
   );
+}
+
+SocialLink.propTypes = {
+  link: PropTypes.string,
 };

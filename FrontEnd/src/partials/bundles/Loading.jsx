@@ -6,13 +6,16 @@ function Loading() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      axios.get('http://127.0.0.1:8000/getProgress/').then(response => {
-        if (response.data.progress > progress) {
-          setProgress(response.data.progress);
-        }
-      }).catch(error => {
-        // Add Error Modal
-      });
+      axios
+        .get('http://127.0.0.1:8000/getProgress/')
+        .then((response) => {
+          if (response.data.progress > progress) {
+            setProgress(response.data.progress);
+          }
+        })
+        .catch((error) => {
+          // Add Error Modal
+        });
     }, 1000);
 
     return () => clearInterval(interval);

@@ -18,7 +18,6 @@ function SearchServs() {
       return updatedMedia;
     });
   };
-  
 
   const removeItem = (indexToRemove) => {
     setMedia(media.filter((_, index) => index !== indexToRemove));
@@ -39,7 +38,7 @@ function SearchServs() {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <main className="grow">
-        <CurSubs onAddItem={addItem}/>
+        <CurSubs onAddItem={addItem} />
 
         <section>
           <div className="max-w-4xl mx-auto py-10">
@@ -47,11 +46,10 @@ function SearchServs() {
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold mb-4">Your Streaming Services</h2>
               </div>
-              <AltDisplay items={media} onRemoveItem={removeItem}/>
+              <AltDisplay items={media} onRemoveItem={removeItem} />
             </div>
           </div>
         </section>
-
       </main>
     </div>
   );

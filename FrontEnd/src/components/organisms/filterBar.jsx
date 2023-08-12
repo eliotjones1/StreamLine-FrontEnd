@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { ServicesSearchContext } from '../../contexts/servicesSearchContext';
 
 export default function FilterBar() {
-  const { filter, updateFilter } = useContext(ServicesSearchContext)
+  const { filter, updateFilter } = useContext(ServicesSearchContext);
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -25,7 +25,12 @@ export default function FilterBar() {
         autoComplete="off"
       />
       <button className="absolute left-3 h-full" type="submit">
-        <svg className="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <svg
+          className="h-5 w-5 text-gray-500"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
           <path d="M22 22l-6-6" />
           <path d="M16 11a6 6 0 1 1-12 0 6 6 0 0 1 12 0z" />
         </svg>
@@ -33,4 +38,3 @@ export default function FilterBar() {
     </div>
   );
 }
-

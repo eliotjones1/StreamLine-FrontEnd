@@ -1,7 +1,12 @@
 import React from 'react';
 
 // Imoprt Icons
-import { ArrowTrendingUpIcon, WindowIcon, CurrencyDollarIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import {
+  ArrowTrendingUpIcon,
+  WindowIcon,
+  CurrencyDollarIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/20/solid';
 
 // Import Images
 import FeatImage01 from '../../images/Search_Light_Mode.png';
@@ -27,10 +32,16 @@ export default function FeaturesZigzag() {
           <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
             <div className="lg:pr-4">
               <div className="lg:w-full">
-                <p className="text-base font-semibold leading-7 text-sky-600 dark:text-sky-400">More content. Less searching.</p>
-                <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-gray-900 dark:text-white">Personalized Streaming</h1>
+                <p className="text-base font-semibold leading-7 text-sky-600 dark:text-sky-400">
+                  More content. Less searching.
+                </p>
+                <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-gray-900 dark:text-white">
+                  Personalized Streaming
+                </h1>
                 <p className="mt-6 text-xl leading-8 text-gray-700 dark:text-gray-300">
-                  Experience personalized streaming like never before! Our platform delivers custom recommendations to match your unique tastes. Immerse yourself in captivating content curated just for you. Unlock a universe of entertainment made personal.
+                  Experience personalized streaming like never before! Our platform delivers custom
+                  recommendations to match your unique tastes. Immerse yourself in captivating
+                  content curated just for you. Unlock a universe of entertainment made personal.
                 </p>
               </div>
             </div>
@@ -47,15 +58,30 @@ export default function FeaturesZigzag() {
               <div className="max-w-xl text-base leading-7 lg:max-w-lg">
                 <ul role="list" className="space-y-6 text-slate-600 dark:text-gray-400">
                   <li className="flex gap-x-3">
-                    <MagnifyingGlassIcon className="mt-1 h-5 w-5 flex-none text-sky-600 dark:text-sky-400" aria-hidden="true" />
+                    <MagnifyingGlassIcon
+                      className="mt-1 h-5 w-5 flex-none text-sky-600 dark:text-sky-400"
+                      aria-hidden="true"
+                    />
                     <span>
-                      <strong className="font-semibold text-slate-900 dark:text-white">Discover Content.</strong> StreamLine your search and discover shows and movies across streaming services. Elevate your viewing experience effortlessly.
+                      <strong className="font-semibold text-slate-900 dark:text-white">
+                        Discover Content.
+                      </strong>{' '}
+                      StreamLine your search and discover shows and movies across streaming
+                      services. Elevate your viewing experience effortlessly.
                     </span>
                   </li>
                   <li className="flex gap-x-3">
-                    <CurrencyDollarIcon className="mt-1 h-5 w-5 flex-none text-sky-600 dark:text-sky-400" aria-hidden="true" />
+                    <CurrencyDollarIcon
+                      className="mt-1 h-5 w-5 flex-none text-sky-600 dark:text-sky-400"
+                      aria-hidden="true"
+                    />
                     <span>
-                      <strong className="font-semibold text-slate-900 dark:text-white">Free Bundle Suggestions.</strong> Simply provide us with your desired viewing content to curate a personalized bundle of the best streaming services. Stream smarter, save more, no work required.
+                      <strong className="font-semibold text-slate-900 dark:text-white">
+                        Free Bundle Suggestions.
+                      </strong>{' '}
+                      Simply provide us with your desired viewing content to curate a personalized
+                      bundle of the best streaming services. Stream smarter, save more, no work
+                      required.
                     </span>
                   </li>
                 </ul>
@@ -65,10 +91,17 @@ export default function FeaturesZigzag() {
           <div className="lg:col-span-2 lg:col-start-1 lg:row-start-5 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
             <div className="lg:col-start-2 lg:pl-4 ">
               <div className="lg:w-full">
-                <p className="text-base font-semibold leading-7 text-sky-600 dark:text-sky-400">More content. Less hastle.</p>
-                <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-gray-900 dark:text-white">Subscription Optimization</h1>
+                <p className="text-base font-semibold leading-7 text-sky-600 dark:text-sky-400">
+                  More content. Less hastle.
+                </p>
+                <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-gray-900 dark:text-white">
+                  Subscription Optimization
+                </h1>
                 <p className="mt-6 text-xl leading-8 text-gray-700 dark:text-gray-300">
-                  Discover the power of subscription optimization and start saving today. Our intuitive platform simplifies subscription management, providing valuable insights and tailored recommendations. Take charge of your finances effortlessly and maximize your savings.
+                  Discover the power of subscription optimization and start saving today. Our
+                  intuitive platform simplifies subscription management, providing valuable insights
+                  and tailored recommendations. Take charge of your finances effortlessly and
+                  maximize your savings.
                 </p>
               </div>
             </div>
@@ -85,15 +118,30 @@ export default function FeaturesZigzag() {
               <div className="max-w-xl text-base leading-7 lg:max-w-lg">
                 <ul role="list" className="space-y-6 text-slate-600 dark:text-gray-400">
                   <li className="flex gap-x-3">
-                    <WindowIcon className="mt-1 h-5 w-5 flex-none text-sky-600 dark:text-sky-400" aria-hidden="true" />
+                    <WindowIcon
+                      className="mt-1 h-5 w-5 flex-none text-sky-600 dark:text-sky-400"
+                      aria-hidden="true"
+                    />
                     <span>
-                      <strong className="font-semibold text-slate-900 dark:text-white">Subscription Dashboard.</strong> Take control of your subscriptions in one place. Never miss a chance to save with easy management of renewals, upgrades, and cancellations.
+                      <strong className="font-semibold text-slate-900 dark:text-white">
+                        Subscription Dashboard.
+                      </strong>{' '}
+                      Take control of your subscriptions in one place. Never miss a chance to save
+                      with easy management of renewals, upgrades, and cancellations.
                     </span>
                   </li>
                   <li className="flex gap-x-3">
-                    <ArrowTrendingUpIcon className="mt-1 h-5 w-5 flex-none text-sky-600 dark:text-sky-400" aria-hidden="true" />
+                    <ArrowTrendingUpIcon
+                      className="mt-1 h-5 w-5 flex-none text-sky-600 dark:text-sky-400"
+                      aria-hidden="true"
+                    />
                     <span>
-                      <strong className="font-semibold text-slate-900 dark:text-white">Smart Recommendations.</strong> Unlock significant savings with personalized recommendations based on your usage patterns. Say goodbye to unused services and hello to optimized subscriptions.
+                      <strong className="font-semibold text-slate-900 dark:text-white">
+                        Smart Recommendations.
+                      </strong>{' '}
+                      Unlock significant savings with personalized recommendations based on your
+                      usage patterns. Say goodbye to unused services and hello to optimized
+                      subscriptions.
                     </span>
                   </li>
                 </ul>

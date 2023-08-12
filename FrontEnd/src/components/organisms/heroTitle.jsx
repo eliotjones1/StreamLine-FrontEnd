@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 // Import Molecules
 import ButtonAndArrowBtn from '../molecules/buttonAndArrowBtn';
 
-export default function HeroTitle(){
+export default function HeroTitle() {
   const nav = useNavigate();
 
   return (
@@ -20,15 +20,14 @@ export default function HeroTitle(){
       </div>
       <div className="text-center">
         <h1 className="text-2xl font-bold tracking-tight sm:text-6xl">
-        <span className="text-sky-600 dark:text-sky-500">StreamLine</span>  Your Subscriptions
+          <span className="text-sky-600 dark:text-sky-500">StreamLine</span> Your Subscriptions
         </h1>
         <p className="mt-6 mb-10 text-lg leading-8">
-          Optimize subscription services based on your unique interests and preferences. StreamLine uses cutting-edge technology to analyze your tastes and tailor a personalized selection of subscriptions just for you at a price you can afford.
+          Optimize subscription services based on your unique interests and preferences. StreamLine
+          uses cutting-edge technology to analyze your tastes and tailor a personalized selection of
+          subscriptions just for you at a price you can afford.
         </p>
-        <ButtonAndArrowBtn
-          arrowBtnText={"Learn More"}
-          newNavURL={"/about-us"}
-        />
+        <ButtonAndArrowBtn arrowBtnText={'Learn More'} newNavURL={'/about-us'} />
       </div>
     </div>
   );

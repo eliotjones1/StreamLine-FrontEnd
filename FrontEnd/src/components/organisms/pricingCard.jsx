@@ -6,9 +6,7 @@ export default function PricingCard({ title, description, features, price, link 
     <div className="bg-white dark:bg-slate-900 mx-auto max-w-2xl rounded-3xl ring-1 ring-slate-200 sm:mt-4 lg:mx-0 lg:flex lg:max-w-none">
       <div className="p-8 sm:p-10 lg:flex-auto">
         <h3 className="text-2xl font-bold tracking-tight">{title}</h3>
-        <p className="mt-6 text-base leading-7 text-gray-600 dark:text-white">
-          {description}
-        </p>
+        <p className="mt-6 text-base leading-7 text-gray-600 dark:text-white">{description}</p>
         <div className="mt-10 flex items-center gap-x-4">
           <h4 className="flex-none text-sm font-semibold leading-6 text-sky-600">
             What&apos;s included
@@ -45,4 +43,4 @@ export default function PricingCard({ title, description, features, price, link 
       </div>
     </div>
   );
-};
+}

@@ -1,7 +1,7 @@
 // ImageContainer.js
 import React from 'react';
 
-export default function ImageContainer({ src, alt, classNameMods}){
+export default function ImageContainer({ src, alt, classNameMods }) {
   return (
     <div className="flex h-full w-full justify-center items-center">
       <div className={`${classNameMods} h-64 w-44 overflow-hidden rounded-lg`}>
@@ -9,4 +9,4 @@ export default function ImageContainer({ src, alt, classNameMods}){
       </div>
     </div>
   );
-};
+}

@@ -1,13 +1,12 @@
-import React, { useContext, useRef, useState } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Switch } from '@headlessui/react'
+import React, { useContext, useRef, useState } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { Switch } from '@headlessui/react';
 import axios from 'axios';
 
 import { ModalContext } from '../../contexts/ModalContext';
 
-
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Form() {
@@ -18,7 +17,7 @@ export default function Form() {
   const phoneNumberRef = useRef();
   const messageRef = useRef();
 
-  const { setOpen500Modal, setOpenSuccessModal } = useContext(ModalContext)
+  const { setOpen500Modal, setOpenSuccessModal } = useContext(ModalContext);
 
   const sendInfo = (event) => {
     event.preventDefault();
@@ -44,17 +43,16 @@ export default function Form() {
       });
       */
       setOpenSuccessModal(true);
-      firstNameRef.current.value = "";
-      lastNameRef.current.value = "";
-      emailRef.current.value = "";
-      phoneNumberRef.current.value = "";
-      messageRef.current.value = "";
+      firstNameRef.current.value = '';
+      lastNameRef.current.value = '';
+      emailRef.current.value = '';
+      phoneNumberRef.current.value = '';
+      messageRef.current.value = '';
       setAgreed(false);
     } else {
-      alert("Please agree to the privacy policy!");
+      alert('Please agree to the privacy policy!');
     }
-    
-  }
+  };
 
   return (
     <div className="isolate px-6 py-24 sm:py-32 lg:px-8">
@@ -73,7 +71,8 @@ export default function Form() {
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Contact Us</h2>
         <p className="mt-2 text-lg leading-8 text-gray-600 dark:text-slate-50">
-          Reach out to our dedicated team for all your support and sales inquiries - we're here to assist you every step of the way!
+          Reach out to our dedicated team for all your support and sales inquiries - we're here to
+          assist you every step of the way!
         </p>
       </div>
       <form className="mx-auto mt-16 max-w-xl sm:mt-20" onSubmit={sendInfo}>
@@ -213,5 +212,5 @@ export default function Form() {
         </div>
       </form>
     </div>
-  )
+  );
 }

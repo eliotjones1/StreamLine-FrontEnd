@@ -1,80 +1,117 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { UserCircleIcon } from '@heroicons/react/24/solid'
+import { UserCircleIcon } from '@heroicons/react/24/solid';
 
 import axios from 'axios';
 
-import Header from "../organisms/header";
-import PageTopIllustration from "../organisms/pageTopIllustration";
+import Header from '../organisms/header';
+import PageTopIllustration from '../organisms/pageTopIllustration';
 import Cookies from 'js-cookie';
 import { ModalContext } from '../../contexts/ModalContext';
 import { LoginContext } from '../../contexts/LoginContext';
 
-
 export default function EditAccount() {
-  const [profileData, setProfileData] = useState({ user: "", Email: "", First_Name: "", Last_Name: "", Street_Address: "", City: "", State_Province: "", Country: "", Postal_Code: "", Newsletter: false, Promotions: false, Push_Notifications: "" });
+  const [profileData, setProfileData] = useState({
+    user: '',
+    Email: '',
+    First_Name: '',
+    Last_Name: '',
+    Street_Address: '',
+    City: '',
+    State_Province: '',
+    Country: '',
+    Postal_Code: '',
+    Newsletter: false,
+    Promotions: false,
+    Push_Notifications: '',
+  });
   const [showConfirmation, setShowConfirmation] = useState(false);
   const { setOpen500Modal } = useContext(ModalContext);
   const { logout } = useContext(LoginContext);
 
   function handleSubmit(event) {
-    console.log("submitting");
+    console.log('submitting');
     event.preventDefault();
     const curData = JSON.stringify(profileData);
-    axios.post("http://127.0.0.1:8000/api/user/settings/update/", curData, {
-      withCredentials: true, headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => {
-      console.log(response.data)
-      setProfileData({
-        user: response.data.settings.user, Email: response.data.settings.Email, First_Name: response.data.settings.First_Name, Last_Name: response.data.settings.Last_Name,
-        Street_Address: response.data.settings.Street_Address, City: response.data.settings.City, State_Province: response.data.settings.State_Province, Country: response.data.settings.Country,
-        Postal_Code: response.data.settings.Postal_Code, Newsletter: response.data.settings.Newsletter, Promotions: response.data.settings.Promotions, Push_Notifications: response.data.settings.Push_Notifications
+    axios
+      .post('http://127.0.0.1:8000/api/user/settings/update/', curData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setProfileData({
+          user: response.data.settings.user,
+          Email: response.data.settings.Email,
+          First_Name: response.data.settings.First_Name,
+          Last_Name: response.data.settings.Last_Name,
+          Street_Address: response.data.settings.Street_Address,
+          City: response.data.settings.City,
+          State_Province: response.data.settings.State_Province,
+          Country: response.data.settings.Country,
+          Postal_Code: response.data.settings.Postal_Code,
+          Newsletter: response.data.settings.Newsletter,
+          Promotions: response.data.settings.Promotions,
+          Push_Notifications: response.data.settings.Push_Notifications,
+        });
+        document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        Cookies.set('session', JSON.stringify(response.data.user), {
+          path: '/',
+          secure: true,
+          sameSite: 'strict',
+        });
+      })
+      .catch((error) => {
+        setOpen500Modal(true);
       });
-      document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      Cookies.set('session', JSON.stringify(response.data.user), {
-        path: '/',
-        secure: true,
-        sameSite: 'strict',
-      });    
-    }).catch(error => {
-      setOpen500Modal(true);
-    })
-
   }
 
   function loadData() {
-    axios.get('http://127.0.0.1:8000/api/user/settings/', { withCredentials: true }).then(response => {
-      setProfileData({
-        user: response.data.user, Email: response.data.Email, First_Name: response.data.First_Name, Last_Name: response.data.Last_Name,
-        Street_Address: response.data.Street_Address, City: response.data.City, State_Province: response.data.State_Province, Country: response.data.Country,
-        Postal_Code: response.data.Postal_Code, Newsletter: response.data.Newsletter, Promotions: response.data.Promotions, Push_Notifications: response.data.Push_Notifications
+    axios
+      .get('http://127.0.0.1:8000/api/user/settings/', { withCredentials: true })
+      .then((response) => {
+        setProfileData({
+          user: response.data.user,
+          Email: response.data.Email,
+          First_Name: response.data.First_Name,
+          Last_Name: response.data.Last_Name,
+          Street_Address: response.data.Street_Address,
+          City: response.data.City,
+          State_Province: response.data.State_Province,
+          Country: response.data.Country,
+          Postal_Code: response.data.Postal_Code,
+          Newsletter: response.data.Newsletter,
+          Promotions: response.data.Promotions,
+          Push_Notifications: response.data.Push_Notifications,
+        });
+      })
+      .catch((error) => {
+        setOpen500Modal(true);
       });
-    }).catch(error => {
-      setOpen500Modal(true);
-    });
-
   }
   const handleFormValueChange = (event) => {
     let { name, value } = event.target;
     if (value === true && profileData[name] === true) value = false;
-    setProfileData(prevData => ({ ...prevData, [name]: value }));
+    setProfileData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleButtonValueChange = (event) => {
     const { name, checked } = event.target;
     const value = checked;
-    setProfileData(prevData => ({ ...prevData, [name]: value }));
+    setProfileData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   function handleConfirmDelete() {
-    axios.post("http://127.0.0.1:8000/api/user/settings/delete/", [], { withCredentials: true }).then(response => {
-      logout();
-    }).catch(error => {
-      setOpen500Modal(true);
-    });
+    axios
+      .post('http://127.0.0.1:8000/api/user/settings/delete/', [], { withCredentials: true })
+      .then((response) => {
+        logout();
+      })
+      .catch((error) => {
+        setOpen500Modal(true);
+      });
   }
-
 
   useEffect(() => {
     loadData();
@@ -86,7 +123,7 @@ export default function EditAccount() {
       <main className="grow">
         <PageTopIllustration />
         <div className="flex justify-center">
-          <form className='py-24' onSubmit={handleSubmit}>
+          <form className="py-24" onSubmit={handleSubmit}>
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
                 <h2 className="text-base font-semibold leading-7">Profile</h2>
@@ -100,7 +137,10 @@ export default function EditAccount() {
                       Photo
                     </label>
                     <div className="mt-2 flex items-center gap-x-3">
-                      <UserCircleIcon className="h-12 w-12 text-slate-700 dark:text-white" aria-hidden="true" />
+                      <UserCircleIcon
+                        className="h-12 w-12 text-slate-700 dark:text-white"
+                        aria-hidden="true"
+                      />
                       <button
                         type="button"
                         className="rounded-md bg-sky-600 text-white px-2.5 py-1.5 text-sm font-semibold shadow-sm hover:bg-sky-500"
@@ -129,7 +169,9 @@ export default function EditAccount() {
 
               <div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
                 <h2 className="text-base font-semibold leading-7">Personal Information</h2>
-                <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">Use a permanent address where you can receive mail.</p>
+                <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
+                  Use a permanent address where you can receive mail.
+                </p>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-3">
@@ -250,7 +292,8 @@ export default function EditAccount() {
               <div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
                 <h2 className="text-base font-semibold leading-7">Notifications</h2>
                 <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
-                  We'll always let you know about important changes, but you pick what else you want to hear about.
+                  We'll always let you know about important changes, but you pick what else you want
+                  to hear about.
                 </p>
 
                 <div className="mt-10 space-y-10">
@@ -271,7 +314,9 @@ export default function EditAccount() {
                           <label htmlFor="newsletter" className="font-medium">
                             Newsletter
                           </label>
-                          <p className="text-gray-500 dark:text-slate-300">Get monthly updates on relevant streaming news.</p>
+                          <p className="text-gray-500 dark:text-slate-300">
+                            Get monthly updates on relevant streaming news.
+                          </p>
                         </div>
                       </div>
                       <div className="relative flex gap-x-3">
@@ -288,25 +333,32 @@ export default function EditAccount() {
                           <label htmlFor="promotions" className="font-medium">
                             Promotions
                           </label>
-                          <p className="text-gray-500 dark:text-slate-300">Get notified about StreamLine promotions.</p>
+                          <p className="text-gray-500 dark:text-slate-300">
+                            Get notified about StreamLine promotions.
+                          </p>
                         </div>
                       </div>
                     </div>
                   </fieldset>
                   <fieldset>
                     <legend className="text-sm font-semibold leading-6">Push Notifications</legend>
-                    <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-200">These are delivered via SMS to your mobile phone.</p>
+                    <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-200">
+                      These are delivered via SMS to your mobile phone.
+                    </p>
                     <div className="mt-6 space-y-6">
                       <div className="flex items-center gap-x-3">
                         <input
                           name="Push_Notifications"
                           value="Everything"
                           type="radio"
-                          checked={profileData.Push_Notifications === "Everything"}
+                          checked={profileData.Push_Notifications === 'Everything'}
                           onChange={handleFormValueChange}
                           className="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600"
                         />
-                        <label htmlFor="push-everything" className="block text-sm font-medium leading-6">
+                        <label
+                          htmlFor="push-everything"
+                          className="block text-sm font-medium leading-6"
+                        >
                           Everything
                         </label>
                       </div>
@@ -314,7 +366,7 @@ export default function EditAccount() {
                         <input
                           name="Push_Notifications"
                           value="SameAsEmail"
-                          checked={profileData.Push_Notifications === "SameAsEmail"}
+                          checked={profileData.Push_Notifications === 'SameAsEmail'}
                           onChange={handleFormValueChange}
                           type="radio"
                           className="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600"
@@ -328,11 +380,14 @@ export default function EditAccount() {
                           name="Push_Notifications"
                           value="None"
                           type="radio"
-                          checked={profileData.Push_Notifications === "None"}
+                          checked={profileData.Push_Notifications === 'None'}
                           onChange={handleFormValueChange}
                           className="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600"
                         />
-                        <label htmlFor="push-nothing" className="block text-sm font-medium leading-6" >
+                        <label
+                          htmlFor="push-nothing"
+                          className="block text-sm font-medium leading-6"
+                        >
                           No push notifications
                         </label>
                       </div>
@@ -343,7 +398,7 @@ export default function EditAccount() {
               <div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
                 <h2 className="text-base font-semibold leading-7">Account Deletion</h2>
                 <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
-                  This will delete your account and all of your information permanently.                
+                  This will delete your account and all of your information permanently.
                 </p>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -360,7 +415,6 @@ export default function EditAccount() {
               </div>
             </div>
 
-
             <div className="mt-6 flex items-center justify-end gap-x-6">
               <button type="button" onClick={loadData} className="text-sm font-semibold leading-6">
                 Cancel
@@ -375,24 +429,28 @@ export default function EditAccount() {
           </form>
         </div>
 
-        { 
-          showConfirmation && 
+        {showConfirmation && (
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
             <div className="bg-white rounded-lg p-8">
-              <p className='text-black'>Are you sure you want to delete your account?</p>
+              <p className="text-black">Are you sure you want to delete your account?</p>
               <div className="flex justify-end mt-4">
-                <button className="px-4 py-2 bg-red-500 text-white rounded mr-2" onClick={handleConfirmDelete}>
+                <button
+                  className="px-4 py-2 bg-red-500 text-white rounded mr-2"
+                  onClick={handleConfirmDelete}
+                >
                   Yes
                 </button>
-                <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded" onClick={() => setShowConfirmation(false)}>
+                <button
+                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded"
+                  onClick={() => setShowConfirmation(false)}
+                >
                   No
                 </button>
               </div>
             </div>
           </div>
-        
-        }
+        )}
       </main>
     </div>
-  )
+  );
 }

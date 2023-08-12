@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Header from "../organisms/header";
-import Footer from "../organisms/footer";
+import Header from '../organisms/header';
+import Footer from '../organisms/footer';
 import PageTopIllustration from '../organisms/pageTopIllustration';
 import PricingCard from '../organisms/pricingCard';
 
@@ -34,7 +34,9 @@ export default function Pricing() {
 
             <PricingCard
               title="Premium Membership"
-              description={'Our Premium Membership automates essential features and benefits designed to enhance your streaming experience. Enjoy access to a range of core services and valuable resources effortlessly.'}
+              description={
+                'Our Premium Membership automates essential features and benefits designed to enhance your streaming experience. Enjoy access to a range of core services and valuable resources effortlessly.'
+              }
               features={PremiumFeatures}
               price="$30.00"
               link="https://buy.stripe.com/test_5kA3dSb1C05s23K4gi"
@@ -42,12 +44,13 @@ export default function Pricing() {
 
             <PricingCard
               title="Basic Membership"
-              description={'Our Basic Membership offers essential features and benefits designed to enhance your streaming experience. Enjoy access to a range of core services and valuable resources.'}
+              description={
+                'Our Basic Membership offers essential features and benefits designed to enhance your streaming experience. Enjoy access to a range of core services and valuable resources.'
+              }
               features={BasicFeatures}
               price="$10.00"
               link="https://buy.stripe.com/test_9AQ4hW9Xy2dAbEk6op"
             />
-
           </div>
         </div>
       </main>

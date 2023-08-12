@@ -1,29 +1,42 @@
-import React, { useContext } from 'react';
-import { Fragment } from 'react'
+import { useContext, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { Popover, Transition } from '@headlessui/react'
-import { Cog6ToothIcon, ChevronDownIcon, UserCircleIcon, ArrowLeftOnRectangleIcon, WindowIcon} from '@heroicons/react/20/solid';
+import { Popover, Transition } from '@headlessui/react';
+import {
+  Cog6ToothIcon,
+  ChevronDownIcon,
+  UserCircleIcon,
+  ArrowLeftOnRectangleIcon,
+  WindowIcon,
+} from '@heroicons/react/20/solid';
 import { LoginContext } from '../../contexts/LoginContext';
 
-
-export default function accountActions({ flipColors=false }){
+export default function AccountActions({ flipColors = false }) {
   const { logout } = useContext(LoginContext);
   const nav = useNavigate();
   const accountOptions = [
-    {name: "Sign Out", icon: ArrowLeftOnRectangleIcon, action: (event) => {
-      event.preventDefault();
-      logout();
-    }},
-    {name: "Edit Account", icon: Cog6ToothIcon, action: () => nav('/account-settings')},
-    {name: "My Dashboard", icon: WindowIcon, action: () => nav('/user-dash')}
+    {
+      name: 'Sign Out',
+      icon: ArrowLeftOnRectangleIcon,
+      action: (event) => {
+        event.preventDefault();
+        logout();
+      },
+    },
+    { name: 'Edit Account', icon: Cog6ToothIcon, action: () => nav('/account-settings') },
+    { name: 'My Dashboard', icon: WindowIcon, action: () => nav('/user-dash') },
   ];
-  
 
-  return(
+  return (
     <Popover.Group className="hidden lg:flex lg:flex-1 lg:justify-end">
       <Popover className="relative">
         <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 ">
-          <UserCircleIcon className={`h-8 w-8 flex-none ${flipColors ? "text-white dark:text-slate-700" : "text-slate-700 dark:text-white"}`} aria-hidden="true"/>
+          <UserCircleIcon
+            className={`h-8 w-8 flex-none ${
+              flipColors ? 'text-white dark:text-slate-700' : 'text-slate-700 dark:text-white'
+            }`}
+            aria-hidden="true"
+          />
           <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
         </Popover.Button>
 
@@ -45,11 +58,12 @@ export default function accountActions({ flipColors=false }){
                   onClick={item.action}
                 >
                   <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                    <item.icon className="h-6 w-6 text-gray-700 group-hover:text-sky-600" aria-hidden="true" />
+                    <item.icon
+                      className="h-6 w-6 text-gray-700 group-hover:text-sky-600"
+                      aria-hidden="true"
+                    />
                   </div>
-                  <div className="flex-autos block font-semibold">
-                    {item.name}
-                  </div>
+                  <div className="flex-autos block font-semibold">{item.name}</div>
                 </div>
               ))}
             </div>
@@ -57,5 +71,9 @@ export default function accountActions({ flipColors=false }){
         </Transition>
       </Popover>
     </Popover.Group>
-  )
+  );
 }
+
+AccountActions.propTypes = {
+  flipColors: PropTypes.bool,
+};

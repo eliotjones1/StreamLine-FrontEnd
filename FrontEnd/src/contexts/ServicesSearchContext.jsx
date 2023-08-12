@@ -4,17 +4,17 @@ import axios from 'axios';
 
 export const ServicesSearchContext = createContext();
 
-export default function ServicesSearchProvider({ children }){
+export default function ServicesSearchProvider({ children }) {
   const [content, setContent] = useState([]);
   const [filteredContent, setFilteredContent] = useState([]);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState('');
 
   const fetchServices = () => {
-    axios.get(`http://127.0.0.1:8000/showServices/`).then(response => {
+    axios.get(`http://127.0.0.1:8000/showServices/`).then((response) => {
       setFilteredContent(response.data);
       setContent(response.data);
     });
-  }
+  };
 
   const updateFilter = (filterString) => {
     setFilter(filterString);
@@ -27,18 +27,21 @@ export default function ServicesSearchProvider({ children }){
       return titleLowerCase.includes(filterLowerCase);
     });
     setFilteredContent(filteredList);
-  }
+  };
 
   useEffect(() => {
     fetchServices();
-  }, [])
+  }, []);
 
   return (
-    <ServicesSearchContext.Provider value={{
-      filter,
-      updateFilter,
-      filteredContent
-    }}>
+    <ServicesSearchContext.Provider
+      value={{
+        filter,
+        updateFilter,
+        filteredContent,
+      }}
+    >
       {children}
-    </ServicesSearchContext.Provider>);
-};
+    </ServicesSearchContext.Provider>
+  );
+}

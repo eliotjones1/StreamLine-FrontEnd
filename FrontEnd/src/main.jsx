@@ -7,8 +7,8 @@ import GlobalContextWrapper from './contexts/index';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <GlobalContextWrapper> 
-      <App/>
+    <GlobalContextWrapper>
+      <App />
     </GlobalContextWrapper>
   </BrowserRouter>
 );

@@ -4,13 +4,11 @@ import { ServicesSearchContext } from '../../contexts/servicesSearchContext';
 
 export default function Content() {
   const { filteredContent } = useContext(ServicesSearchContext);
-  console.log(filteredContent )
+  console.log(filteredContent);
 
   if (filteredContent.length === 0) {
     return (
-      <p className="max-w-7xl mx-auto text-center my-20">
-        No services available with this filter.
-      </p>
+      <p className="max-w-7xl mx-auto text-center my-20">No services available with this filter.</p>
     );
   }
 
@@ -22,17 +20,14 @@ export default function Content() {
           key={index}
         >
           <a className="font-semibold space-y-2" href={service.link} target="_blank">
-            <img className="w-full object-cover cursor-pointer" src={`https://image.tmdb.org/t/p/original${service.image}`} alt={noimage} />
-            <p>
-              {service.title}
-            </p>
+            <img
+              className="w-full object-cover cursor-pointer"
+              src={`https://image.tmdb.org/t/p/original${service.image}`}
+              alt={noimage}
+            />
+            <p>{service.title}</p>
           </a>
-          {
-            service.price &&
-            <p>
-              Base Price: ${service.price}
-            </p>
-          }
+          {service.price && <p>Base Price: ${service.price}</p>}
         </div>
       ))}
     </section>

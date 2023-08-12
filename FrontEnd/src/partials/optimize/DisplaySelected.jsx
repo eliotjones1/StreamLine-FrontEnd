@@ -3,11 +3,11 @@ import { Box, IconButton, Stack, Typography } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import DefaultMovieImg from '../../images/StreamLine.jpeg';
 
-function DisplaySelected({items, onRemoveItem}) {
-  const [activeColor, setActiveColor] = useState("");
+function DisplaySelected({ items, onRemoveItem }) {
+  const [activeColor, setActiveColor] = useState('');
 
   useEffect(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setActiveColor('linear-gradient(90deg, rgba(0,183,255,1) 0%, rgba(104,94,255,1) 100%)');
     } else {
       setActiveColor('linear-gradient(90deg, rgba(30,41,59,1) 0%, rgba(0,183,255,1) 100%)');
@@ -16,9 +16,9 @@ function DisplaySelected({items, onRemoveItem}) {
 
   return (
     <div className="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white rounded-lg shadow-lg px-6 py-4 max-h-96 overflow-y-auto">
-      {items.length === 0 
-      ? ('No content selected yet.') 
-      : (
+      {items.length === 0 ? (
+        'No content selected yet.'
+      ) : (
         <Stack spacing={2}>
           {items.map((item, index) => (
             <Box
@@ -34,7 +34,13 @@ function DisplaySelected({items, onRemoveItem}) {
               }}
             >
               <div className="flex flex-row">
-                <img width="46.25" height="69.5" style={{ borderRadius: '10%' }} src={`https://image.tmdb.org/t/p/w185${item.poster_path}`} alt={DefaultMovieImg}/>
+                <img
+                  width="46.25"
+                  height="69.5"
+                  style={{ borderRadius: '10%' }}
+                  src={`https://image.tmdb.org/t/p/w185${item.poster_path}`}
+                  alt={DefaultMovieImg}
+                />
                 <div className="pl-2 text-white">
                   <Typography
                     variant="body1"
@@ -46,37 +52,27 @@ function DisplaySelected({items, onRemoveItem}) {
                     {item.title}
                   </Typography>
                   <div>
-                  {
-                    item.release_date !== null && (
-                    <Typography variant="caption">
-                      Release Date: {item.release_date}
-                    </Typography>
-                  )
-}
+                    {item.release_date !== null && (
+                      <Typography variant="caption">Release Date: {item.release_date}</Typography>
+                    )}
                   </div>
-                  {
-                    item.type !== null && (
-                    <Typography variant="caption">
-                      Type: {item.type}
-                    </Typography>
-                  )
-}
+                  {item.type !== null && (
+                    <Typography variant="caption">Type: {item.type}</Typography>
+                  )}
                 </div>
               </div>
-              {
-                onRemoveItem !== undefined && (
+              {onRemoveItem !== undefined && (
                 <div>
                   <IconButton
                     size="small"
                     edge="end"
-                    style={{ color: "white" }}
+                    style={{ color: 'white' }}
                     onClick={() => onRemoveItem(index)}
                   >
                     <CheckCircleOutlineIcon />
                   </IconButton>
                 </div>
-              )
-}
+              )}
             </Box>
           ))}
         </Stack>

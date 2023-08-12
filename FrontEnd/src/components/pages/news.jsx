@@ -1,15 +1,15 @@
 // Import Libraries
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 
 // Import Components
-import Header from "../organisms/header";
-import Footer from "../organisms/footer";
+import Header from '../organisms/header';
+import Footer from '../organisms/footer';
 import PageTopIllustration from '../organisms/pageTopIllustration';
 import PageSelection from '../organisms/pageSelection';
 
 // Import Context
-import { ModalContext } from "../../contexts/ModalContext";
+import { ModalContext } from '../../contexts/ModalContext';
 
 export default function News() {
   const [posts, setPosts] = useState([]);
@@ -19,11 +19,14 @@ export default function News() {
   const numPerPage = 6;
 
   const fetchPosts = () => {
-    axios.get('http://127.0.0.1:8000/api/newsletter/getAllPosts/').then(response => {
-      setPosts(response.data);
-    }).catch(error => {
-      setOpen500Modal(true);
-    });
+    axios
+      .get('http://127.0.0.1:8000/api/newsletter/getAllPosts/')
+      .then((response) => {
+        setPosts(response.data);
+      })
+      .catch((error) => {
+        setOpen500Modal(true);
+      });
   };
 
   useEffect(() => {
@@ -31,9 +34,9 @@ export default function News() {
   }, []);
 
   const handleChangeBaseIndex = (newBaseIndex) => {
-    if (newBaseIndex >= 0 && newBaseIndex < posts.length){
+    if (newBaseIndex >= 0 && newBaseIndex < posts.length) {
       setBaseIndex(newBaseIndex);
-      document.getElementById("scroll-target").scrollIntoView({behavior: "instant"});
+      document.getElementById('scroll-target').scrollIntoView({ behavior: 'instant' });
     }
   };
 
@@ -63,12 +66,17 @@ export default function News() {
         <div className="py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl lg:mx-0">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Content Announcements</h2>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Content Announcements
+              </h2>
               <p className="mt-2 text-lg leading-8 text-gray-600 dark:text-white">
                 Stay updated with the latest announcements from the StreamLine team!
               </p>
             </div>
-            <div id="scroll-target" className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <div
+              id="scroll-target"
+              className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+            >
               {paginatedPosts.map((post) => (
                 <article key={post.id} className="flex flex-col justify-between max-w-xl">
                   <div className="flex flex-col items-start justify-start">
@@ -79,7 +87,11 @@ export default function News() {
                       </h3>
                     </div>
                     <a href={post.href} className="relative z-10 pt-2">
-                      <img src={post.image_url} alt="" className="h-60 w-96 rounded-md overflow-hidden" />
+                      <img
+                        src={post.image_url}
+                        alt=""
+                        className="h-60 w-96 rounded-md overflow-hidden"
+                      />
                     </a>
                   </div>
                   <div className="group relative">
