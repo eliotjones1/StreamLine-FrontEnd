@@ -1,21 +1,50 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-export default function NameAndDate({ content }){
+const formatDate = (date) => {
+  return new Date(date).toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
+export default function NameAndDate({ content }) {
+  const nav = useNavigate();
+
+  const handleClick = () => {
+    nav(`/content-data/${content.media_type}/${content.id}`);
+  };
+
+  const renderDate = (label, date) => {
+    if (date) {
+      return (
+        <p className="font-thin text-sm">
+          {label}: {formatDate(date)}
+        </p>
+      );
+    }
+    return null;
+  };
+
   return (
     <>
-      <p className='font-semibold cursor-pointer' onClick={() => nav(`/content-data/${content.media_type}/${content.id}`)}>
-          {content.title || content.name}
-        </p>
-        { content.release_date && 
-          <p className='font-thin text-sm'>
-            Released: {new Date(content.release_date).toLocaleString('en-US', {year:'numeric', month:'long', day:'numeric'})}
-          </p>
-        }
-        { content.first_air_date && 
-          <p className='font-thin text-sm'>
-            First Aired: {new Date(content.first_air_date).toLocaleString('en-US', {year:'numeric', month:'long', day:'numeric'})}
-          </p>
-        }
+      <p className="font-semibold cursor-pointer" onClick={handleClick}>
+        {content.title || content.name}
+      </p>
+      {renderDate('Released', content.release_date)}
+      {renderDate('First Aired', content.first_air_date)}
     </>
   );
 }
+
+NameAndDate.propTypes = {
+  content: PropTypes.shape({
+    media_type: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    name: PropTypes.string,
+    release_date: PropTypes.string,
+    first_air_date: PropTypes.string,
+  }).isRequired,
+};
