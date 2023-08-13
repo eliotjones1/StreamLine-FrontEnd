@@ -1,24 +1,29 @@
-// Basic Imports
-import React from 'react';
-
-// Import Contexts
+import PropTypes from 'prop-types';
 import LoginProvider from './LoginContext';
 import SearchProvider from './SearchContext';
 import ServicesSearchProvider from './servicesSearchContext';
 import ModalProvider from './ModalContext';
-import TMDBProvider from './tmdbContext';
+import APIProvider from './api';
 
-export default function GlobalContextWrapper({ children }) {
-  //element to wrap all context
+function GlobalContextWrapper({ children }) {
   return (
     <LoginProvider>
       <ModalProvider>
         <SearchProvider>
           <ServicesSearchProvider>
-            <TMDBProvider>{children}</TMDBProvider>
+            <APIProvider>
+              {children}
+            </APIProvider>
           </ServicesSearchProvider>
         </SearchProvider>
       </ModalProvider>
     </LoginProvider>
   );
 }
+
+GlobalContextWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default GlobalContextWrapper;
+

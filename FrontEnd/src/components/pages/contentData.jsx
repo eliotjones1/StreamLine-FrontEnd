@@ -11,17 +11,14 @@ import CastSlider from '../molecules/castSlider';
 import TrailerIFrame from '../atoms/trailer';
 import { LoginContext } from '../../contexts/LoginContext';
 import { ModalContext } from '../../contexts/ModalContext';
-import { TMDBContext } from '../../contexts/tmdbContext';
+import { APIContext } from '../../contexts/api';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Detail() {
-  const { fetchContentData, fetchCast, fetchVideo } = useContext(TMDBContext);
+  const { fetchContentData } = useContext(APIContext);
   const { isLoggedIn } = useContext(LoginContext);
   const { setOpen500Modal } = useContext(ModalContext);
   const { type, id } = useParams();
-
-  const [contentDetails, setContentDetails] = useState({});
-  const [contentVideos, setContentVideos] = useState([]);
-  const [contentCastCrew, setContentCastCrew] = useState({});
   const [inList, setInList] = useState(false);
 
   const onList = async () => {
@@ -79,22 +76,21 @@ export default function Detail() {
     </Tooltip>
   );
 
-  useEffect(() => {
-    fetchCast(type, id).then((data) => {
-      setContentCastCrew(data);
-    });
-    fetchVideo(type, id).then((data) => {
-      setContentVideos(data);
-    });
-    fetchContentData(type, id).then((data) => {
-      setContentDetails(data);
-    });
-    onList();
-  }, []);
+  const {
+    status,
+    error,
+    data: content,
+  } = useQuery({
+    queryKey: ["media_content", type, id],
+    queryFn: () => fetchContentData(type, id),
+  });
 
-  if (Object.keys(contentDetails).length === 0) {
-    return <></>;
-  }
+  useEffect(() => {
+    onList();
+  }, [])
+
+  if (status === "loading") return <></>;
+  if (status === "error") return <p>{JSON.stringify(error)}</p>;
 
   return (
     <div>
@@ -108,7 +104,7 @@ export default function Detail() {
               <div className="absolute inset-0 bg-slate-900 opacity-80"></div>
               <img
                 className="object-cover object-top w-full h-[40rem]"
-                src={`https://image.tmdb.org/t/p/original/${contentDetails.backdrop_path}`}
+                src={`https://image.tmdb.org/t/p/original/${content.data.backdrop_path}`}
               />
             </div>
           </div>
@@ -117,22 +113,22 @@ export default function Detail() {
           <div className="relative z-10 flex max-w-5xl mx-auto space-x-6 text-white h-[40rem] justify-center items-center">
             <img
               className="h-[32rem] rounded-3xl"
-              src={`https://image.tmdb.org/t/p/original/${contentDetails.poster_path}`}
+              src={`https://image.tmdb.org/t/p/original/${content.data.poster_path}`}
             />
             <div className="w-full relative flex-auto">
               <div className="flex items-center space-x-1">
                 <p className="font-bold truncate text-4xl">
-                  {contentDetails.title || contentDetails.name}
+                  {content.data.title || content.data.name}
                 </p>
-                <a href={contentDetails.homepage} target="_blank" rel="noopener noreferrer">
+                <a href={content.data.homepage} target="_blank" rel="noopener noreferrer">
                   <LinkIcon className="h-8 hover:text-sky-600 cursor-pointer text-slate-400" />
                 </a>
               </div>
 
-              <p className="font-thin italic truncate pb-4">{contentDetails.tagline}</p>
+              <p className="font-thin italic truncate pb-4">{content.data.tagline}</p>
 
               <div className="flex mb-4">
-                {contentDetails.genres.map((genre, index) => (
+                {content.data.genres.map((genre, index) => (
                   <div className="flex items-center" key={index}>
                     {index !== 0 && (
                       <svg
@@ -153,19 +149,19 @@ export default function Detail() {
               </div>
 
               <div className="flex items-center space-x-1 mb-4">
-                {contentDetails.release_date && (
+                {content.data.release_date && (
                   <p className="font-thin text-sm">
                     (
-                    {new Date(contentDetails.release_date).toLocaleString('en-US', {
+                    {new Date(content.data.release_date).toLocaleString('en-US', {
                       year: 'numeric',
                     })}
                     )
                   </p>
                 )}
-                {contentDetails.first_air_date && (
+                {content.data.first_air_date && (
                   <p className="font-thin text-sm">
                     (
-                    {new Date(contentDetails.first_air_date).toLocaleString('en-US', {
+                    {new Date(content.data.first_air_date).toLocaleString('en-US', {
                       year: 'numeric',
                     })}
                     )
@@ -180,12 +176,12 @@ export default function Detail() {
                 >
                   <circle cx="1" cy="1" r="1" />
                 </svg>
-                {contentDetails.episode_run_time && <p>Episode Avg</p>}
+                {content.data.episode_run_time && <p>Episode Avg</p>}
                 <ClockIcon className="h-4" />
-                {contentDetails.episode_run_time && contentDetails.episode_run_time.length > 0 ? (
-                  <p>{contentDetails.episode_run_time[0]}mins</p>
+                {content.data.episode_run_time && content.data.episode_run_time.length > 0 ? (
+                  <p>{content.data.episode_run_time[0]}mins</p>
                 ) : (
-                  <p>{contentDetails.runtime}mins</p>
+                  <p>{content.data.runtime}mins</p>
                 )}
               </div>
 
@@ -207,7 +203,7 @@ export default function Detail() {
               <div className="mt-2 flex-rows flex-wrap text-sm leading-6 font-medium">
                 <div className="w-full font-normal">
                   <p className="font-semibold text-xl mb-2">Overview</p>
-                  {contentDetails.overview}
+                  {content.data.overview}
                 </div>
               </div>
             </div>
@@ -217,16 +213,16 @@ export default function Detail() {
         <section className="mx-auto my-6 grid max-w-7xl gap-x-8 gap-y-8 grid-cols-4 grid-rows-[auto, auto] items-start">
           <div className="col-start-4 row-span-2 p-4 space-y-4 overflow-scroll max-h-screen">
             <h2 className="text-3xl font-bold truncate">Information</h2>
-            <MediaInfo info={contentDetails} />
+            <MediaInfo info={content.data} />
           </div>
           <div className="col-start-1 col-span-3 row-start-1">
             <h2 className="text-2xl font-bold mb-4">Cast</h2>
-            <CastSlider castCrew={contentCastCrew.cast} />
+            <CastSlider castCrew={content.cast} />
           </div>
           <div className="col-start-1 col-span-3 row-start-2">
             <h2 className="text-2xl font-bold mb-4">Trailers</h2>
             <div className="flex overflow-x-auto">
-              {contentVideos.map((trailer, index) => {
+              {content.video.map((trailer, index) => {
                 if (trailer.type === 'Trailer') {
                   return (
                     <TrailerIFrame

@@ -1,17 +1,17 @@
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 import ContentSlider from '../molecules/contentSlider';
 import { ModalContext } from '../../contexts/ModalContext';
-import { TMDBContext } from '../../contexts/tmdbContext';
+import { APIContext } from '../../contexts/api';
 
 export default function Content() {
-  const [trending, setTrending] = useState([]);
   const [newlyReleased, setNewlyReleased] = useState([]);
   const [staffPicks, setStaffPicks] = useState([]);
   const { setOpen500Modal } = useContext(ModalContext);
-  const { fetchTrendingContent } = useContext(TMDBContext);
+  const { fetchTrendingContent } = useContext(APIContext);
 
   const fetchNewlyReleased = async () => {
     try {
@@ -31,15 +31,17 @@ export default function Content() {
     }
   };
 
-  const loadData = async () => {
-    setTrending(await fetchTrendingContent());
-    fetchStaffPicks();
-    fetchNewlyReleased();
-  }
+  const {
+    status,
+    error,
+    data: trending,
+  } = useQuery({
+    queryKey: ["trending_content"],
+    queryFn: () => fetchTrendingContent(),
+  });
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  if (status === "loading") return <></>;
+  if (status === "error") return <p>{JSON.stringify(error)}</p>;
 
   return (
     <div className="max-w-7xl mx-auto relative z-0">

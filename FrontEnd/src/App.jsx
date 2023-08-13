@@ -1,13 +1,7 @@
-// Basic Imports
-import { useContext, useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import AOS from 'aos';
-
-// Import CSS
-import 'aos/dist/aos.css';
+import { useEffect } from 'react';
+import ProtectedRoutes from './components/protected-route';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import './css/style.css';
-
-// Import Pages
 import Home from './components/pages/home';
 import SignIn from './components/pages/signIn';
 import SignUp from './components/pages/signUp';
@@ -27,21 +21,8 @@ import ContactSupport from './components/pages/contactSupport';
 import VirtualCableBox from './components/pages/virtualCableBox';
 import ServicesSearch from './components/pages/servicesSearch';
 
-// Import Context
-import { LoginContext } from './contexts/LoginContext';
-
 export default function App() {
   const location = useLocation();
-  const { isLoggedIn } = useContext(LoginContext);
-
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      disable: 'phone',
-      duration: 600,
-      easing: 'ease-out-sine',
-    });
-  }, []);
 
   useEffect(() => {
     document.querySelector('html').style.scrollBehavior = 'auto';
@@ -49,41 +30,32 @@ export default function App() {
     document.querySelector('html').style.scrollBehavior = '';
   }, [location.pathname]);
 
-  const routes = [
-    { path: '/', component: Home },
-    { path: '/signin', component: SignIn },
-    { path: '/signup', component: SignUp },
-    { path: '/reset-password', component: ResetPassword },
-    { path: '/bundles', component: Bundles },
-    { path: '/support', component: ContactSupport },
-    { path: '/pricing', component: Pricing },
-    { path: '/news', component: News },
-    { path: '/about-us', component: AboutUs },
-    { path: '/new-sub', component: NewSub },
-    { path: '/content-search', component: ContentSearch },
-    { path: '/content-data/:type/:id/', component: ContentData },
-    { path: '/services-search', component: ServicesSearch },
-  ];
-
-  const protectedRoutes = [
-    { path: '/user-dash', component: UserDash },
-    { path: '/account-settings', component: AccountInfo },
-    { path: '/secure-reset', component: SecureReset },
-    { path: '/virtual-cable-box', component: VirtualCableBox },
-  ];
-
   return (
     <Routes>
-      {routes.map((route) => (
-        <Route key={route.path} path={route.path} element={<route.component />} />
-      ))}
-      {protectedRoutes.map((route) => (
-        <Route
-          key={route.path}
-          path={route.path}
-          element={isLoggedIn ? <route.component /> : <Navigate to="/signin" />}
-        />
-      ))}
+      {/* Public Routes */}
+      <Route path="/" element={<Home />}/>
+      <Route path="/signin" element={<SignIn />}/>
+      <Route path="/signup" element={<SignUp />}/>
+      <Route path="/reset-password" element={<ResetPassword />}/>
+      <Route path="/bundles" element={<Bundles />}/>
+      <Route path="/support" element={<ContactSupport />}/>
+      <Route path="/pricing" element={<Pricing />}/>
+      <Route path="/news" element={<News />}/>
+      <Route path="/about-us" element={<AboutUs />}/>
+      <Route path="/new-sub" element={<NewSub />}/>
+      <Route path="/content-search" element={<ContentSearch />}/>
+      <Route path="/content-data/:type/:id" element={<ContentData />}/>
+      <Route path="/services-search" element={<ServicesSearch />}/>
+
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/user-dash" element={<UserDash />}/>
+        <Route path="/account-settings" element={<AccountInfo />}/>
+        <Route path="/secure-reset" element={<SecureReset />}/>
+        <Route path="/virtual-cable-box" element={<VirtualCableBox />}/>
+      </Route>
+
+      {/* 404: Catch Routes Not Found */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import ButtonAndArrowBtn from '../molecules/buttonAndArrowBtn';
 
-export default function CTA({ arrowBtnText, newNavURL }) {
+function CTA({ arrowBtnText, newNavURL }) {
   return (
     <section className="mx-auto dark:text-slate-900 max-w-7xl my-16">
       <div className="relative isolate overflow-hidden bg-slate-900 dark:bg-white px-6 pt-16 pb-10 shadow-2xl rounded-3xl">
@@ -36,3 +37,11 @@ export default function CTA({ arrowBtnText, newNavURL }) {
     </section>
   );
 }
+
+CTA.propTypes = {
+  arrowBtnText: PropTypes.string.isRequired,
+  newNavURL: PropTypes.string.isRequired,
+};
+
+export default CTA;
+

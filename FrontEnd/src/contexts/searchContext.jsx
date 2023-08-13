@@ -17,8 +17,6 @@ export default function SearchProvider({ children }) {
     setShowDefault(false);
   };
 
-  
-
   const returnToMain = () => {
     setShowDefault(true);
   };

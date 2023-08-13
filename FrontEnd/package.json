@@ -17,6 +17,8 @@
     "@stripe/react-stripe-js": "^2.1.1",
     "@stripe/stripe-js": "^1.54.1",
     "@tailwindcss/forms": "^0.5.3",
+    "@tanstack/react-query": "^4.32.6",
+    "@tanstack/react-query-devtools": "^4.32.6",
     "aos": "^3.0.0-beta.6",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
 import { ModalContext } from '../../contexts/ModalContext';
@@ -14,7 +14,7 @@ export default function ScrollableSubscription() {
       .then((response) => {
         setSubscriptions(response.data);
       })
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
   };
@@ -25,7 +25,7 @@ export default function ScrollableSubscription() {
       .then((response) => {
         setBudget(response.data.budget);
       })
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
   };
