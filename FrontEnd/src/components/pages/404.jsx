@@ -1,6 +1,3 @@
-import React from 'react';
-
-// Import Templates
 import ErrorPage from '../templates/errorPage';
 
 export default function NotFound() {

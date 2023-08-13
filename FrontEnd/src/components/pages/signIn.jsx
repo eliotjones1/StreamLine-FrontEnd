@@ -1,11 +1,6 @@
-// Basic Imports
-import React, { useContext, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// Component Imports
 import Header from '../organisms/header';
-
-// Context Imports
 import { LoginContext } from '../../contexts/LoginContext';
 
 export default function SignIn() {
@@ -51,7 +46,7 @@ export default function SignIn() {
                         placeholder="Email Address"
                         ref={email}
                         required
-                        className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900"
+                        className="form-input"
                       />
                     </div>
                   </div>
@@ -69,7 +64,7 @@ export default function SignIn() {
                         placeholder="Password"
                         ref={password}
                         required
-                        className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900"
+                        className="form-input"
                       />
                     </div>
                   </div>
@@ -89,7 +84,7 @@ export default function SignIn() {
                         <button
                           type="button"
                           onClick={() => nav('/reset-password')}
-                          className="text-sky-600 hover:text-sky-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
+                          className="text-link"
                         >
                           Forgot Password?
                         </button>
@@ -99,7 +94,7 @@ export default function SignIn() {
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
                       <button
-                        className="btn text-white bg-sky-600 rounded-md hover:bg-sky-700 w-full"
+                        className="colored-sky-btn w-full"
                         type="submit"
                       >
                         Sign in
@@ -112,7 +107,7 @@ export default function SignIn() {
                   <button
                     type="button"
                     onClick={() => nav('/signup')}
-                    className="text-sky-600 hover:text-sky-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
+                    className="text-link"
                   >
                     {' '}
                     Sign up

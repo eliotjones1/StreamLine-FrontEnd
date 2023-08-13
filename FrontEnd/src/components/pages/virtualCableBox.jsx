@@ -1,17 +1,13 @@
-// Import Libraries
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-
-// Import Components
 import ContentSlider from '../molecules/contentSlider';
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
-
 import { ModalContext } from '../../contexts/ModalContext';
 
 export default function CableBox() {
   const [myList, setMyList] = useState([]);
-  const [services, setServices] = useState([]);
+  //const [services, setServices] = useState([]);
   const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
   const { setOpen500Modal } = useContext(ModalContext);
 
@@ -39,7 +35,7 @@ export default function CableBox() {
     }
   };
 
-  const fetchRecs = () => {
+  /*const fetchRecs = () => {
     // Get recs here: change link accordingly ##### NEED TO GENERATE DATA TO TEST ####
     axios
       .get('http://127.0.0.1:8000/api/recommendations/getRecommendations/', {
@@ -47,16 +43,16 @@ export default function CableBox() {
       })
       .then((response) => {
         console.log(response.data);
-        setServices(/*Something here not sure your response structure. */);
+        setServices(response.data);
       })
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
-  };
+  };*/
 
   useEffect(() => {
     fetchMyList();
-    fetchRecs();
+    //fetchRecs();
   }, []);
 
   return (
@@ -77,7 +73,7 @@ export default function CableBox() {
             <p className="font-bold pb-2 text-3xl">My List</p>
             <ContentSlider mediaContent={myList} />
           </div>
-          {services.map((service) => (
+          {/*services.map((service) => (
             <div className="pb-4" key={service}>
               <a className="flex pb-2" href={service.web_link} target="_blank" rel="noreferrer">
                 <img src={service.logo_link} className="w-12 h-12 rounded-full" />
@@ -85,7 +81,7 @@ export default function CableBox() {
               </a>
               <ContentSlider mediaContent={service.reccomendations} />
             </div>
-          ))}
+          ))*/}
         </section>
       </main>
       <Footer />

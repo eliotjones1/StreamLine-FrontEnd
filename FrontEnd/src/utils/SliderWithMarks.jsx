@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Slider } from '@mui/material';
 // Marks from 1-10 step 1
 

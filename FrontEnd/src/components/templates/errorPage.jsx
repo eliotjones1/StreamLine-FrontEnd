@@ -1,6 +1,4 @@
-import React from 'react';
-
-// Import Molecules
+import PropTypes from 'prop-types';
 import ButtonAndArrowBtn from '../molecules/buttonAndArrowBtn';
 
 export default function NotFound({ errNum, errName, errMessage }) {
@@ -19,3 +17,9 @@ export default function NotFound({ errNum, errName, errMessage }) {
     </div>
   );
 }
+
+NotFound.propTypes = {
+  errNum: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  errName: PropTypes.string.isRequired,
+  errMessage: PropTypes.string,
+};

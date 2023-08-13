@@ -1,17 +1,10 @@
-// Import Libraries
-import React from 'react';
-
 import noimage from '../../images/no-image.jpg';
-
-// Import Components
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
 import Story from '../organisms/story';
 import Founders from '../organisms/founders';
 import CTA from '../organisms/cta';
 import TextSection from '../organisms/textSection';
-
-// Import Templates
 import TwoColumnGrid from '../templates/twoColumnSection';
 
 export default function AboutUs() {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import noimage from '../../images/no-image.jpg';
 import { ServicesSearchContext } from '../../contexts/servicesSearchContext';
 

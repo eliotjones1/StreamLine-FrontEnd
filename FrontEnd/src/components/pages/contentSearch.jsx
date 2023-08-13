@@ -1,14 +1,9 @@
-// Imports Libraries
-import React, { useContext } from 'react';
-
-// Import Components
+import { useContext } from 'react';
 import DefaultContent from '../organisms/defaultContent';
 import SearchContent from '../organisms/searchContent';
 import Searchbar from '../organisms/searchBar';
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
-
-// Import Contexts
 import { SearchContext } from '../../contexts/SearchContext';
 
 export default function ContentSearch() {

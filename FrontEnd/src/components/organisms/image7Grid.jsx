@@ -1,6 +1,3 @@
-import React from 'react';
-
-// Import Molecules
 import ImageContainer from '../molecules/imageContainer';
 
 const images = [
@@ -45,7 +42,7 @@ export default function Image7Grid() {
                 key={index}
                 src={image.src}
                 alt={image.alt}
-                classNameMods={index === 0 ? 'self-end' : 'self-start'}
+                classNameMods={index === 0 ? 'items-end' : 'items-start'}
               />
             ))}
           </div>
@@ -62,7 +59,7 @@ export default function Image7Grid() {
                 key={index}
                 src={image.src}
                 alt={image.alt}
-                classNameMods={index === 0 ? 'self-end' : 'self-start'}
+                classNameMods={index === 0 ? 'items-end' : 'items-start'}
               />
             ))}
           </div>

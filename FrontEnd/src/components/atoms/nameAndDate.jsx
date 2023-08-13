@@ -9,7 +9,7 @@ const formatDate = (date) => {
   });
 };
 
-export default function NameAndDate({ content }) {
+export default function NameAndDate({ content, classNameMods }) {
   const nav = useNavigate();
 
   const handleClick = () => {
@@ -28,13 +28,13 @@ export default function NameAndDate({ content }) {
   };
 
   return (
-    <>
+    <div className={`${classNameMods}`}>
       <p className="font-semibold cursor-pointer" onClick={handleClick}>
         {content.title || content.name}
       </p>
       {renderDate('Released', content.release_date)}
       {renderDate('First Aired', content.first_air_date)}
-    </>
+    </div>
   );
 }
 
@@ -47,4 +47,5 @@ NameAndDate.propTypes = {
     release_date: PropTypes.string,
     first_air_date: PropTypes.string,
   }).isRequired,
+  classNameMods: PropTypes.string
 };

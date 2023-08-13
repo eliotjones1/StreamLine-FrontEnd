@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
 
 import axios from 'axios';
@@ -62,7 +62,7 @@ export default function EditAccount() {
           sameSite: 'strict',
         });
       })
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
   }
@@ -86,7 +86,7 @@ export default function EditAccount() {
           Push_Notifications: response.data.Push_Notifications,
         });
       })
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
   }
@@ -105,10 +105,10 @@ export default function EditAccount() {
   function handleConfirmDelete() {
     axios
       .post('http://127.0.0.1:8000/api/user/settings/delete/', [], { withCredentials: true })
-      .then((response) => {
+      .then(() => {
         logout();
       })
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
   }
@@ -292,7 +292,7 @@ export default function EditAccount() {
               <div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
                 <h2 className="text-base font-semibold leading-7">Notifications</h2>
                 <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
-                  We'll always let you know about important changes, but you pick what else you want
+                  We&apos;ll always let you know about important changes, but you pick what else you want
                   to hear about.
                 </p>
 

@@ -1,6 +1,6 @@
-// Import Libraries
-import React, { createContext, useState } from 'react';
-import axios from 'axios';
+import { createContext, useState } from 'react';
+//import axios from 'axios';
+import { axiosWithCache } from '../axiosConfig';
 
 export const SearchContext = createContext();
 
@@ -9,13 +9,15 @@ export default function SearchProvider({ children }) {
   const [content, setContent] = useState([]);
   const [lastSearch, setLastSearch] = useState('');
 
-  const fetchSearch = (query) => {
-    axios.get(`http://127.0.0.1:8000/search/all/?search=${query}`).then((response) => {
-      setContent(response.data);
-      setLastSearch(query);
-      setShowDefault(false);
-    });
+  const fetchSearch = async (query) => {
+    const response = await axiosWithCache.get(`http://127.0.0.1:8000/search/all/?search=${query}`, {withCredentials: true});
+    console.log(response);
+    setContent(response.data);
+    setLastSearch(query);
+    setShowDefault(false);
   };
+
+  
 
   const returnToMain = () => {
     setShowDefault(true);

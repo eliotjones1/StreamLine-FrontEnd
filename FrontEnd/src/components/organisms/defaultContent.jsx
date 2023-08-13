@@ -1,60 +1,44 @@
-// Import Libraries
-import React, { useState, useEffect, useContext } from 'react';
-import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
+
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
-// Import Components
 import ContentSlider from '../molecules/contentSlider';
 import { ModalContext } from '../../contexts/ModalContext';
+import { TMDBContext } from '../../contexts/tmdbContext';
 
-const queryClient = new QueryClient();
-
-function Content() {
-  const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
+export default function Content() {
   const [trending, setTrending] = useState([]);
+  const [newlyReleased, setNewlyReleased] = useState([]);
+  const [staffPicks, setStaffPicks] = useState([]);
   const { setOpen500Modal } = useContext(ModalContext);
+  const { fetchTrendingContent } = useContext(TMDBContext);
 
-  const fetchTrending = () => {
-    axios
-      .get(
-        `https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=US`
-      )
-      .then((response) => {
-        setTrending(response.data.results);
-      })
-      .catch((error) => {
-        setOpen500Modal(true);
-      });
+  const fetchNewlyReleased = async () => {
+    try {
+      const { data } = await axios.get('http://127.0.0.1:8000/recent/');
+      setNewlyReleased(data);
+    } catch (error) {
+      setOpen500Modal(true);
+    }
   };
 
-  const fetchNewlyReleased = () => {
-    return axios
-      .get('http://127.0.0.1:8000/recent/')
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        setOpen500Modal(true);
-        return Promise.reject(error);
-      });
+  const fetchStaffPicks = async () => {
+    try {
+      const { data } = await axios.get('http://127.0.0.1:8000/staffpicks/');
+      setStaffPicks(data);
+    } catch (error) {
+      setOpen500Modal(true);
+    }
   };
-  const { data: newlyReleased } = useQuery('newlyReleased', fetchNewlyReleased);
 
-  const fetchStaffPicks = () => {
-    return axios
-      .get('http://127.0.0.1:8000/staffpicks/')
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        setOpen500Modal(true);
-        return Promise.reject(error);
-      });
-  };
-  const { data: staffPicks } = useQuery('staffPicks', fetchStaffPicks);
+  const loadData = async () => {
+    setTrending(await fetchTrendingContent());
+    fetchStaffPicks();
+    fetchNewlyReleased();
+  }
 
   useEffect(() => {
-    fetchTrending();
+    loadData();
   }, []);
 
   return (
@@ -63,26 +47,14 @@ function Content() {
         <p className="font-bold pb-2 text-2xl">Trending Content</p>
         <ContentSlider mediaContent={trending} />
       </div>
-      {newlyReleased !== undefined && (
-        <div className="pb-2">
-          <p className="font-bold pb-2 text-2xl">Newly Released</p>
-          <ContentSlider mediaContent={newlyReleased} />
-        </div>
-      )}
-      {staffPicks !== undefined && (
-        <div className="pb-2">
-          <p className="font-bold pb-2 text-2xl">Staff Picks</p>
-          <ContentSlider mediaContent={staffPicks} />
-        </div>
-      )}
+      <div className="pb-2">
+        <p className="font-bold pb-2 text-2xl">Newly Released</p>
+        <ContentSlider mediaContent={newlyReleased} />
+      </div>
+      <div className="pb-2">
+        <p className="font-bold pb-2 text-2xl">Staff Picks</p>
+        <ContentSlider mediaContent={staffPicks} />
+      </div>
     </div>
-  );
-}
-
-export default function cacheWrapped() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Content />
-    </QueryClientProvider>
   );
 }

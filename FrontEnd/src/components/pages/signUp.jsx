@@ -1,11 +1,6 @@
-// Import Libraries
-import React, { useContext, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// Import Components
 import Header from '../organisms/header';
-
-// Import Contexts
 import { LoginContext } from '../../contexts/LoginContext';
 
 export default function SignUp() {
@@ -45,7 +40,7 @@ export default function SignUp() {
             <div className="max-w-sm mx-auto">
               <form onSubmit={confirmPasswordMatch}>
                 <div className="flex flex-wrap -mx-3 mb-4">
-                  <div className="flex flex-row w-full px-3">
+                  <div className="flex flex-row w-full px-3 space-x-2">
                     <div className="flex flex-col">
                       <label
                         className="block text-slate-800 dark:text-gray-300 text-sm font-medium mb-1"
@@ -58,7 +53,7 @@ export default function SignUp() {
                         ref={firstName}
                         placeholder="First Name"
                         required
-                        className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900"
+                        className="form-input"
                       />
                     </div>
                     <div className="flex flex-col">
@@ -73,7 +68,7 @@ export default function SignUp() {
                         ref={lastName}
                         placeholder="Last Name"
                         required
-                        className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900"
+                        className="form-input"
                       />
                     </div>
                   </div>
@@ -91,7 +86,7 @@ export default function SignUp() {
                       ref={email}
                       placeholder="Email Address"
                       required
-                      className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900"
+                      className="form-input"
                     />
                   </div>
                 </div>
@@ -109,7 +104,7 @@ export default function SignUp() {
                       placeholder="Password"
                       minLength={8}
                       required
-                      className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900"
+                      className="form-input"
                     />
                   </div>
                 </div>
@@ -127,7 +122,7 @@ export default function SignUp() {
                       placeholder="Password"
                       minLength="8"
                       required
-                      className="form-input w-full text-slate-800 dark:text-gray-300 bg-slate-100 dark:bg-slate-900"
+                      className="form-input"
                     />
                   </div>
                 </div>
@@ -145,7 +140,7 @@ export default function SignUp() {
                   <div className="w-full px-3">
                     <button
                       type="submit"
-                      className="btn text-white bg-sky-600 hover:bg-sky-700 w-full"
+                      className="colored-sky-btn w-full"
                     >
                       Sign up
                     </button>
@@ -156,7 +151,7 @@ export default function SignUp() {
                 Already using StreamLine?{' '}
                 <button
                   onClick={() => nav('/signin')}
-                  className="text-sky-600 hover:text-sky-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
+                  className="text-link"
                 >
                   Sign In
                 </button>

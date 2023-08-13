@@ -1,12 +1,7 @@
-// Import Libraries
-import React, { useContext, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-// Import Components
 import Header from '../organisms/header';
-
-// Import Contexts
 import { ModalContext } from '../../contexts/ModalContext';
 
 function ResetPassword() {
@@ -22,10 +17,10 @@ function ResetPassword() {
         { email: email.current.value },
         { withCredentials: true }
       )
-      .then((response) => {
+      .then(() => {
         nav('/signin');
       })
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
   };

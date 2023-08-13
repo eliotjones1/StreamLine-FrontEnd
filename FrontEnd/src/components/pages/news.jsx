@@ -1,14 +1,9 @@
-// Import Libraries
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-
-// Import Components
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
 import PageTopIllustration from '../organisms/pageTopIllustration';
 import PageSelection from '../organisms/pageSelection';
-
-// Import Context
 import { ModalContext } from '../../contexts/ModalContext';
 
 export default function News() {
@@ -24,7 +19,7 @@ export default function News() {
       .then((response) => {
         setPosts(response.data);
       })
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
   };

@@ -1,9 +1,10 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
 export const TMDBContext = createContext();
 
-export default function TMDBProvider({ children }) {
+function TMDBProvider({ children }) {
   const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
 
   const fetchContentData = async (type, id) => {
@@ -12,6 +13,11 @@ export default function TMDBProvider({ children }) {
       id: id,
     });
     return data;
+  };
+
+  const fetchTrendingContent = async () => {
+    const { data } = await axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=US`);
+    return data.results;
   };
 
   const fetchCast = async (type, id) => {
@@ -34,6 +40,7 @@ export default function TMDBProvider({ children }) {
         APIKEY,
         fetchCast,
         fetchContentData,
+        fetchTrendingContent,
         fetchVideo,
       }}
     >
@@ -41,3 +48,9 @@ export default function TMDBProvider({ children }) {
     </TMDBContext.Provider>
   );
 }
+
+TMDBProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default TMDBProvider;

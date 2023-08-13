@@ -1,26 +1,26 @@
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { axiosNoCache } from '../axiosConfig';
 
 export const LoginContext = createContext();
 
 export default function LoginProvider({ children }) {
   const nav = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    axios.get('http://127.0.0.1:8000/isAuthenticated/', { withCredentials: true }).then(() => {
+    axiosNoCache.get('http://127.0.0.1:8000/isAuthenticated/', { withCredentials: true }).then(() => {
       setIsLoggedIn(true);
     });
   });
 
   const signUp = async (userData) => {
-    await axios.post('http://127.0.0.1:8000/api/auth/register', userData, {
+    await axiosNoCache.post('http://127.0.0.1:8000/api/auth/register', userData, {
       withCredentials: true,
     });
     login(userData);
   };
 
   const login = async (userData) => {
-    const { data } = await axios.post('http://127.0.0.1:8000/api/auth/login', userData, {
+    await axiosNoCache.post('http://127.0.0.1:8000/api/auth/login', userData, {
       withCredentials: true,
     });
     setIsLoggedIn(true);
@@ -28,7 +28,7 @@ export default function LoginProvider({ children }) {
   };
 
   const logout = async () => {
-    await axios.post('http://127.0.0.1:8000/api/auth/logout', {}, { withCredentials: true });
+    await axiosNoCache.post('http://127.0.0.1:8000/api/auth/logout', {}, { withCredentials: true });
     setIsLoggedIn(false);
     nav('/');
   };

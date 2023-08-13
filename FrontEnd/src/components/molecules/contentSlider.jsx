@@ -8,9 +8,7 @@ function ContentSlider({ mediaContent }) {
       {mediaContent.map((content, index) => (
         <div className="w-44" key={index}>
           <ContentCard content={content} />
-          <div className="py-3">
-            <NameAndDate content={content} />
-          </div>
+          <NameAndDate content={content} classNameMods={"py-3"} />
         </div>
       ))}
     </div>

@@ -24,6 +24,6 @@ ContentCard.propTypes = {
   content: PropTypes.shape({
     poster_path: PropTypes.string,
     media_type: PropTypes.string,
-    id: PropTypes.string,
+    id: PropTypes.number,
   }).isRequired,
 };

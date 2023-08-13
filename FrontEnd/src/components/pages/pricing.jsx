@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
 import PageTopIllustration from '../organisms/pageTopIllustration';

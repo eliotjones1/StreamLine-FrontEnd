@@ -1,4 +1,3 @@
-import React from 'react';
 import Form from '../organisms/supportForm';
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';

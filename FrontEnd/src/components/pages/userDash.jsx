@@ -1,6 +1,3 @@
-import React from 'react';
-
-// Import Components
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
 import CurrentSubsriptions from '../organisms/currentSubs';

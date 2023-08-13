@@ -1,8 +1,5 @@
-// Import Libraries
-import React, { useContext, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import axios from 'axios';
-
-// Import Contexts
 import { ModalContext } from '../../contexts/ModalContext';
 
 export default function Newsletter() {
@@ -17,7 +14,7 @@ export default function Newsletter() {
         { email: inputEmail.current.value },
         { withCredentials: true }
       )
-      .catch((error) => {
+      .catch(() => {
         setOpen500Modal(true);
       });
     inputEmail.current.value = '';
@@ -44,7 +41,7 @@ export default function Newsletter() {
               placeholder="Enter your email"
               ref={inputEmail}
               required
-              className="min-w-0 flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+              className="form-input"
             />
             <button type="submit" className="colored-sky-btn">
               Subscribe

@@ -1,7 +1,3 @@
-// Imports Libraries
-import React from 'react';
-
-// Import Components
 import AllSubs from '../organisms/allSubs';
 import Searchbar from '../organisms/filterBar';
 import Header from '../organisms/header';

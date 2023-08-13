@@ -1,6 +1,6 @@
 // Basic Imports
-import React, { useContext, useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import AOS from 'aos';
 
 // Import CSS
@@ -32,7 +32,6 @@ import { LoginContext } from './contexts/LoginContext';
 
 export default function App() {
   const location = useLocation();
-  const nav = useNavigate();
   const { isLoggedIn } = useContext(LoginContext);
 
   useEffect(() => {

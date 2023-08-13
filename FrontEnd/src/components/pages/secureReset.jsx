@@ -1,5 +1,4 @@
-// Import Libraries
-import React, { useContext, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ModalContext } from '../../contexts/ModalContext';
@@ -12,7 +11,7 @@ export default function ResetPassword() {
 
   const reset_pwd = async (event) => {
     event.preventDefault();
-    if (pswd !== confirm_pswd) {
+    if (password !== confirm_pswd) {
       alert('Passwords do not match!');
     } else {
       let data = {
@@ -24,7 +23,7 @@ export default function ResetPassword() {
         .then(() => {
           nav('/signin');
         })
-        .catch((error) => {
+        .catch(() => {
           setOpen500Modal(true);
         });
     }

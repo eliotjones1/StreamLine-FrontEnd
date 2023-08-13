@@ -1,11 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-
 import ButtonAndArrowBtn from '../molecules/buttonAndArrowBtn';
 
 export default function CTA({ arrowBtnText, newNavURL }) {
-  const nav = useNavigate();
-
   return (
     <section className="mx-auto dark:text-slate-900 max-w-7xl my-16">
       <div className="relative isolate overflow-hidden bg-slate-900 dark:bg-white px-6 pt-16 pb-10 shadow-2xl rounded-3xl">

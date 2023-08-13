@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo, useEffect } from 'react';
+import { useContext, useState, useMemo, useEffect } from 'react';
 import Autosuggest from 'react-autosuggest';
 import Fuse from 'fuse.js';
 import axios from 'axios';
@@ -12,18 +12,14 @@ export default function Searchbar() {
   const [suggestions, setSuggestions] = useState([]);
   const [autosuggestions, setAutoSuggestions] = useState([]);
 
-  const fetchAutoSuggestions = () => {
-    setAutoSuggestions(['Star Wars', 'Star Wars', 'Star Wars', 'Star Wars']);
-
-    axios.get('http://127.0.0.1:8000/getAutofill/').then((response) => {
-      console.log(response);
-      setAutoSuggestions(response);
-    });
+  const fetchAutoSuggestions = async () => {
+    const response = await axios.get('http://127.0.0.1:8000/getAutofill/');
+    setAutoSuggestions(response);
   };
 
   useEffect(() => {
     fetchAutoSuggestions();
-  }, []);
+  }, [value]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -1,22 +1,14 @@
-// Import Libraries
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
-// Import Icons
 import { PlusIcon, LinkIcon, MinusIcon } from '@heroicons/react/20/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
-
-// Import Components
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
 import MediaInfo from '../organisms/mediaInfo';
 import CastSlider from '../molecules/castSlider';
 import TrailerIFrame from '../atoms/trailer';
-
-// Import Contexts
 import { LoginContext } from '../../contexts/LoginContext';
 import { ModalContext } from '../../contexts/ModalContext';
 import { TMDBContext } from '../../contexts/tmdbContext';

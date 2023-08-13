@@ -25,14 +25,18 @@
   }
 }
 
-/* Buttons */
-
-/* Forms */
-
 @layer utilities {
+  /* Text */
+  .text-link {
+    @apply text-sky-600 hover:text-sky-900 dark:hover:text-gray-200 transition duration-150 ease-in-out
+  }
+
   /* Images */
 
   /* Forms */
+  .form-input {
+    @apply w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6
+  }
 
   /* Buttons */
   .basic-btn {

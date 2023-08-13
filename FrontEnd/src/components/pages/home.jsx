@@ -1,10 +1,4 @@
-// Import Libraries
-import React from 'react';
-
-// Import Templates
 import TwoColumnGrid from '../templates/twoColumnSection';
-
-// Import Organisms
 import FeaturesZigzag from '../organisms/featuresZigzag';
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
