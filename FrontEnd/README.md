@@ -27,7 +27,7 @@ cd FrontEnd
 
 2. Project setup
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 3. Compiles and hot-reloads for development
