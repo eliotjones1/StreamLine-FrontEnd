@@ -15,7 +15,7 @@ export default function News() {
       .then((response) => {
         setPosts(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };

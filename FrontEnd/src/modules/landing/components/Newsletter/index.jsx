@@ -12,7 +12,7 @@ export default function Newsletter() {
         { email: inputEmail.current.value },
         { withCredentials: true }
       )
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
     inputEmail.current.value = '';

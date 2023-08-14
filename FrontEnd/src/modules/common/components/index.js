@@ -1,8 +1,8 @@
-export { default as CTA } from "./CTA";
+export { default as CTA } from './CTA';
 export { default as Header } from './Header';
 export { default as Footer } from './Footer';
 export { default as SocialLinksList } from './SocialLinksList';
-export { default as ContentCard} from './ContentCard';
+export { default as ContentCard } from './ContentCard';
 export { default as ContentNameAndDate } from './ContentName&Date';
 export { default as PageTopIllustration } from './PageTopIllustration';
 export { default as PageRight2Illustration } from './PageRight2Illustration';

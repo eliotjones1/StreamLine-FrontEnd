@@ -5,9 +5,7 @@ import TMDBProvider from './TMDB';
 export default function CommonContextWrapper({ children }) {
   return (
     <LoginProvider>
-      <TMDBProvider>
-        {children}
-      </TMDBProvider>
+      <TMDBProvider>{children}</TMDBProvider>
     </LoginProvider>
   );
 }

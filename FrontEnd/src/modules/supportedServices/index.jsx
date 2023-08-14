@@ -28,10 +28,6 @@ function wrapMe() {
   );
 }
 
-export default function SupportedServices(){
-  return (
-    <CompaniesContextWrapper>
-      {wrapMe()}
-    </CompaniesContextWrapper>
-  );
+export default function SupportedServices() {
+  return <CompaniesContextWrapper>{wrapMe()}</CompaniesContextWrapper>;
 }

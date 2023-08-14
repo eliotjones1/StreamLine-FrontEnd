@@ -12,9 +12,9 @@ export default function Story() {
         At <span className="text-sky-600 font-semibold">StreamLine</span>, our journey began during
         a senior project class at Stanford University. As passionate entertainment enthusiasts, our
         founding team shared a deep love for classic cinema franchises such as Star Wars and a
-        profound appreciation for the excitement of live sports. However, we couldn&apos;t overlook the
-        challenges posed by the transition from cable boxes, which offered all-in-one entertainment
-        solutions, to the fragmentation of content in the subscription landscape.
+        profound appreciation for the excitement of live sports. However, we couldn&apos;t overlook
+        the challenges posed by the transition from cable boxes, which offered all-in-one
+        entertainment solutions, to the fragmentation of content in the subscription landscape.
       </p>
       <p className="text-lg leading-8">
         Fueled by our collective frustration with managing multiple subscriptions and the complexity
@@ -57,8 +57,8 @@ function quote() {
           <blockquote className="text-center text-sky-600 text-xl font-semibold leading-8 text-gray-900 sm:text-2xl sm:leading-9">
             <p>
               “Our journey with StreamLine has been about simplifying the complicated and bringing
-              joy back to content discovery. We&apos;re thrilled to share this innovative platform with
-              the world.”
+              joy back to content discovery. We&apos;re thrilled to share this innovative platform
+              with the world.”
             </p>
           </blockquote>
           <figcaption className="mt-10">

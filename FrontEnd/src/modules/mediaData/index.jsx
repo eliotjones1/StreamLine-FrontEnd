@@ -9,7 +9,6 @@ import { Header, Footer } from '../common/components';
 import { useAuth, useTMDB } from '../common/hooks';
 import { TrailerIFrame, CastSlider, MediaInfo } from './components';
 
-
 export default function ContentData() {
   const { fetchContentData } = useTMDB();
   const { isLoggedIn } = useAuth();
@@ -39,7 +38,7 @@ export default function ContentData() {
       .then(() => {
         setInList(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };
@@ -61,24 +60,27 @@ export default function ContentData() {
     error,
     data: content,
   } = useQuery({
-    queryKey: ["media_content", type, id],
+    queryKey: ['media_content', type, id],
     queryFn: () => fetchContentData(type, id),
   });
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/returnData/', { withCredentials: true }).then(response => {
-      if (response.data.media.find((item) => item.id === id && item.media_type === type)) {
-        setInList(true);
-      } else {
-        setInList(false);
-      }
-    }).catch(error => {
-      console.error(error)
-    });
-  }, [id, type])
+    axios
+      .get('http://127.0.0.1:8000/returnData/', { withCredentials: true })
+      .then((response) => {
+        if (response.data.media.find((item) => item.id === id && item.media_type === type)) {
+          setInList(true);
+        } else {
+          setInList(false);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [id, type]);
 
-  if (status === "loading") return <></>;
-  if (status === "error") return <p>{JSON.stringify(error)}</p>;
+  if (status === 'loading') return <></>;
+  if (status === 'error') return <p>{JSON.stringify(error)}</p>;
 
   return (
     <div>

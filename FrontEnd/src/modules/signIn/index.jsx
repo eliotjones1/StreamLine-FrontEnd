@@ -93,10 +93,7 @@ export default function SignIn() {
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button
-                        className="colored-sky-btn w-full"
-                        type="submit"
-                      >
+                      <button className="colored-sky-btn w-full" type="submit">
                         Sign in
                       </button>
                     </div>
@@ -104,11 +101,7 @@ export default function SignIn() {
                 </form>
                 <div className="text-gray-600 dark:text-gray-400 text-center mt-6">
                   Don&apos;t have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={() => nav('/signup')}
-                    className="text-link"
-                  >
+                  <button type="button" onClick={() => nav('/signup')} className="text-link">
                     {' '}
                     Sign up
                   </button>

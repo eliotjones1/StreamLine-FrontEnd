@@ -11,7 +11,7 @@ export default function WatchList() {
   const fetchList = async () => {
     const { data } = await axios
       .get('http://127.0.0.1:8000/returnData/', { withCredentials: true })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
     const promises = data.media.map(async (media) => {
@@ -26,7 +26,7 @@ export default function WatchList() {
       const results = await Promise.all(promises);
       setUserList(results);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   };
 
@@ -40,7 +40,7 @@ export default function WatchList() {
       .then(() => {
         fetchList();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };

@@ -1,5 +1,11 @@
 import { TwoColumnGrid } from '../common/templates';
-import { Header, Footer, CTA, PageTopIllustration, PageRight2Illustration } from '../common/components';
+import {
+  Header,
+  Footer,
+  CTA,
+  PageTopIllustration,
+  PageRight2Illustration,
+} from '../common/components';
 import { FeaturesZigzag, Newsletter, LogoClouds, HeroTitle, ImageGrid } from './components';
 
 export default function LandingPage() {

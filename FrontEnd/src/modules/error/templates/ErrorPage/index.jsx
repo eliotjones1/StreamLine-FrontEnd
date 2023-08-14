@@ -14,10 +14,7 @@ export default function ErrorPageTemplate({ errNum, errName, errMessage }) {
             {errMessage}
           </p>
           <div className="flex items-center justify-center gap-x-6">
-            <button
-              onClick={() => nav('/')}
-              className="colored-sky-btn"
-            >
+            <button onClick={() => nav('/')} className="colored-sky-btn">
               Return Home
             </button>
             <button onClick={() => nav('/support')} className="arrow-btn">

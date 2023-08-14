@@ -11,7 +11,7 @@ export default function Subscriptions() {
       .then((response) => {
         setSubscriptions(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };
@@ -22,7 +22,7 @@ export default function Subscriptions() {
       .then((response) => {
         setBudget(response.data.budget);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };

@@ -9,10 +9,15 @@ import SearchServs from './partials/onsignup/ServSearch';
 import PersInfo from './partials/onsignup/PersInfo';
 import NotificationInfo from './partials/onsignup/NotifInfo';
 
-export default function WelcomePage(){
+export default function WelcomePage() {
   const nav = useNavigate();
   const session = Cookies.get('session') ? JSON.parse(Cookies.get('session')) : undefined;
-  const components = [<WelcomeSearch key={0}/>, <SearchServs key={1}/>, <PersInfo key={2}/>, <NotificationInfo key={3}/>];
+  const components = [
+    <WelcomeSearch key={0} />,
+    <SearchServs key={1} />,
+    <PersInfo key={2} />,
+    <NotificationInfo key={3} />,
+  ];
   const [currentComponent, setCurrentComponent] = useState(0); // Track the current component
   const [tosReminder, setTOSReminder] = useState(false); // Track the current component
   const handleNext = () => {
@@ -35,10 +40,9 @@ export default function WelcomePage(){
       setTOSReminder(true);
     } else {
       // TOS POST
-      axios
-        .post('http://127.0.0.1:8000/api/user/tosCompliance/update/', [session.email], {
-          withCredentials: true,
-        })
+      axios.post('http://127.0.0.1:8000/api/user/tosCompliance/update/', [session.email], {
+        withCredentials: true,
+      });
       // Create Subscriptions POST
       // get subscriptions and dates from local storage
       const subs = JSON.parse(localStorage.getItem('selectedContent')) || [];
@@ -49,12 +53,11 @@ export default function WelcomePage(){
       // loop through subs and dates and create subscription
       for (let i = 0; i < subs.length; i++) {
         const subObject = { name: subs[i], date: dates[i] };
-        axios
-          .post(
-            'http://127.0.0.1:8000/api/user/subscriptions/create/',
-            [session.email, subObject],
-            { withCredentials: true }
-          )
+        axios.post(
+          'http://127.0.0.1:8000/api/user/subscriptions/create/',
+          [session.email, subObject],
+          { withCredentials: true }
+        );
       }
       // Send msg to backEnd to render bundles from subscriptions
       axios
@@ -65,7 +68,7 @@ export default function WelcomePage(){
           localStorage.removeItem('selectedContent');
           localStorage.removeItem('selectedDates');
           nav('/user-dash');
-        })
+        });
     }
   };
 

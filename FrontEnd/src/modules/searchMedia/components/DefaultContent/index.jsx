@@ -6,12 +6,12 @@ export default function Content() {
   const { fetchTrending, fetchNewlyReleased } = useTMDB();
 
   const trending = useQuery({
-    queryKey: ["trending"],
+    queryKey: ['trending'],
     queryFn: () => fetchTrending(),
   });
 
   const newlyReleased = useQuery({
-    queryKey: ["newly_released"],
+    queryKey: ['newly_released'],
     queryFn: () => fetchNewlyReleased(),
   });
 
@@ -24,8 +24,8 @@ export default function Content() {
     queryFn: () => fetchStaffPicks(),
   });*/
 
-  if (trending.status === "loading" || newlyReleased.status === "loading") return <></>;
-  if (trending.status === "error" || newlyReleased.status === "error") return <></>;
+  if (trending.status === 'loading' || newlyReleased.status === 'loading') return <></>;
+  if (trending.status === 'error' || newlyReleased.status === 'error') return <></>;
 
   return (
     <div className="max-w-7xl mx-auto relative z-0">

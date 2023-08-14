@@ -6,10 +6,7 @@ export default function BtnAndArwBtn({ arrowBtnText, newNavURL }) {
 
   return (
     <div className="flex items-center justify-center gap-x-6">
-      <button
-        onClick={() => nav('/signup')}
-        className="colored-sky-btn"
-      >
+      <button onClick={() => nav('/signup')} className="colored-sky-btn">
         Get started
       </button>
       <button onClick={() => nav(newNavURL)} className="arrow-btn">

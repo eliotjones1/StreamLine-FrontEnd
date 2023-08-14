@@ -9,7 +9,9 @@ export default function SearchProvider({ children }) {
   const [lastSearch, setLastSearch] = useState('');
 
   const fetchSearch = async (query) => {
-    const response = await axios.get(`http://127.0.0.1:8000/search/all/?search=${query}`, {withCredentials: true});
+    const response = await axios.get(`http://127.0.0.1:8000/search/all/?search=${query}`, {
+      withCredentials: true,
+    });
     console.log(response);
     setContent(response.data);
     setLastSearch(query);

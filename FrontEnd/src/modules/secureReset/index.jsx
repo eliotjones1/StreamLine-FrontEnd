@@ -21,7 +21,7 @@ export default function ResetPassword() {
         .then(() => {
           nav('/signin');
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     }

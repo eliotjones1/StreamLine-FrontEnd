@@ -6,16 +6,13 @@ import { ContentCard, ContentNameAndDate } from '/src/modules/common/components'
 export default function BasicContentData({ type, id }) {
   const { fetchContentData } = useTMDB();
 
-  const {
-    status,
-    data: content,
-  } = useQuery({
-    queryKey: ["media_content", type, id],
+  const { status, data: content } = useQuery({
+    queryKey: ['media_content', type, id],
     queryFn: () => fetchContentData(type, id),
   });
 
-  if (status === "loading") return <></>;
-  if (status === "error") return <></>;
+  if (status === 'loading') return <></>;
+  if (status === 'error') return <></>;
 
   return (
     <div className="bg-slate-50 dark:bg-slate-700 rounded-3xl ring-1 ring-slate-200 dark:ring-slate-600 p-2 space-x-2 flex shadow-md">

@@ -5,9 +5,9 @@ export { default as ContentData } from './mediaData';
 export { default as ContentSearch } from './searchMedia';
 export { default as Error404 } from './error';
 export { default as News } from './news';
-export { default as NewSub} from './newSub'
+export { default as NewSub } from './newSub';
 export { default as Pricing } from './pricing';
-export { default as ResetPassword} from './resetPassword';
+export { default as ResetPassword } from './resetPassword';
 export { default as SecureReset } from './secureReset';
 export { default as SignIn } from './signIn';
 export { default as SignUp } from './signUp';

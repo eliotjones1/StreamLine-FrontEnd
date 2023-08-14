@@ -47,5 +47,5 @@ ContentNameAndDate.propTypes = {
     release_date: PropTypes.string,
     first_air_date: PropTypes.string,
   }).isRequired,
-  classNameMods: PropTypes.string
+  classNameMods: PropTypes.string,
 };

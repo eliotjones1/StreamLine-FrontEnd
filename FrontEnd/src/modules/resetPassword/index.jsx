@@ -18,7 +18,7 @@ export default function ResetPassword() {
       .then(() => {
         nav('/signin');
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };
@@ -59,20 +59,14 @@ export default function ResetPassword() {
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button
-                        type="submit"
-                        className="colored-sky-btn w-full"
-                      >
+                      <button type="submit" className="colored-sky-btn w-full">
                         Reset Password
                       </button>
                     </div>
                   </div>
                 </form>
                 <div className="text-gray-400 text-center mt-6">
-                  <button
-                    className="text-link"
-                    onClick={() => nav('/signin')}
-                  >
+                  <button className="text-link" onClick={() => nav('/signin')}>
                     Cancel
                   </button>
                 </div>

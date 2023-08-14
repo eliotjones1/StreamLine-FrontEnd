@@ -138,10 +138,7 @@ export default function SignUp() {
                 </div>
                 <div className="flex flex-wrap -mx-3 mt-6">
                   <div className="w-full px-3">
-                    <button
-                      type="submit"
-                      className="colored-sky-btn w-full"
-                    >
+                    <button type="submit" className="colored-sky-btn w-full">
                       Sign up
                     </button>
                   </div>
@@ -149,10 +146,7 @@ export default function SignUp() {
               </form>
               <div className="text-slate-600 dark:text-gray-400 text-center mt-6">
                 Already using StreamLine?{' '}
-                <button
-                  onClick={() => nav('/signin')}
-                  className="text-link"
-                >
+                <button onClick={() => nav('/signin')} className="text-link">
                   Sign In
                 </button>
               </div>

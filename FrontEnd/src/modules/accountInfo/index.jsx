@@ -57,7 +57,7 @@ export default function EditAccount() {
           sameSite: 'strict',
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -81,7 +81,7 @@ export default function EditAccount() {
           Push_Notifications: response.data.Push_Notifications,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -103,7 +103,7 @@ export default function EditAccount() {
       .then(() => {
         logout();
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -287,8 +287,8 @@ export default function EditAccount() {
               <div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
                 <h2 className="text-base font-semibold leading-7">Notifications</h2>
                 <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
-                  We&apos;ll always let you know about important changes, but you pick what else you want
-                  to hear about.
+                  We&apos;ll always let you know about important changes, but you pick what else you
+                  want to hear about.
                 </p>
 
                 <div className="mt-10 space-y-10">

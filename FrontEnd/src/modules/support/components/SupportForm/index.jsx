@@ -38,7 +38,7 @@ export default function SupportForm() {
         setOpen500Modal(true);
       });
       */
-      console.log("Success")
+      console.log('Success');
       firstNameRef.current.value = '';
       lastNameRef.current.value = '';
       emailRef.current.value = '';

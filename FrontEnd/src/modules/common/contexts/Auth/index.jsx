@@ -16,7 +16,9 @@ export default function LoginProvider({ children }) {
   }, []);
 
   const signUp = async (userData) => {
-    await axios.post('http://127.0.0.1:8000/api/auth/register', userData, { withCredentials: true });
+    await axios.post('http://127.0.0.1:8000/api/auth/register', userData, {
+      withCredentials: true,
+    });
     login(userData);
   };
 
