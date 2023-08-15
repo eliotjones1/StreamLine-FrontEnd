@@ -8,7 +8,7 @@ export default function ResetPassword() {
 
   const reset_pwd = async (event) => {
     event.preventDefault();
-    try{
+    try {
       resetPassword(event.target.email.value);
     } catch (error) {
       console.log(error);

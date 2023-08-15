@@ -8,10 +8,10 @@ export default function Login() {
 
   const signIn = (event) => {
     event.preventDefault();
-    login({ 
-      email: event.target.email.value, 
-      password: event.target.password.value, 
-      keepSignedIn: event.target.keepSignedIn.checked 
+    login({
+      email: event.target.email.value,
+      password: event.target.password.value,
+      keepSignedIn: event.target.keepSignedIn.checked,
     });
   };
 

@@ -11,13 +11,13 @@ const authReducer = (state, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        isAdmin: action.payload.isAdmin
+        isAdmin: action.payload.isAdmin,
       };
     case 'LOGOUT':
       return {
         ...state,
         isLoggedIn: false,
-        isAdmin: false
+        isAdmin: false,
       };
     default:
       return state;
@@ -34,16 +34,20 @@ export default function LoginProvider({ children }) {
 
   const checkLoginStatus = async () => {
     await axios.get('http://127.0.0.1:8000/isAuthenticated/', { withCredentials: true });
-    dispatch({ type: 'LOGIN', payload: { isAdmin: false } }); 
+    dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
   };
 
   const signUp = async (userData) => {
-    await axios.post('http://127.0.0.1:8000/api/auth/register', userData, { withCredentials: true });
+    await axios.post('http://127.0.0.1:8000/api/auth/register', userData, {
+      withCredentials: true,
+    });
     login(userData);
   };
 
   const login = async (userData) => {
-    const { data } = await axios.post('http://127.0.0.1:8000/api/auth/login', userData, { withCredentials: true });
+    const { data } = await axios.post('http://127.0.0.1:8000/api/auth/login', userData, {
+      withCredentials: true,
+    });
     dispatch({ type: 'LOGIN', payload: { isAdmin: data.is_staff } });
     nav('/user-dash');
   };
@@ -55,9 +59,13 @@ export default function LoginProvider({ children }) {
   };
 
   const resetPassword = async (email) => {
-    await axios.post('http://127.0.0.1:8000/api/password_reset/', { email: email }, { withCredentials: true });
+    await axios.post(
+      'http://127.0.0.1:8000/api/password_reset/',
+      { email: email },
+      { withCredentials: true }
+    );
     nav('/signin');
-  }
+  };
 
   return (
     <LoginContext.Provider
