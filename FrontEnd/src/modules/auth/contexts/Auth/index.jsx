@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export const AuthContext = createContext();
+export const LoginContext = createContext();
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -11,20 +11,20 @@ const authReducer = (state, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        role: action.payload.role, // Set the role from the payload
+        isAdmin: action.payload.isAdmin
       };
     case 'LOGOUT':
       return {
         ...state,
         isLoggedIn: false,
-        role: '',
+        isAdmin: false
       };
     default:
       return state;
   }
 };
 
-export default function AuthProvider({ children }) {
+export default function LoginProvider({ children }) {
   const nav = useNavigate();
   const [state, dispatch] = useReducer(authReducer, { isLoggedIn: false, isAdmin: false });
 
@@ -43,8 +43,8 @@ export default function AuthProvider({ children }) {
   };
 
   const login = async (userData) => {
-    await axios.post('http://127.0.0.1:8000/api/auth/login', userData, { withCredentials: true });
-    dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
+    const { data } = await axios.post('http://127.0.0.1:8000/api/auth/login', userData, { withCredentials: true });
+    dispatch({ type: 'LOGIN', payload: { isAdmin: data.is_staff } });
     nav('/user-dash');
   };
 
@@ -54,13 +54,13 @@ export default function AuthProvider({ children }) {
     nav('/');
   };
 
-  const resetPassword = async () => {
-    await axios.post('http://127.0.0.1:8000/api/password_reset/', { email: event.target.email.value }, { withCredentials: true });
+  const resetPassword = async (email) => {
+    await axios.post('http://127.0.0.1:8000/api/password_reset/', { email: email }, { withCredentials: true });
     nav('/signin');
   }
 
   return (
-    <AuthContext.Provider
+    <LoginContext.Provider
       value={{
         isLoggedIn: state.isLoggedIn,
         isAdmin: state.isAdmin,
@@ -71,10 +71,10 @@ export default function AuthProvider({ children }) {
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </LoginContext.Provider>
   );
 }
 
-AuthProvider.propTypes = {
+LoginProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

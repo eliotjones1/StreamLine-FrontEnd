@@ -160,7 +160,7 @@ export default function Header({ flipColors = false }) {
             News
           </button>
           <button
-            onClick={() => nav('/about-us')}
+            onClick={() => nav('/about')}
             className={`text-sm font-semibold leading-6 ${
               flipColors && 'text-white dark:text-slate-900'
             }`}

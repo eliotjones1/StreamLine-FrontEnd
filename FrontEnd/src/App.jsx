@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { ProtectedRoutes } from './modules/common/components';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import './css/style.css';
-import { About, AccountSettings, Landing, ContentData, ContentSearch, Error404, News, NewSub, Pricing, ResetPassword, SecureReset, SignIn, SignUp, Support, SupportedServices, UserDash, VirtualCableBox} from './modules';
+import { About, AccountSettings, Landing, ContentData, ContentSearch, Error404, News, NewSub, Pricing, ResetPassword, SecureReset, Login, SignUp, Support, SupportedServices, UserDash, VirtualCableBox} from './modules';
 
 
 export default function App() {
@@ -21,7 +21,7 @@ export default function App() {
       <Route path="/content-data/:type/:id" element={<ContentData />}/>
       <Route path="/about" element={<About />}/>
       <Route path="/pricing" element={<Pricing />}/>
-      <Route path="/signin" element={<SignIn />}/>
+      <Route path="/signin" element={<Login />}/>
       <Route path="/signup" element={<SignUp />}/>
       <Route path="/support" element={<Support />}/>
       <Route path="/services-search" element={<SupportedServices />}/>

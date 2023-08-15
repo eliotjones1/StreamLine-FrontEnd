@@ -1,1 +1,1 @@
-export { default as Login } from './pages';
+export * from './pages';
