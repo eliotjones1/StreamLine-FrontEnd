@@ -11,7 +11,7 @@ export default function ContentCard({ content }) {
         <img className="rounded-xl" src={noimage} />
       ) : (
         <img
-          onClick={() => nav(`/content-data/${content.media_type}/${content.id}`)}
+          onClick={() => nav(`/media/${content.media_type}/${content.id}`)}
           className="rounded-xl"
           src={`https://image.tmdb.org/t/p/w500${content.poster_path}`}
         />

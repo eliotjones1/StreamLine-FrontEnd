@@ -1,53 +1,18 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 import { Header, Footer, ContentSlider } from '/src/modules/common/components';
+import { useAccount } from '/src/modules/account/hooks';
 
 export default function CableBox() {
-  const [myList, setMyList] = useState([]);
-  //const [services, setServices] = useState([]);
-  const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
+  const { fetchList } = useAccount();
 
-  const fetchMyList = async () => {
-    const { data } = await axios
-      .get('http://127.0.0.1:8000/returnData/', { withCredentials: true })
-      .catch((error) => {
-        console.error(error);
-      });
-    const promises = data.media.map(async (media) => {
-      let { data } = await axios.get(
-        `https://api.themoviedb.org/3/${media.media_type}/${media.id}?api_key=${APIKEY}`
-      );
-      data.media_type = media.media_type;
-      return data;
-    });
+  const {status, data} = useQuery({
+    queryKey: ["account", "list"],
+    keepPreviousData: true,
+    queryFn: () => fetchList()
+  });
 
-    try {
-      const results = await Promise.all(promises);
-      setMyList(results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  /*const fetchRecs = () => {
-    // Get recs here: change link accordingly ##### NEED TO GENERATE DATA TO TEST ####
-    axios
-      .get('http://127.0.0.1:8000/api/recommendations/getRecommendations/', {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log(response.data);
-        setServices(response.data);
-      })
-      .catch(() => {
-        setOpen500Modal(true);
-      });
-  };*/
-
-  useEffect(() => {
-    fetchMyList();
-    //fetchRecs();
-  }, []);
+  if (status === "loading") return <></>;
+  if (status === "error") return <></>;
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
@@ -65,17 +30,8 @@ export default function CableBox() {
         <section>
           <div className="pb-4" key="My List">
             <p className="font-bold pb-2 text-3xl">My List</p>
-            <ContentSlider mediaContent={myList} />
+            <ContentSlider mediaContent={data} />
           </div>
-          {/*services.map((service) => (
-            <div className="pb-4" key={service}>
-              <a className="flex pb-2" href={service.web_link} target="_blank" rel="noreferrer">
-                <img src={service.logo_link} className="w-12 h-12 rounded-full" />
-                <p className="font-bold pb-2 text-3xl">{service.name}</p>
-              </a>
-              <ContentSlider mediaContent={service.reccomendations} />
-            </div>
-          ))*/}
         </section>
       </main>
       <Footer />

@@ -1,28 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import { useTMDB } from '/src/modules/common/hooks';
 import { ContentSlider } from '/src/modules/common/components';
 
 export default function Content() {
   const { fetchTrending, fetchNewlyReleased } = useTMDB();
 
-  const trending = useQuery({
-    queryKey: ['trending'],
-    queryFn: () => fetchTrending(),
+  const [trending, newlyReleased] = useQueries({
+    queries: [
+      {
+        queryKey: ['trending'],
+        queryFn: () => fetchTrending(),
+      },
+      {
+        queryKey: ['newly_released'],
+        queryFn: () => fetchNewlyReleased(),
+      }
+    ]
   });
-
-  const newlyReleased = useQuery({
-    queryKey: ['newly_released'],
-    queryFn: () => fetchNewlyReleased(),
-  });
-
-  /*
-  const {
-    staffPicksStatus,
-    data: staffPicks,
-  } = useQuery({
-    queryKey: ["staff_picks"],
-    queryFn: () => fetchStaffPicks(),
-  });*/
 
   if (trending.status === 'loading' || newlyReleased.status === 'loading') return <></>;
   if (trending.status === 'error' || newlyReleased.status === 'error') return <></>;

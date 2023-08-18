@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
 import axios from 'axios';
 import { Header, PageTopIllustration } from '/src/modules/common/components';
-import Cookies from 'js-cookie';
 import { useAuth } from '/src/modules/common/hooks';
 
 export default function EditAccount() {
@@ -49,12 +48,6 @@ export default function EditAccount() {
           Newsletter: response.data.settings.Newsletter,
           Promotions: response.data.settings.Promotions,
           Push_Notifications: response.data.settings.Push_Notifications,
-        });
-        document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-        Cookies.set('session', JSON.stringify(response.data.user), {
-          path: '/',
-          secure: true,
-          sameSite: 'strict',
         });
       })
       .catch((error) => {

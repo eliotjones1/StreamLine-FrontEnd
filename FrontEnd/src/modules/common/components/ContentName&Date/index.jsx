@@ -13,7 +13,7 @@ export default function ContentNameAndDate({ content, classNameMods }) {
   const nav = useNavigate();
 
   const handleClick = () => {
-    nav(`/content-data/${content.media_type}/${content.id}`);
+    nav(`/media/${content.media_type}/${content.id}`);
   };
 
   const renderDate = (label, date) => {

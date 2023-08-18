@@ -11,7 +11,7 @@ const products = [
   {
     name: 'Discover Content',
     description: 'Search for movies and television in the U.S.',
-    href: '/content-search',
+    href: '/media',
     userOnly: false,
     icon: FilmIcon,
   },

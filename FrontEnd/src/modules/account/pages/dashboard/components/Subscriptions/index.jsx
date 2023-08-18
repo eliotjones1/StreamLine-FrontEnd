@@ -1,36 +1,25 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useAccount } from '/src/modules/account/hooks';
+import { useQueries } from '@tanstack/react-query';
 
 export default function Subscriptions() {
-  const [subscriptions, setSubscriptions] = useState([]);
-  const [budget, setBudget] = useState('0');
+  const { fetchSubscriptions, fetchBudget } = useAccount();
 
-  const fetchSubs = () => {
-    axios
-      .get('http://127.0.0.1:8000/api/user/subscriptions/view/', { withCredentials: true })
-      .then((response) => {
-        setSubscriptions(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  const [subs, budget] = useQueries({
+    queries: [
+      { 
+        queryKey: ['account', 'subscriptions'], 
+        queryFn: () => fetchSubscriptions()
+      },
+      { 
+        queryKey: ['account', 'budget'], 
+        queryFn: () => fetchBudget()
+      }
+    ]
+  });
 
-  const fetchBudget = () => {
-    axios
-      .get('http://127.0.0.1:8000/returnData/', { withCredentials: true })
-      .then((response) => {
-        setBudget(response.data.budget);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  if (subs.status === 'loading' || budget.status === "loading") return <></>;
+  if (subs.status === 'error' || budget.status === "error") return <></>;
 
-  useEffect(() => {
-    fetchSubs();
-    fetchBudget();
-  }, []);
 
   return (
     <div className="container mx-auto py-8">
@@ -38,14 +27,14 @@ export default function Subscriptions() {
       <div className="h-96 overflow-y-auto border dark:border-none rounded-lg p-4 bg-slate-50 dark:bg-slate-700">
         <div className="flex w-full mb-2 font-semibold">
           <p>Budget:</p>
-          <p className="ml-auto">{`$${parseFloat(budget).toFixed(2)}`}</p>
+          <p className="ml-auto">{`$${parseFloat(budget.data).toFixed(2)}`}</p>
         </div>
         <hr className="m-2" />
-        {subscriptions.length === 0 ? (
+        {subs.data.length === 0 ? (
           <p>No subscriptions found.</p>
         ) : (
           <ul className="space-y-4">
-            {subscriptions.map((subscription) => (
+            {subs.data.map((subscription) => (
               <li key={subscription.id} className="flex items-center space-x-4">
                 <img
                   src={`https://image.tmdb.org/t/p/w500${subscription.subscription_image_path}`}
