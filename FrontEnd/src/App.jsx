@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ProtectedRoutes } from './modules/common/components';
+// import { ProtectedRoutes } from './modules/common/components';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import './css/style.css';
 import { About, AccountSettings, Landing, MediaData, MediaSearch, Error404, News, NewSub, Pricing, ResetPassword, SecureReset, Login, SignUp, Support, SupportedServices, UserDash, VirtualCableBox} from './modules';
@@ -31,12 +31,10 @@ export default function App() {
       <Route path="/new-sub" element={<NewSub />}/>
       
       {/* Protected Routes */}
-      <Route element={<ProtectedRoutes />}>
-        <Route path="/secure-reset" element={<SecureReset />}/>
-        <Route path="/account-settings" element={<AccountSettings />}/>
-        <Route path="/user-dash" element={<UserDash />}/>
-        <Route path="/virtual-cable-box" element={<VirtualCableBox />}/>
-      </Route>
+      <Route path="/secure-reset" element={<SecureReset />}/>
+      <Route path="/account-settings" element={<AccountSettings />}/>
+      <Route path="/user-dash" element={<UserDash />}/>
+      <Route path="/virtual-cable-box" element={<VirtualCableBox />}/>
 
       {/* 404: Catch Routes Not Found */}
       <Route path="*" element={<Error404 />} />
