@@ -31,7 +31,7 @@ export default function Subscriptions() {
         </div>
         <hr className="m-2" />
         {subs.data.length === 0 ? (
-          <p>No subscriptions found.</p>
+          <p className='flex items-center justify-center'> No subscriptions found.</p>
         ) : (
           <ul className="space-y-4">
             {subs.data.map((subscription) => (
@@ -51,7 +51,7 @@ export default function Subscriptions() {
                       day: 'numeric',
                     })}
                   </p>
-                  <p>Price: {'$' + subscription.subscription_price}</p>
+                  <p>Price: {`$${subscription.subscription_price}`}</p>
                 </div>
               </li>
             ))}

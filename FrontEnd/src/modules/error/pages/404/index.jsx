@@ -1,4 +1,4 @@
-import { ErrorPageTemplate } from './templates';
+import { ErrorPageTemplate } from '/src/modules/error/templates';
 
 export default function Error404() {
   return (
