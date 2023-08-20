@@ -1,48 +1,12 @@
-// Basic Imports
-import React, { useContext, useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import AOS from 'aos';
-
-// Import CSS
-import 'aos/dist/aos.css';
+import { useEffect } from 'react';
+// import { ProtectedRoutes } from './modules/common/components';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import './css/style.css';
+import { About, AccountSettings, Landing, MediaData, MediaSearch, Error404, News, NewSub, Pricing, ResetPassword, SecureReset, Login, SignUp, Support, SupportedServices, UserDash, VirtualCableBox} from './modules';
 
-// Import Pages
-import Home from './components/pages/home';
-import SignIn from './components/pages/signIn';
-import SignUp from './components/pages/signUp';
-import ResetPassword from './components/pages/resetPassword';
-import Bundles from './components/pages/Bundles';
-import UserDash from './components/pages/userDash';
-import SecureReset from './components/pages/secureReset';
-import NotFound from './components/pages/404';
-import AccountInfo from './components/pages/accountInfo';
-import Pricing from './components/pages/pricing';
-import News from './components/pages/news';
-import AboutUs from './components/pages/aboutUs';
-import NewSub from './components/pages/NewSub';
-import ContentSearch from './components/pages/contentSearch';
-import ContentData from './components/pages/contentData';
-import ContactSupport from './components/pages/contactSupport';
-import VirtualCableBox from './components/pages/virtualCableBox';
-import ServicesSearch from './components/pages/servicesSearch';
-
-// Import Context
-import { LoginContext } from './contexts/LoginContext';
 
 export default function App() {
   const location = useLocation();
-  const nav = useNavigate();
-  const { isLoggedIn } = useContext(LoginContext);
-
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      disable: 'phone',
-      duration: 600,
-      easing: 'ease-out-sine',
-    });
-  }, []);
 
   useEffect(() => {
     document.querySelector('html').style.scrollBehavior = 'auto';
@@ -50,50 +14,31 @@ export default function App() {
     document.querySelector('html').style.scrollBehavior = '';
   }, [location.pathname]);
 
-  const routes = [
-    { path: '/', component: Home },
-    { path: '/signin', component: SignIn },
-    { path: '/signup', component: SignUp },
-    { path: '/reset-password', component: ResetPassword },
-    { path: '/bundles', component: Bundles },
-    { path: '/support', component: ContactSupport },
-    { path: '/pricing', component: Pricing },
-    { path: '/news', component: News },
-    { path: '/about-us', component: AboutUs },
-    { path: '/new-sub', component: NewSub },
-    { path: '/content-search', component: ContentSearch },
-    { path: '/content-data/:type/:id/', component: ContentData },    
-    { path: '/services-search', component: ServicesSearch}
-  ];
-
-  const protectedRoutes = [
-    { path: '/user-dash', component: UserDash },
-    { path: '/account-settings', component: AccountInfo },
-    { path: '/secure-reset', component: SecureReset },
-    { path: '/virtual-cable-box', component: VirtualCableBox },
-  ]
-
   return (
     <Routes>
-      {
-        routes.map(route => (
-          <Route 
-            key={route.path} 
-            path={route.path} 
-            element={<route.component />} 
-          />
-        ))
-      }
-      {
-        protectedRoutes.map(route => (
-          <Route 
-            key={route.path} 
-            path={route.path} 
-            element={isLoggedIn ? <route.component /> : <Navigate to='/signin'/>} 
-          />
-        ))
-      }
-      <Route path="*" element={<NotFound />} />
+      {/* Public Routes */}
+      <Route path="/" element={<Landing />}/>
+      <Route path="/media/:type/:id" element={<MediaData />}/>
+      <Route path="/about" element={<About />}/>
+      <Route path="/pricing" element={<Pricing />}/>
+      <Route path="/signin" element={<Login />}/>
+      <Route path="/signup" element={<SignUp />}/>
+      <Route path="/support" element={<Support />}/>
+      <Route path="/services-search" element={<SupportedServices />}/>
+      <Route path="/media" element={<MediaSearch />}/>
+      <Route path="/reset-password" element={<ResetPassword />}/>
+      <Route path="/news" element={<News />}/>
+      <Route path="/new-sub" element={<NewSub />}/>
+      
+      {/* Protected Routes */}
+      <Route path="/secure-reset" element={<SecureReset />}/>
+      <Route path="/account-settings" element={<AccountSettings />}/>
+      <Route path="/user-dash" element={<UserDash />}/>
+      <Route path="/virtual-cable-box" element={<VirtualCableBox />}/>
+
+      {/* 404: Catch Routes Not Found */}
+      <Route path="*" element={<Error404 />} />
+      
     </Routes>
   );
 }
