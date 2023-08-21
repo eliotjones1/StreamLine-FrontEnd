@@ -1,5 +1,5 @@
 import { Header, Footer } from '/src/modules/common/components';
-import { Releases, Subscriptions, WatchList, PaymentTable } from './components';
+import { Releases, Subscriptions PaymentTable } from './components';
 
 export default function UserDash() {
 	return (

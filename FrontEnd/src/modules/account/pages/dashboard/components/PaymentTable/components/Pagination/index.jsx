@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Button, IconButton } from '@material-tailwind/react';
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 
@@ -71,3 +72,11 @@ export default function CircularPagination({ paginationData, setPage }) {
 		</div>
 	);
 }
+
+CircularPagination.propTypes = {
+	paginationData: PropTypes.shape({
+		curPage: PropTypes.number.isRequired,
+		numPages: PropTypes.number.isRequired,
+	}).isRequired,
+	setPage: PropTypes.func.isRequired,
+};
