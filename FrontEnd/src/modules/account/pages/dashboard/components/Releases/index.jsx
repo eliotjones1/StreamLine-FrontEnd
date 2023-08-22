@@ -13,19 +13,20 @@ import {
 } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { ClockIcon, FaceFrownIcon } from '@heroicons/react/24/outline';
-import { useQuery } from '@tanstack/react-query';
+import { FaceFrownIcon } from '@heroicons/react/24/outline';
+import { useQueries } from '@tanstack/react-query';
 import { useAccount } from 'src/modules/account/hooks';
-import { Button } from 'react-bootstrap';
 
 export default function UpcomingReleases() {
 	const nav = useNavigate();
 	const { fetchUpcoming, addToUserList } = useAccount();
 
-	const { status, data } = useQuery({
-		queryKey: ['account', 'upcoming releases'],
-		queryFn: () => fetchUpcoming(),
-	});
+	const { status, data } = useQueries([
+		{
+			queryKey: ['account', 'upcoming releases'],
+			queryFn: () => fetchUpcoming(),
+		},
+	]);
 
 	if (status === 'loading')
 		return (
@@ -72,7 +73,7 @@ export default function UpcomingReleases() {
 					</div>
 				</div>
 			</CardHeader>
-			<CardBody className="overflow-scroll p-0">
+			<CardBody className="overflow-scroll p-0 h-[48rem]">
 				{data.length === 0 ? (
 					<div className="flex flex-col h-full w-full bg-slate-50 rounded-lg items-center justify-center">
 						<FaceFrownIcon className="text-slate-800 h-32 w-32" />
@@ -118,12 +119,6 @@ export default function UpcomingReleases() {
 														},
 												  )}
 										</Typography>
-										<div className="flex items-center">
-											<ClockIcon className="h-4 text-slate-900" />
-											<Typography className="text-slate-900">
-												{release.runtime || release.episode_run_time[0]}mins
-											</Typography>
-										</div>
 									</div>
 									<Typography className="h-12 text-slate-900 line-clamp-2">
 										{release.overview}
