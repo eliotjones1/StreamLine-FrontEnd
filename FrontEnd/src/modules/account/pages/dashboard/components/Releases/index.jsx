@@ -121,7 +121,7 @@ export default function UpcomingReleases() {
 									</Typography>
 								</div>
 								<ListItemSuffix>
-									<AddToListCheck id={release.id} type={release.type} />
+									<AddToListCheck id={release.id} type={release.media_type} />
 								</ListItemSuffix>
 							</ListItem>
 						))}

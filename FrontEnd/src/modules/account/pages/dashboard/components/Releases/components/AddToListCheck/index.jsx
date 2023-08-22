@@ -4,6 +4,7 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 
 export default function AddToListCheck({ id, type }) {
 	const { checkInList, addToUserList } = useAccount();
+	console.log(id, type);
 
 	return (
 		<Tooltip content={'Add to Watchlist'} className="bg-sky-600">

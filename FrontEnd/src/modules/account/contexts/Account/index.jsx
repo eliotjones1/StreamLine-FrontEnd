@@ -13,7 +13,7 @@ export default function AccountProvider({ children }) {
 			{ id: id, media_type: type },
 			{ withCredentials: true },
 		);
-		console.log(response);
+		console.log(response.status);
 		return response.status;
 	};
 
