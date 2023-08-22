@@ -49,6 +49,8 @@ class Subscription(models.Model):
     num_months = models.IntegerField(default = 0)
     num_cancellations = models.IntegerField(default = 0)
     is_active = models.BooleanField(default = "True")
+    subscription_version = models.CharField(max_length=100) 
+
     
 
 class UserContactRequest(models.Model):

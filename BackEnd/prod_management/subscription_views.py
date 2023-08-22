@@ -60,4 +60,3 @@ class AvailSubs(generics.ListAPIView):
 
 
 
-

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "recommendations",
     "prod_management",
     "newsletter",
+    "automated",
 ]
 
 MIDDLEWARE = [
