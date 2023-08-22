@@ -5,72 +5,103 @@ import axios from 'axios';
 export const AccountContext = createContext();
 
 export default function AccountProvider({ children }) {
-  const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
+	const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
 
-  const fetchUpcoming = async () => {
-    const { data } = await axios.get('http://127.0.0.1:8000/api/user/subscriptions/upcoming', { withCredentials: true });
-    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const todayIndex = new Date().getDay();
-    const nextSevenDays = daysOfWeek.slice(todayIndex).concat(daysOfWeek.slice(0, todayIndex));
+	const fetchUpcoming = async () => {
+		const { data } = await axios.get(
+			'http://127.0.0.1:8000/api/user/subscriptions/upcoming',
+			{ withCredentials: true },
+		);
+		const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		const todayIndex = new Date().getDay();
+		const nextSevenDays = daysOfWeek
+			.slice(todayIndex)
+			.concat(daysOfWeek.slice(0, todayIndex));
 
-    if (data.length === 0){
-      return {
-        days: nextSevenDays,
-        releases: []
-      };
-    }
-    return {
-      days: nextSevenDays,
-      releases: nextSevenDays.map((day) => data.filter((movie) => daysOfWeek[new Date(movie.release_date).getUTCDay()] === day))
-    }
-  }
-  
-  const fetchSubscriptions = async () => {
-    const { data } = await axios.get('http://127.0.0.1:8000/api/user/subscriptions/view/', { withCredentials: true });
-    return data;
-  }
+		if (data.length === 0) {
+			return {
+				days: nextSevenDays,
+				releases: [],
+			};
+		}
+		return {
+			days: nextSevenDays,
+			releases: nextSevenDays.map((day) =>
+				data.filter(
+					(movie) =>
+						daysOfWeek[new Date(movie.release_date).getUTCDay()] === day,
+				),
+			),
+		};
+	};
 
-  const fetchBudget = async () => {
-    const { data } = await axios.get('http://127.0.0.1:8000/returnData/', { withCredentials: true });
-    return data.budget;
-  };
+	const fetchSubscriptions = async () => {
+		const { data } = await axios.get(
+			'http://127.0.0.1:8000/api/user/subscriptions/view/',
+			{ withCredentials: true },
+		);
+		return data;
+	};
 
-  const fetchList = async () => {
-    const { data } = await axios.get('http://127.0.0.1:8000/returnData/', { withCredentials: true })
+	const fetchBudget = async () => {
+		const { data } = await axios.get('http://127.0.0.1:8000/returnData/', {
+			withCredentials: true,
+		});
+		return data.budget;
+	};
 
-    const promises = data.media.map(async (media) => {
-      let { data } = await axios.get(
-        `https://api.themoviedb.org/3/${media.media_type}/${media.id}?api_key=${APIKEY}`
-      );
-      data.media_type = media.media_type;
-      return data;
-    });
+	const fetchList = async () => {
+		const { data } = await axios.get('http://127.0.0.1:8000/returnData/', {
+			withCredentials: true,
+		});
 
-    const results = await Promise.all(promises);
-    return results;
-  };
+		const promises = data.media.map(async (media) => {
+			let { data } = await axios.get(
+				`https://api.themoviedb.org/3/${media.media_type}/${media.id}?api_key=${APIKEY}`,
+			);
+			data.media_type = media.media_type;
+			return data;
+		});
 
-  const removeFromList =  async (media) => {
-    await axios.post('http://127.0.0.1:8000/removeMedia/', { id: media.id.toString(), media_type: media.media_type },{ withCredentials: true })
-    fetchList();
-    return;
-  };
+		const results = await Promise.all(promises);
+		return results;
+	};
 
-  return (
-    <AccountContext.Provider
-      value={{
-        fetchUpcoming,
-        fetchSubscriptions,
-        fetchBudget,
-        fetchList,
-        removeFromList,
-      }}
-    >
-      {children}
-    </AccountContext.Provider>
-  );
+	const removeFromList = async (media) => {
+		await axios.post(
+			'http://127.0.0.1:8000/removeMedia/',
+			{ id: media.id.toString(), media_type: media.media_type },
+			{ withCredentials: true },
+		);
+		fetchList();
+		return;
+	};
+
+	const addToUserList = async (id, type) => {
+		await axios.post(
+			'http://127.0.0.1:8000/saveMedia/',
+			{ id: id, media_type: type },
+			{ withCredentials: true },
+		);
+		fetchList();
+	};
+
+	return (
+		<AccountContext.Provider
+			value={{
+				fetchUpcoming,
+				fetchSubscriptions,
+				fetchBudget,
+				fetchList,
+				removeFromList,
+				addToUserList,
+			}}
+		>
+			{children}
+		</AccountContext.Provider>
+	);
 }
 
 AccountProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 };

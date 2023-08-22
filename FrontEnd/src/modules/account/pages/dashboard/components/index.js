@@ -1,4 +1,3 @@
 export { default as Releases } from './Releases';
-export { default as Subscriptions } from './Subscriptions';
-export { default as WatchList } from './Watchlist';
+export { default as ManageSubscriptions } from './ManageSubscriptions';
 export { default as PaymentTable } from './PaymentTable';

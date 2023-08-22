@@ -12,6 +12,7 @@ import {
 	CardFooter,
 	Avatar,
 	Input,
+	Spinner,
 } from '@material-tailwind/react';
 import { Pagination } from './components';
 import { useState } from 'react';
@@ -76,18 +77,23 @@ export default function TransactionsTable() {
 	const [page, setPage] = useState(1);
 
 	const { status, data } = useQuery({
-		queryKey: ['account', 'PaymentHistory', page],
+		queryKey: ['account', 'payment history', page],
 		keepPreviousData: true,
 		queryFn: () => {
 			return {
 				pageData: TABLE_ROWS,
-				numPages: 5,
+				numPages: 10,
 				curPage: page,
 			};
 		},
 	});
 
-	if (status === 'loading') return <></>;
+	if (status === 'loading')
+		return (
+			<div className="flex h-full w-full bg-slate-50 rounded-lg items-center justify-center">
+				<Spinner className="h-12 w-12" color="blue" />
+			</div>
+		);
 	if (status === 'error') return <></>;
 
 	return (
@@ -99,7 +105,7 @@ export default function TransactionsTable() {
 			>
 				<div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
 					<div>
-						<Typography variant="h4" color="blue-gray">
+						<Typography variant="h3" color="blue-gray">
 							Payment History
 						</Typography>
 						<Typography color="gray" className="mt-1 font-normal">
@@ -115,7 +121,7 @@ export default function TransactionsTable() {
 								containerProps={{ className: 'bg-white' }}
 							/>
 						</div>
-						<Button className="flex items-center gap-3" size="sm" color="blue">
+						<Button className="flex items-center gap-3 bg-sky-600" size="sm">
 							<ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> Download
 						</Button>
 					</div>
@@ -185,7 +191,7 @@ export default function TransactionsTable() {
 												color="blue-gray"
 												className="font-normal"
 											>
-												{amount}
+												${amount.toFixed(2)}
 											</Typography>
 										</td>
 										<td className={classes}>
@@ -256,8 +262,8 @@ export default function TransactionsTable() {
 			<CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
 				<Pagination
 					paginationData={{
-						numPages: 5,
-						curPage: page,
+						numPages: data.numPages,
+						curPage: data.curPage,
 					}}
 					setPage={setPage}
 				/>

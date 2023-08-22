@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 // import { ProtectedRoutes } from './modules/common/components';
 import { Routes, Route, useLocation } from 'react-router-dom';
-//import './App.css';
 import {
 	About,
 	AccountSettings,

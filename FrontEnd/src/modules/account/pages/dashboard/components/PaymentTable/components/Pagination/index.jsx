@@ -24,9 +24,11 @@ export default function CircularPagination({ paginationData, setPage }) {
 
 	const getItemProps = (index) => ({
 		variant: paginationData.curPage === index ? 'filled' : 'text',
-		color: paginationData.curPage === index ? 'blue' : 'gray',
+		color: 'gray',
 		onClick: () => setPage(index),
-		className: 'rounded-full',
+		className: `rounded-full ${
+			paginationData.curPage === index && 'bg-sky-600'
+		}`,
 	});
 
 	const next = () => {
