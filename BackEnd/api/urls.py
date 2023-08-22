@@ -18,4 +18,5 @@ urlpatterns = [
     path('staffpicks/', StaffPicks.as_view(), name='staffpicks'),
     path('showServices/', seeServices.as_view(), name='showServices'),
     path('getAllUpcoming/', getAllUpcoming.as_view(), name='getAllUpcoming'),
+    path('isInWatchlist/', checkInList.as_view(), name='isInWatchlist'),
 ]

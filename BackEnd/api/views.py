@@ -92,6 +92,25 @@ def saveBudget(request):
     current.save()
     return Response({"Status": "OK"})
 
+class checkInList(generics.ListAPIView):
+    def get(self, request):
+        sessionid = request.COOKIES.get('sessionid')
+        # Check if session is active
+        if isSessionActive(sessionid) == False:
+            return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
+        user_email = Session.objects.get(
+            session_key=sessionid).get_decoded()['user_email']
+        if user_email is None:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        object = request.data
+        user_exists = CustomUser.objects.get(email=user_email)
+        current = UserData.objects.get(user_id=user_exists)
+        cur_list = current.media
+        if object in cur_list:
+            return Response({"Status": "true"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"Status": "false"}, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def saveMedia(request):
