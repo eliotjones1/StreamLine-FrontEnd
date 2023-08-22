@@ -1,4 +1,4 @@
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, FaceFrownIcon } from '@heroicons/react/24/outline';
 import {
 	Card,
 	CardHeader,
@@ -84,13 +84,22 @@ export default function TransactionsTable() {
 		},
 	});
 
-	if (status === 'loading')
+	if (status === 'loading') {
 		return (
 			<div className="flex h-full w-full bg-slate-50 rounded-lg items-center justify-center">
 				<Spinner className="h-12 w-12" color="blue" />
 			</div>
 		);
-	if (status === 'error') return <></>;
+	}
+	console.log(data);
+	if (data.length === 0 || status === 'error') {
+		console.log('error');
+		return (
+			<div className="flex h-full w-full bg-slate-50 rounded-lg items-center justify-center">
+				<FaceFrownIcon className="text-slate-800 h-12 w-12" />
+			</div>
+		);
+	}
 
 	return (
 		<Card className="h-full w-full bg-slate-50">
