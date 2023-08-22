@@ -60,66 +60,6 @@ class checkTOSStatus(generics.ListAPIView):
             return Response("ok", status=status.HTTP_200_OK)
         else:
             return Response("not ok", status=status.HTTP_200_OK)
-        
-@api_view(['POST'])
-def createSubscription(request):
-    sessionid = request.COOKIES.get('sessionid')
-    # print(sessionid)
-    # Check if session is active
-    if isSessionActive(sessionid) == False:
-        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    # expects user_id at 0, subscription info (name, date) at 1. Expect name to be from our list of possible (like a search and drop down type thing, 
-    # Needs to be exact string
-    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
-    if user_email is None:
-        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
-    subscription_info = request.data
-    # import dataframe from api/random/serviceImages.csv
-    df = pd.read_csv('api/random/serviceImages.csv')
-    # find image that corresponds to subscription_info['name']
-    image_path = df.loc[df['service_name'] == subscription_info['name']]['logo_path'].values[0]
-    user = CustomUser.objects.get(email=user_email)
-    this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'], end_date=subscription_info['date'][:10], num_months=1, num_cancellations=0, is_active=True, subscription_price=subscription_info['price'], subscription_image_path=image_path, subscription_version=subscription_info['version'])
-    this_subscription.save()
-    return Response(SubscriptionSerializer(this_subscription).data, status=status.HTTP_200_OK)
-
-@api_view(['POST'])
-def cancelSubscription(request):
-    sessionid = request.COOKIES.get('sessionid')
-    # print(sessionid)
-    # Check if session is active
-    if isSessionActive(sessionid) == False:
-        return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-    # expects user_id at 0, subscription info (name, date, recurring) at 1
-    user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
-    if user_email is None:
-        return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
-    subscription_info = json.dumps(request.data)
-    user = CustomUser.objects.get(email=user_email)
-    this_subscription = Subscription.objects.create(user=user, subscription_name=subscription_info['name'])
-    this_subscription.is_active = False
-    this_subscription.num_cancellations += 1
-    this_subscription.save()
-    return Response(status=status.HTTP_200_OK)
-
-class getSubscriptions(generics.ListAPIView):
-    def get(self, request):
-        # NAME, LOGO, END DATE, PRICE
-        sessionid = request.COOKIES.get('sessionid')
-        # print(sessionid)
-        # Check if session is active
-        if isSessionActive(sessionid) == False:
-            return Response({'error': 'Session expired'}, status=status.HTTP_400_BAD_REQUEST)
-        # expects user_id at 0, subscription info (name, date, recurring) at 1
-        user_email = Session.objects.get(session_key=sessionid).get_decoded()['user_email']
-        if user_email is None:
-            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
-        user = CustomUser.objects.get(email=user_email)
-        subscriptions = Subscription.objects.filter(user=user)
-        out = []
-        for subscription in subscriptions:
-            out.append(SubscriptionSerializer(subscription).data)
-        return Response(out, status=status.HTTP_200_OK)
 
 ## Find a way to figure out when to email / when to define cycles
 ## Customer adds subscriptions to their account. Before each subscription is up, we calculate bundles for them,

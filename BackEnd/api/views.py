@@ -135,12 +135,16 @@ def saveMedia(request):
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     cur_list = current.media
-    cur_list.append(object)
-    background_thread = threading.Thread(
-        target=optimizeInTheBackground, args=([cur_list, user_email],))
-    background_thread.start()
-    current.save()
-    return Response({"Status": "OK"})
+    if object not in cur_list:
+        cur_list.append(object)
+        background_thread = threading.Thread(
+            target=optimizeInTheBackground, args=([cur_list, user_email],))
+        background_thread.start()
+        current.save()
+        return Response({"Status": "OK"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"Status": "Already in list"}, status=status.HTTP_400_BAD_REQUEST)
+   
 
 
 @api_view(['POST'])
