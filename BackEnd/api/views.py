@@ -16,8 +16,9 @@ from django.utils import timezone
 from prod_management.models import Subscription
 from .models import StaffPick
 import pandas as pd
+from datetime import datetime
 # Create your views here.
-
+format_str = "%Y-%m-%d"
 class returnAll(generics.ListAPIView):
     def get(self, request):
         search_query = request.query_params.get('search', None)
@@ -424,7 +425,7 @@ class getAllUpcoming(generics.ListAPIView):
     def get(self, request):
         release_year = datetime.now().year
         # TV SHOWS
-        url = "https://api.themoviedb.org/3/discover/tv?first_air_date_year=" + str(release_year) + "&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&watch_region=US"
+        url = "https://api.themoviedb.org/3/discover/tv?first_air_date.gte=" + str(datetime.now().date()) + "&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc"
         headers = {
             "accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
@@ -433,7 +434,7 @@ class getAllUpcoming(generics.ListAPIView):
         new_shows = response.json()['results']
 
         # MOVIES
-        url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=" + str(release_year) + "&sort_by=popularity.desc&watch_region=US"
+        url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=" + str(datetime.now().date()) + "&sort_by=popularity.desc"
         headers = {
             "accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
@@ -444,16 +445,23 @@ class getAllUpcoming(generics.ListAPIView):
         # NEED TO FIND SHOWS BEING RELEASED THIS WEEK
         output = []
         for show in new_shows:
+            print(str(datetime.strptime(show['first_air_date'][:10], format_str).date()) + " " + str(datetime.now().date()) + " " + show['name'])
             # Check if it is released this week
-            if show['first_air_date'] is not None and show['first_air_date'][:10] >= str(datetime.now().date()):
+            if show['first_air_date'] is not None and datetime.strptime(show['first_air_date'][:10], format_str).date() >= datetime.now().date():
                 show["media_type"] = "tv"
+                show["release_date"] = show["first_air_date"]
                 output.append(show)
+
+
         for movie in new_movies:
-            # Check if it is released this week
-            if movie['release_date'] is not None and movie['release_date'][:10] >= str(datetime.now().date()):
+                        # Check if it is released this week
+            if movie['release_date'] is not None and datetime.strptime(movie['release_date'][:10], format_str).date() >= datetime.now().date():
+                print(movie["title"])
                 # Check if it is on a subscription
                 movie['media_type'] = "movie"
                 output.append(movie)
-        return Response(output, status=status.HTTP_200_OK)
+        
+        sorted_data = sorted(output, key=lambda x: x["release_date"])
+        return Response(sorted_data, status=status.HTTP_200_OK)
 
 
