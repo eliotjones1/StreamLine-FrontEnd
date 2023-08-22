@@ -7,26 +7,22 @@ import {
 	ListItem,
 	ListItemPrefix,
 	ListItemSuffix,
-	IconButton,
 	Typography,
-	Tooltip,
 } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
-import { PlusIcon } from '@heroicons/react/24/solid';
 import { FaceFrownIcon } from '@heroicons/react/24/outline';
-import { useQueries } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'src/modules/account/hooks';
+import { AddToListCheck } from './components';
 
 export default function UpcomingReleases() {
 	const nav = useNavigate();
-	const { fetchUpcoming, addToUserList } = useAccount();
+	const { fetchUpcoming } = useAccount();
 
-	const { status, data } = useQueries([
-		{
-			queryKey: ['account', 'upcoming releases'],
-			queryFn: () => fetchUpcoming(),
-		},
-	]);
+	const { status, data } = useQuery({
+		queryKey: ['account', 'upcoming releases'],
+		queryFn: () => fetchUpcoming(),
+	});
 
 	if (status === 'loading')
 		return (
@@ -125,17 +121,7 @@ export default function UpcomingReleases() {
 									</Typography>
 								</div>
 								<ListItemSuffix>
-									<Tooltip content="Add to Watchlist" className="bg-sky-600">
-										<IconButton
-											variant="text"
-											color="blue-gray"
-											onClick={() =>
-												addToUserList(release.id, release.media_type)
-											}
-										>
-											<PlusIcon className="h-6" />
-										</IconButton>
-									</Tooltip>
+									<AddToListCheck id={release.id} type={release.type} />
 								</ListItemSuffix>
 							</ListItem>
 						))}

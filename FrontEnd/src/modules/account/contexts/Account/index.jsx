@@ -7,6 +7,16 @@ export const AccountContext = createContext();
 export default function AccountProvider({ children }) {
 	const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
 
+	const checkInList = async (id, type) => {
+		const response = await axios.get(
+			'http://127.0.0.1:8000/isInWatchlist/',
+			{ id: id, media_type: type },
+			{ withCredentials: true },
+		);
+		console.log(response);
+		return response.status;
+	};
+
 	const fetchUpcoming = async () => {
 		const { data } = await axios.get('http://127.0.0.1:8000/getAllUpcoming/', {
 			withCredentials: true,
@@ -75,6 +85,7 @@ export default function AccountProvider({ children }) {
 				fetchList,
 				removeFromList,
 				addToUserList,
+				checkInList,
 			}}
 		>
 			{children}
