@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/recommendations/', include('recommendations.urls')),
     path('api/user/', include('prod_management.urls')),
     path('api/newsletter/', include('newsletter.urls')),
+    path('api/auto/', include('automated.urls')),
 ]
