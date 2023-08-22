@@ -22,7 +22,7 @@ export default function DeleteDialog({ name, date }) {
 
 	return (
 		<>
-			<Tooltip content="Cancel Subscription" className="bg-red-800">
+			<Tooltip content="Cancel Subscription" className="bg-slate-900">
 				<IconButton variant="text">
 					<TrashIcon className="h-4 w-4" onClick={handleOpen} />
 				</IconButton>

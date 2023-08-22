@@ -76,13 +76,15 @@ export default function SortableTable() {
 						const columnKey = Object.keys(a)[sortColumn];
 						const aValue = a[columnKey];
 						const bValue = b[columnKey];
-						console.log(columnKey + ':' + aValue + ' ____ ' + bValue);
 
-						if (aValue < bValue) {
-							return sortOrder === 'asc' ? -1 : 1;
+						if (typeof aValue === 'string' && typeof bValue === 'string') {
+							return sortOrder === 'asc'
+								? aValue.localeCompare(bValue)
+								: bValue.localeCompare(aValue);
 						}
-						if (aValue > bValue) {
-							return sortOrder === 'asc' ? 1 : -1;
+
+						if (typeof aValue === 'number' && typeof bValue === 'number') {
+							return sortOrder === 'asc' ? bValue - aValue : aValue - bValue;
 						}
 					}
 					return 0;
@@ -123,7 +125,9 @@ export default function SortableTable() {
 								<th
 									key={head}
 									className="cursor-pointer border-y border-slate-300 bg-slate-200 p-4 transition-colors hover:bg-slate-100"
-									onClick={() => handleHeaderClick(index)}
+									onClick={() =>
+										index === 4 ? null : handleHeaderClick(index)
+									}
 								>
 									<Typography
 										variant="small"
