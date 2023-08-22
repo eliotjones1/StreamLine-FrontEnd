@@ -441,4 +441,41 @@ class seeServices(generics.ListAPIView):
             })
         return Response(output, status=status.HTTP_200_OK)
         
-        
+
+class getAllUpcoming(generics.ListAPIView):
+    def get(self, request):
+        release_year = datetime.now().year
+        # TV SHOWS
+        url = "https://api.themoviedb.org/3/discover/tv?first_air_date_year=" + str(release_year) + "&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&watch_region=US"
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
+        }
+        response = requests.get(url, headers=headers)
+        new_shows = response.json()['results']
+
+        # MOVIES
+        url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=" + str(release_year) + "&sort_by=popularity.desc&watch_region=US"
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NWNkNTI3OWYxN2M2NTkzMTIzYzcyZDA0ZTBiZWRmYSIsInN1YiI6IjY0NDg4NTgzMmZkZWM2MDU3M2EwYjk3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VXG36aVRaprnsBeXXhjGq6RmRRoPibEuGsjkgSB-Q-c"
+        }
+        response = requests.get(url, headers=headers)
+        new_movies = response.json()['results']
+
+        # NEED TO FIND SHOWS BEING RELEASED THIS WEEK
+        output = []
+        for show in new_shows:
+            # Check if it is released this week
+            if show['first_air_date'] is not None and show['first_air_date'][:10] >= str(datetime.now().date()):
+                show["media_type"] = "tv"
+                output.append(show)
+        for movie in new_movies:
+            # Check if it is released this week
+            if movie['release_date'] is not None and movie['release_date'][:10] >= str(datetime.now().date()):
+                # Check if it is on a subscription
+                movie['media_type'] = "movie"
+                output.append(movie)
+        return Response(output, status=status.HTTP_200_OK)
+
+
