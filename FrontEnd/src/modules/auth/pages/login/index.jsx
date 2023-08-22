@@ -2,13 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '/src/modules/auth/hooks';
 import { Header } from '/src/modules/common/components';
-import {
-	Button,
-	Card,
-	Checkbox,
-	Typography,
-	Input,
-} from '@material-tailwind/react';
+import { Card, Checkbox, Typography, Input } from '@material-tailwind/react';
 
 export default function Login() {
 	const { login } = useAuth();
@@ -41,11 +35,18 @@ export default function Login() {
 								shadow={false}
 							>
 								<Typography
-									className="text-center mb-4"
+									className="text-center text-sky-600 mb-4"
 									variant="h1"
 									color="blue"
 								>
 									Sign In
+								</Typography>
+								<Typography
+									className="text-center text-slate-800 mb-4"
+									variant="h5"
+									color="blue"
+								>
+									Welcome back! StreamLine subscriptions your now.
 								</Typography>
 								<form onSubmit={signIn} to="/">
 									<div className="flex flex-wrap -mx-3 mb-4">
@@ -98,9 +99,9 @@ export default function Login() {
 											</div>
 										</div>
 									</div>
-									<Button type="submit" color="blue" fullWidth>
+									<button type="submit" className="colored-sky-btn w-full">
 										Sign In
-									</Button>
+									</button>
 								</form>
 							</Card>
 							<div className="text-gray-600 dark:text-gray-400 text-center mt-6">

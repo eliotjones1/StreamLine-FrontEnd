@@ -26,7 +26,7 @@ export default function ResetPassword() {
 					<div className="max-w-6xl mx-auto px-4 sm:px-6">
 						<div className="pt-32 pb-12 md:pt-40 md:pb-20">
 							<div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-								<Typography className="mb-4" variant="h2">
+								<Typography className="mb-4 text-slate-800" variant="h2">
 									Forgot your password?
 								</Typography>
 								<p className="text-xl text-slate-600 dark:text-gray-400">
@@ -51,7 +51,7 @@ export default function ResetPassword() {
 										</div>
 									</div>
 									<div className="flex flex-wrap mt-6">
-										<Button className="w-full" color="blue">
+										<Button className="w-full bg-sky-600" color="blue">
 											Reset Password
 										</Button>
 									</div>
