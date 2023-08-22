@@ -19,11 +19,11 @@ import { useAccount } from 'src/modules/account/hooks';
 
 export default function UpcomingReleases() {
 	const nav = useNavigate();
-	const { fetchList, addToUserList } = useAccount();
+	const { fetchUpcoming, addToUserList } = useAccount();
 
 	const { status, data } = useQuery({
 		queryKey: ['account', 'upcoming releases'],
-		queryFn: () => fetchList(),
+		queryFn: () => fetchUpcoming(),
 	});
 
 	if (status === 'loading')
