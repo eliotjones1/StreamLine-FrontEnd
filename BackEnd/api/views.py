@@ -14,25 +14,9 @@ from fuzzywuzzy import fuzz
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from prod_management.models import Subscription
-from .models import StaffPick, searchQuery
+from .models import StaffPick
 import pandas as pd
 # Create your views here.
-
-def runSaveQuery(query):
-    url = "http://localhost:8000/saveQuery/"
-    requests.post(url, json=query)
-
-@api_view(['POST'])
-def saveQuery(request):
-    query = request.data
-    try:
-        search = searchQuery.objects.get(searchQuery=query)
-        search.searchCount += 1
-        search.save()
-    except:
-        search = searchQuery(searchQuery=query, searchCount=1)
-        search.save()
-    return Response(status=status.HTTP_200_OK)
 
 class returnAll(generics.ListAPIView):
     def get(self, request):
@@ -59,16 +43,6 @@ class returnAll(generics.ListAPIView):
             return None
         data = response.json()['results']
         return Response(data, status=status.HTTP_200_OK)
-
-
-
-class returnAutoFillSuggestions(generics.ListAPIView):
-    def get(self, request):
-        suggestions = searchQuery.objects.all()
-        suggestions = list(suggestions.values_list('searchQuery', flat=True))
-        counts = list(suggestions.values_list('searchCount', flat=True))
-        return Response({'suggestions':suggestions,
-                         'count' : counts}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -135,12 +109,16 @@ def saveMedia(request):
     user_exists = CustomUser.objects.get(email=user_email)
     current = UserData.objects.get(user_id=user_exists)
     cur_list = current.media
-    cur_list.append(object)
-    background_thread = threading.Thread(
-        target=optimizeInTheBackground, args=([cur_list, user_email],))
-    background_thread.start()
-    current.save()
-    return Response({"Status": "OK"})
+    if object not in cur_list:
+        cur_list.append(object)
+        background_thread = threading.Thread(
+            target=optimizeInTheBackground, args=([cur_list, user_email],))
+        background_thread.start()
+        current.save()
+        return Response({"Status": "OK"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"Status": "Already in list"}, status=status.HTTP_400_BAD_REQUEST)
+   
 
 
 @api_view(['POST'])
