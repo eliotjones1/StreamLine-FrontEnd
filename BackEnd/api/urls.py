@@ -17,7 +17,5 @@ urlpatterns = [
     path('isAuthenticated/', isAuthenticated.as_view(), name='isAuthenticated'),
     path('staffpicks/', StaffPicks.as_view(), name='staffpicks'),
     path('showServices/', seeServices.as_view(), name='showServices'),
-    path('saveQuery/', saveQuery, name='saveQuery'),
-    path('getAutofill/', returnAutoFillSuggestions.as_view(), name='getAutofill'),
     path('getAllUpcoming/', getAllUpcoming.as_view(), name='getAllUpcoming'),
 ]
