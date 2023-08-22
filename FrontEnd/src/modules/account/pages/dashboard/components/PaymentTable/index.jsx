@@ -1,7 +1,4 @@
-import {
-	ArrowDownTrayIcon,
-	MagnifyingGlassIcon,
-} from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import {
 	Card,
 	CardHeader,
@@ -11,7 +8,6 @@ import {
 	Chip,
 	CardFooter,
 	Avatar,
-	Input,
 	Spinner,
 } from '@material-tailwind/react';
 import { Pagination } from './components';
