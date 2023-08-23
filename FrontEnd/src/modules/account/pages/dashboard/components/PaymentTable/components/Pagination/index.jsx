@@ -2,17 +2,17 @@ import PropTypes from 'prop-types';
 import { Button, IconButton } from '@material-tailwind/react';
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 
-export default function CircularPagination({ paginationData, setPage }) {
-	const getPageList = (currentPage, maxPages) => {
+export default function CircularPagination({ totalPages, curPage, setPage }) {
+	const getPageList = (currentPage) => {
 		const pageList = [];
 		let startPage = Math.max(1, currentPage - 2);
-		let endPage = Math.min(maxPages, currentPage + 2);
+		let endPage = Math.min(totalPages, currentPage + 2);
 		for (let i = startPage; i <= endPage; i++) {
 			pageList.push(i);
 		}
 
-		while (pageList.length < 5 && (startPage > 1 || endPage < maxPages)) {
-			if (endPage < maxPages) {
+		while (pageList.length < 5 && (startPage > 1 || endPage < totalPages)) {
+			if (endPage < totalPages) {
 				pageList.push(++endPage);
 			} else if (startPage > 1) {
 				pageList.unshift(--startPage);
@@ -23,23 +23,21 @@ export default function CircularPagination({ paginationData, setPage }) {
 	};
 
 	const getItemProps = (index) => ({
-		variant: paginationData.curPage === index ? 'filled' : 'text',
+		variant: curPage === index ? 'filled' : 'text',
 		color: 'gray',
 		onClick: () => setPage(index),
-		className: `rounded-full ${
-			paginationData.curPage === index && 'bg-sky-600'
-		}`,
+		className: `rounded-full ${curPage === index && 'bg-sky-600'}`,
 	});
 
 	const next = () => {
-		if (paginationData.curPage !== paginationData.numPages) {
-			setPage(paginationData.curPage + 1);
+		if (curPage !== totalPages) {
+			setPage(curPage + 1);
 		}
 	};
 
 	const prev = () => {
-		if (paginationData.curPage !== 1) {
-			setPage(paginationData.curPage - 1);
+		if (curPage !== 1) {
+			setPage(curPage - 1);
 		}
 	};
 
@@ -49,24 +47,22 @@ export default function CircularPagination({ paginationData, setPage }) {
 				variant="text"
 				className="flex items-center gap-2 rounded-full"
 				onClick={prev}
-				disabled={paginationData.curPage === 1}
+				disabled={curPage === 1}
 			>
 				<ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
 			</Button>
 			<div className="flex items-center gap-2">
-				{getPageList(paginationData.curPage, paginationData.numPages).map(
-					(pageNum) => (
-						<IconButton {...getItemProps(pageNum)} key={pageNum}>
-							{pageNum}
-						</IconButton>
-					),
-				)}
+				{getPageList(curPage).map((pageNum) => (
+					<IconButton {...getItemProps(pageNum)} key={pageNum}>
+						{pageNum}
+					</IconButton>
+				))}
 			</div>
 			<Button
 				variant="text"
 				className="flex items-center gap-2 rounded-full"
 				onClick={next}
-				disabled={paginationData.curPage === paginationData.numPages}
+				disabled={curPage === totalPages}
 			>
 				Next
 				<ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
@@ -76,9 +72,7 @@ export default function CircularPagination({ paginationData, setPage }) {
 }
 
 CircularPagination.propTypes = {
-	paginationData: PropTypes.shape({
-		curPage: PropTypes.number.isRequired,
-		numPages: PropTypes.number.isRequired,
-	}).isRequired,
+	curPage: PropTypes.number.isRequired,
+	totalPages: PropTypes.number.isRequired,
 	setPage: PropTypes.func.isRequired,
 };

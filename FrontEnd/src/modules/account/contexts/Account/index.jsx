@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const AccountContext = createContext();
 
@@ -13,7 +14,7 @@ export default function AccountProvider({ children }) {
 			{ id: id, media_type: type },
 			{ withCredentials: true },
 		);
-		console.log(response.status);
+		console.log(response);
 		return response.status;
 	};
 
@@ -21,7 +22,6 @@ export default function AccountProvider({ children }) {
 		const { data } = await axios.get('http://127.0.0.1:8000/getAllUpcoming/', {
 			withCredentials: true,
 		});
-		console.log(data);
 		return data;
 	};
 
@@ -57,23 +57,66 @@ export default function AccountProvider({ children }) {
 		return results;
 	};
 
-	const removeFromList = async (media) => {
-		await axios.post(
-			'http://127.0.0.1:8000/removeMedia/',
-			{ id: media.id.toString(), media_type: media.media_type },
-			{ withCredentials: true },
-		);
-		fetchList();
-		return;
+	const removeFromList = async (id, type) => {
+		try {
+			await axios.post(
+				'http://127.0.0.1:8000/removeMedia/',
+				{ id: id, media_type: type },
+				{ withCredentials: true },
+			);
+			toast.success('Removed from Watchlist', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			});
+		} catch (error) {
+			toast.error('Remove from watchlist failed, please try again later', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			});
+		}
 	};
 
 	const addToUserList = async (id, type) => {
-		await axios.post(
-			'http://127.0.0.1:8000/saveMedia/',
-			{ id: id, media_type: type },
-			{ withCredentials: true },
-		);
-		fetchList();
+		try {
+			await axios.post(
+				'http://127.0.0.1:8000/saveMedia/',
+				{ id: id, media_type: type },
+				{ withCredentials: true },
+			);
+			toast.success('Added to Watchlist', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			});
+		} catch (error) {
+			toast.error('Add to watchlist failed, please try again later', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			});
+		}
 	};
 
 	return (

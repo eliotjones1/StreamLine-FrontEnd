@@ -8,15 +8,17 @@ import {
 	Card,
 	CardHeader,
 	Typography,
-	Spinner,
 	CardBody,
 	Avatar,
 } from '@material-tailwind/react';
-import { DeleteDialog } from './components';
+import { AddDialog, DeleteDialog } from './components';
 import { useQuery } from '@tanstack/react-query';
+import { QueryError, QueryLoading } from 'src/modules/common/components';
+import { useAccount } from 'src/modules/account/hooks';
 
 const TABLE_HEAD = ['Service', 'Version', 'Cost', 'Next Payment', ''];
 
+/*
 const TABLE_ROWS = [
 	{
 		name: 'Netflix',
@@ -25,30 +27,10 @@ const TABLE_ROWS = [
 		paymentDate: '04-20-18',
 		img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
 	},
-	{
-		name: 'Hulu',
-		version: 'With Ads',
-		cost: 15.49,
-		paymentDate: '04-21-18',
-		img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
-	},
-	{
-		name: 'Disney+',
-		version: 'No Ads',
-		cost: 20.49,
-		paymentDate: '04-22-18',
-		img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
-	},
-	{
-		name: 'Amazon Prime Video',
-		version: 'Test',
-		cost: 5.49,
-		paymentDate: '04-23-18',
-		img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg',
-	},
-];
+];*/
 
 export default function SortableTable() {
+	const { fetchSubscriptions } = useAccount();
 	const [sortColumn, setSortColumn] = useState(null);
 	const [sortOrder, setSortOrder] = useState('asc');
 
@@ -63,9 +45,7 @@ export default function SortableTable() {
 
 	const { status, data } = useQuery({
 		queryKey: ['account', 'subscriptions'],
-		queryFn: () => {
-			return TABLE_ROWS;
-		},
+		queryFn: () => fetchSubscriptions(),
 	});
 
 	const sortedRows =
@@ -90,13 +70,8 @@ export default function SortableTable() {
 					return 0;
 			  });
 
-	if (status === 'loading')
-		return (
-			<div className="flex h-full w-full bg-slate-50 rounded-lg items-center justify-center">
-				<Spinner className="h-12 w-12" color="blue" />
-			</div>
-		);
-	if (status === 'error') return <></>;
+	if (status === 'loading') return <QueryLoading />;
+	if (status === 'error') return <QueryError />;
 
 	return (
 		<Card className="h-full w-full bg-slate-50 h-[34rem]">
@@ -105,15 +80,20 @@ export default function SortableTable() {
 				shadow={false}
 				className="rounded-none bg-slate-50"
 			>
-				<div className="flex items-center justify-between gap-8">
+				<div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
 					<div>
-						<Typography variant="h3" color="blue-gray">
-							Current Subscriptions
-						</Typography>
-						<Typography color="gray" className="mt-1 font-normal">
-							See information about all your current entertainment
-							subscriptions.
-						</Typography>
+						<div>
+							<Typography variant="h3" color="blue-gray">
+								Current Subscriptions
+							</Typography>
+							<Typography color="gray" className="mt-1 font-normal">
+								See information about all your current entertainment
+								subscriptions.
+							</Typography>
+						</div>
+					</div>
+					<div className="flex w-full shrink-0 gap-2 md:w-max">
+						<AddDialog />
 					</div>
 				</div>
 			</CardHeader>

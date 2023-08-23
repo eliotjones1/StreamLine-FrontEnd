@@ -1,18 +1,16 @@
-import { ArrowDownTrayIcon, FaceFrownIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import {
 	Card,
 	CardHeader,
 	Typography,
 	Button,
 	CardBody,
-	Chip,
 	CardFooter,
-	Avatar,
-	Spinner,
 } from '@material-tailwind/react';
-import { Pagination } from './components';
+import { Pagination, TableBody, TableHeader } from './components';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { QueryError, QueryLoading } from 'src/modules/common/components';
 
 const TABLE_HEAD = ['Transaction', 'Amount', 'Date', 'Status', 'Account'];
 
@@ -84,22 +82,8 @@ export default function TransactionsTable() {
 		},
 	});
 
-	if (status === 'loading') {
-		return (
-			<div className="flex h-full w-full bg-slate-50 rounded-lg items-center justify-center">
-				<Spinner className="h-12 w-12" color="blue" />
-			</div>
-		);
-	}
-	console.log(data);
-	if (data.length === 0 || status === 'error') {
-		console.log('error');
-		return (
-			<div className="flex h-full w-full bg-slate-50 rounded-lg items-center justify-center">
-				<FaceFrownIcon className="text-slate-800 h-12 w-12" />
-			</div>
-		);
-	}
+	if (status === 'loading') return <QueryLoading />;
+	if (status === 'error') return <QueryError />;
 
 	return (
 		<Card className="h-full w-full bg-slate-50">
@@ -126,142 +110,14 @@ export default function TransactionsTable() {
 			</CardHeader>
 			<CardBody className="overflow-scroll px-0">
 				<table className="w-full min-w-max table-auto text-left">
-					<thead>
-						<tr>
-							{TABLE_HEAD.map((head) => (
-								<th
-									key={head}
-									className="border-y border-slate-300 bg-slate-200 p-4"
-								>
-									<Typography
-										variant="small"
-										className="font-semibold text-slate-900 leading-none opacity-70"
-									>
-										{head}
-									</Typography>
-								</th>
-							))}
-						</tr>
-					</thead>
-					<tbody>
-						{data.pageData.map(
-							(
-								{
-									img,
-									name,
-									amount,
-									date,
-									status,
-									account,
-									accountNumber,
-									expiry,
-								},
-								index,
-							) => {
-								const isLast = index === TABLE_ROWS.length - 1;
-								const classes = isLast
-									? 'p-4'
-									: 'p-4 border-b border-blue-gray-50';
-
-								return (
-									<tr key={name}>
-										<td className={classes}>
-											<div className="flex items-center gap-3">
-												<Avatar
-													src={img}
-													alt={name}
-													size="md"
-													className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-												/>
-												<Typography
-													variant="small"
-													color="blue-gray"
-													className="font-bold"
-												>
-													{name}
-												</Typography>
-											</div>
-										</td>
-										<td className={classes}>
-											<Typography
-												variant="small"
-												color="blue-gray"
-												className="font-normal"
-											>
-												${amount.toFixed(2)}
-											</Typography>
-										</td>
-										<td className={classes}>
-											<Typography
-												variant="small"
-												color="blue-gray"
-												className="font-normal"
-											>
-												{date}
-											</Typography>
-										</td>
-										<td className={classes}>
-											<div className="w-max">
-												<Chip
-													size="sm"
-													variant="ghost"
-													value={status}
-													color={
-														status === 'paid'
-															? 'green'
-															: status === 'pending'
-															? 'amber'
-															: 'red'
-													}
-												/>
-											</div>
-										</td>
-										<td className={classes}>
-											<div className="flex items-center gap-3">
-												<div className="h-9 w-12 bg-white rounded-md border border-blue-gray-50 p-1">
-													<Avatar
-														src={
-															account === 'visa'
-																? 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png'
-																: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png'
-														}
-														size="sm"
-														alt={account}
-														variant="square"
-														className="h-full w-full object-contain p-1"
-													/>
-												</div>
-												<div className="flex flex-col">
-													<Typography
-														variant="small"
-														color="blue-gray"
-														className="font-normal capitalize"
-													>
-														{account.split('-').join(' ')} {accountNumber}
-													</Typography>
-													<Typography
-														variant="small"
-														color="blue-gray"
-														className="font-normal opacity-70"
-													>
-														{expiry}
-													</Typography>
-												</div>
-											</div>
-										</td>
-									</tr>
-								);
-							},
-						)}
-					</tbody>
+					<TableHeader headers={TABLE_HEAD} />
+					<TableBody tableRows={data.pageData} />
 				</table>
 			</CardBody>
 			<CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
 				<Pagination
-					paginationData={{
-						numPages: data.numPages,
-						curPage: data.curPage,
-					}}
+					totalPages={data.numPages}
+					curPage={data.curPage}
 					setPage={setPage}
 				/>
 			</CardFooter>

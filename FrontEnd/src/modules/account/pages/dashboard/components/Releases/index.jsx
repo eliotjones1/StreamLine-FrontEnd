@@ -3,7 +3,6 @@ import {
 	CardHeader,
 	CardBody,
 	List,
-	Spinner,
 	ListItem,
 	ListItemPrefix,
 	ListItemSuffix,
@@ -14,6 +13,7 @@ import { FaceFrownIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'src/modules/account/hooks';
 import { AddToListCheck } from './components';
+import { QueryError, QueryLoading } from 'src/modules/common/components';
 
 export default function UpcomingReleases() {
 	const nav = useNavigate();
@@ -24,30 +24,8 @@ export default function UpcomingReleases() {
 		queryFn: () => fetchUpcoming(),
 	});
 
-	if (status === 'loading')
-		return (
-			<div className="flex h-full w-full bg-slate-50 rounded-lg items-center justify-center">
-				<Spinner className="h-12 w-12" color="blue" />
-			</div>
-		);
-	if (status === 'error')
-		return (
-			<div className="flex flex-col h-full w-full bg-slate-50 rounded-lg items-center justify-center">
-				<FaceFrownIcon className="text-slate-800 h-32 w-32" />
-				<Typography className="flex w-3/4 text-center">
-					An internal server error has occured. Our staff is aware of the issue
-					and working to resolve it in a timely manner. If the issue persists
-					please contact support for assistance.
-				</Typography>
-				<button
-					type="button"
-					className="colored-sky-btn mt-4"
-					onClick={() => nav('/support')}
-				>
-					Contact Support
-				</button>
-			</div>
-		);
+	if (status === 'loading') return <QueryLoading />;
+	if (status === 'error') return <QueryError />;
 
 	return (
 		<Card className="h-full w-full bg-slate-50 h-[34rem] pb-2">
@@ -80,40 +58,45 @@ export default function UpcomingReleases() {
 				) : (
 					<List>
 						{data.map((release, index) => (
-							<ListItem
-								key={index}
-								onClick={() =>
-									nav(`/media/${release.media_type}/${release.id}`)
-								}
-							>
-								<ListItemPrefix>
+							<ListItem key={index}>
+								<ListItemPrefix
+									onClick={() =>
+										nav(`/media/${release.media_type}/${release.id}`)
+									}
+								>
 									<img
 										className="w-20 object-cover rounded-md"
-										src={`https://image.tmdb.org/t/p/original${release.poster_path}`}
+										src={
+											release.poster_path
+												? `https://image.tmdb.org/t/p/original${release.poster_path}`
+												: 'src/assets/images/no-image.jpg'
+										}
 										alt={release.title || release.name}
 									/>
 								</ListItemPrefix>
-								<div className="container w-3/4 h-full">
+								<div
+									className="container w-3/4 h-full"
+									onClick={() =>
+										nav(`/media/${release.media_type}/${release.id}`)
+									}
+								>
 									<Typography className="text-slate-900" variant="h5">
 										{release.title || release.name}
 									</Typography>
-									<div className="flex items-center space-x-2">
-										<Typography className="font-bold text-slate-800">
-											{release.first_air_date === undefined
-												? new Date(release.release_date).toLocaleString(
-														'en-US',
-														{
-															month: 'long',
-															day: 'numeric',
-														},
-												  )
-												: new Date(release.first_air_date).toLocaleString(
-														'en-US',
-														{
-															month: 'long',
-															day: 'numeric',
-														},
-												  )}
+									<div className="flex items-center space-x-1">
+										<Typography className="font-semibold text-slate-800">
+											Releases:
+										</Typography>
+										<Typography className="font-semibold text-slate-800">
+											{new Intl.DateTimeFormat('en-US', {
+												year: 'numeric',
+												month: 'long',
+												day: 'numeric',
+											}).format(
+												release.first_air_date === undefined
+													? new Date(release.release_date.replace(/-/g, '/'))
+													: new Date(release.first_air_date.replace(/-/g, '/')),
+											)}
 										</Typography>
 									</div>
 									<Typography className="h-12 text-slate-900 line-clamp-2">

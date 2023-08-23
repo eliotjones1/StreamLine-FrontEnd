@@ -19,6 +19,7 @@ import {
 	UserDash,
 	VirtualCableBox,
 } from './modules';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
 	const location = useLocation();
