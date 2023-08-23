@@ -9,13 +9,17 @@ export default function AccountProvider({ children }) {
 	const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
 
 	const checkInList = async (id, type) => {
-		const response = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/in-watchlist',
-			{ id: id, media_type: type },
-			{ withCredentials: true },
-		);
-		console.log(response);
-		return response.status;
+		try {
+			const response = await axios.get(
+				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/in-user-watchlist',
+				{ id: id, media_type: type },
+				{ withCredentials: true },
+			);
+			console.log(response);
+			return false;
+		} catch (error) {
+			return false;
+		}
 	};
 
 	const fetchUpcoming = async () => {
