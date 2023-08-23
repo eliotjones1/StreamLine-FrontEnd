@@ -10,7 +10,7 @@ export default function AccountProvider({ children }) {
 
 	const checkInList = async (id, type) => {
 		const response = await axios.get(
-			'http://127.0.0.1:8000/isInWatchlist/',
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/in-watchlist',
 			{ id: id, media_type: type },
 			{ withCredentials: true },
 		);
