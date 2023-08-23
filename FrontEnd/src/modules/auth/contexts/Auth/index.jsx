@@ -6,83 +6,101 @@ import axios from 'axios';
 export const LoginContext = createContext();
 
 const authReducer = (state, action) => {
-  switch (action.type) {
-    case 'LOGIN':
-      return {
-        ...state,
-        isLoggedIn: true,
-        isAdmin: action.payload.isAdmin,
-      };
-    case 'LOGOUT':
-      return {
-        ...state,
-        isLoggedIn: false,
-        isAdmin: false,
-      };
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case 'LOGIN':
+			return {
+				...state,
+				isLoggedIn: true,
+				isAdmin: action.payload.isAdmin,
+			};
+		case 'LOGOUT':
+			return {
+				...state,
+				isLoggedIn: false,
+				isAdmin: false,
+			};
+		default:
+			return state;
+	}
 };
 
 export default function LoginProvider({ children }) {
-  const nav = useNavigate();
-  const [state, dispatch] = useReducer(authReducer, { isLoggedIn: false, isAdmin: false });
+	const nav = useNavigate();
+	const [state, dispatch] = useReducer(authReducer, {
+		isLoggedIn: false,
+		isAdmin: false,
+	});
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
+	useEffect(() => {
+		checkLoginStatus();
+	}, []);
 
-  const checkLoginStatus = async () => {
-    await axios.get('http://127.0.0.1:8000/isAuthenticated/', { withCredentials: true });
-    dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
-  };
+	const checkLoginStatus = async () => {
+		await axios.get(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/is-authenticated/',
+			{ withCredentials: true },
+		);
+		dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
+	};
 
-  const signUp = async (userData) => {
-    await axios.post('http://127.0.0.1:8000/api/auth/register', userData, {
-      withCredentials: true,
-    });
-    login(userData);
-  };
+	const signUp = async (userData) => {
+		await axios.post(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/auth/register/',
+			userData,
+			{
+				withCredentials: true,
+			},
+		);
+		login(userData);
+	};
 
-  const login = async (userData) => {
-    const { data } = await axios.post('http://127.0.0.1:8000/api/auth/login', userData, {
-      withCredentials: true,
-    });
-    dispatch({ type: 'LOGIN', payload: { isAdmin: data.is_staff } });
-    nav('/user-dash');
-  };
+	const login = async (userData) => {
+		const { data } = await axios.post(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/auth/login/',
+			userData,
+			{
+				withCredentials: true,
+			},
+		);
+		dispatch({ type: 'LOGIN', payload: { isAdmin: data.is_staff } });
+		nav('/user-dash');
+	};
 
-  const logout = async () => {
-    await axios.post('http://127.0.0.1:8000/api/auth/logout', {}, { withCredentials: true });
-    dispatch({ type: 'LOGOUT' });
-    nav('/');
-  };
+	const logout = async () => {
+		await axios.post(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/auth/logout/',
+			{},
+			{ withCredentials: true },
+		);
+		dispatch({ type: 'LOGOUT' });
+		nav('/');
+	};
 
-  const resetPassword = async (email) => {
-    await axios.post(
-      'http://127.0.0.1:8000/api/password_reset/',
-      { email: email },
-      { withCredentials: true }
-    );
-    nav('/signin');
-  };
+	const resetPassword = async (email) => {
+		await axios.post(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/auth/password_reset/',
+			{ email: email },
+			{ withCredentials: true },
+		);
+		nav('/signin');
+	};
 
-  return (
-    <LoginContext.Provider
-      value={{
-        isLoggedIn: state.isLoggedIn,
-        isAdmin: state.isAdmin,
-        login,
-        logout,
-        resetPassword,
-        signUp,
-      }}
-    >
-      {children}
-    </LoginContext.Provider>
-  );
+	return (
+		<LoginContext.Provider
+			value={{
+				isLoggedIn: state.isLoggedIn,
+				isAdmin: state.isAdmin,
+				login,
+				logout,
+				resetPassword,
+				signUp,
+			}}
+		>
+			{children}
+		</LoginContext.Provider>
+	);
 }
 
 LoginProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 };

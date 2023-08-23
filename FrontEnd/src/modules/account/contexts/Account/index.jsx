@@ -19,31 +19,40 @@ export default function AccountProvider({ children }) {
 	};
 
 	const fetchUpcoming = async () => {
-		const { data } = await axios.get('http://127.0.0.1:8000/getAllUpcoming/', {
-			withCredentials: true,
-		});
+		const { data } = await axios.get(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/get-upcoming/',
+			{
+				withCredentials: true,
+			},
+		);
 		return data;
 	};
 
 	const fetchSubscriptions = async () => {
 		const { data } = await axios.get(
-			'http://127.0.0.1:8000/api/user/subscriptions/view/',
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/view/',
 			{ withCredentials: true },
 		);
 		return data;
 	};
 
 	const fetchBudget = async () => {
-		const { data } = await axios.get('http://127.0.0.1:8000/returnData/', {
-			withCredentials: true,
-		});
+		const { data } = await axios.get(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/return-user-data/',
+			{
+				withCredentials: true,
+			},
+		);
 		return data.budget;
 	};
 
 	const fetchList = async () => {
-		const { data } = await axios.get('http://127.0.0.1:8000/returnData/', {
-			withCredentials: true,
-		});
+		const { data } = await axios.get(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/return-user-data/',
+			{
+				withCredentials: true,
+			},
+		);
 
 		const promises = data.media.map(async (media) => {
 			let { data } = await axios.get(
@@ -60,7 +69,7 @@ export default function AccountProvider({ children }) {
 	const removeFromList = async (id, type) => {
 		try {
 			await axios.post(
-				'http://127.0.0.1:8000/removeMedia/',
+				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/remove-media/',
 				{ id: id, media_type: type },
 				{ withCredentials: true },
 			);
@@ -91,7 +100,7 @@ export default function AccountProvider({ children }) {
 	const addToUserList = async (id, type) => {
 		try {
 			await axios.post(
-				'http://127.0.0.1:8000/saveMedia/',
+				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/save-media/',
 				{ id: id, media_type: type },
 				{ withCredentials: true },
 			);
