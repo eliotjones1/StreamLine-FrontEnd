@@ -142,19 +142,28 @@ export default function SortableTable() {
 					</thead>
 					<tbody>
 						{sortedRows.map(
-							({ img, name, cost, version, paymentDate }, index) => {
+							(
+								{
+									subscription_image_path,
+									subscription_name,
+									subscription_price,
+									subscription_version,
+									end_date,
+								},
+								index,
+							) => {
 								const isLast = index === sortedRows.length - 1;
 								const classes = isLast
 									? 'p-4'
 									: 'p-4 border-b border-blue-gray-50';
 
 								return (
-									<tr key={name}>
+									<tr key={index}>
 										<td className={classes}>
 											<div className="flex items-center gap-3">
 												<Avatar
-													src={img}
-													alt={name}
+													src={subscription_image_path}
+													alt={subscription_name}
 													size="md"
 													className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
 												/>
@@ -163,7 +172,7 @@ export default function SortableTable() {
 													color="blue-gray"
 													className="font-bold"
 												>
-													{name}
+													{subscription_name}
 												</Typography>
 											</div>
 										</td>
@@ -174,7 +183,7 @@ export default function SortableTable() {
 													color="blue-gray"
 													className="font-normal"
 												>
-													{version}
+													{subscription_version}
 												</Typography>
 											</div>
 										</td>
@@ -185,7 +194,7 @@ export default function SortableTable() {
 													color="blue-gray"
 													className="font-normal"
 												>
-													${cost.toFixed(2)}
+													${subscription_price}
 												</Typography>
 											</div>
 										</td>
@@ -195,15 +204,15 @@ export default function SortableTable() {
 												color="blue-gray"
 												className="font-normal"
 											>
-												{new Date(paymentDate).toLocaleDateString('en-US', {
+												{new Intl.DateTimeFormat('en-US', {
 													year: 'numeric',
 													month: 'long',
 													day: 'numeric',
-												})}
+												}).format(new Date(end_date.replace(/-/g, '/')))}
 											</Typography>
 										</td>
 										<td className={classes}>
-											<DeleteDialog name={name} date={paymentDate} />
+											<DeleteDialog name={subscription_name} date={end_date} />
 										</td>
 									</tr>
 								);

@@ -33,11 +33,12 @@ export default function AccountProvider({ children }) {
 	};
 
 	const fetchSubscriptions = async () => {
-		const { data } = await axios.get(
+		const response = await axios.get(
 			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/view/',
 			{ withCredentials: true },
 		);
-		return data;
+		console.log(response);
+		return response.data;
 	};
 
 	const fetchBudget = async () => {
