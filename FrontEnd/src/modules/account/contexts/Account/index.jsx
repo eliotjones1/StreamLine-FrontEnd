@@ -12,8 +12,8 @@ export default function AccountProvider({ children }) {
 		try {
 			const response = await axios.get(
 				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/in-user-watchlist',
-				{ id: id, media_type: type },
-				{ withCredentials: true },
+				{params: { id: id, media_type: type },
+				withCredentials: true },
 			);
 			console.log(response);
 			return false;
