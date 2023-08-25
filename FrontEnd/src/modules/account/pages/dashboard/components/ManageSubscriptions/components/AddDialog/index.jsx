@@ -9,11 +9,23 @@ import {
 	Typography,
 } from '@material-tailwind/react';
 import { PlusIcon } from '@heroicons/react/24/outline';
+import { useAccount } from 'src/modules/account/hooks';
+import { useQuery } from '@tanstack/react-query';
+import { QueryError, QueryLoading } from 'src/modules/common/components';
 
 export default function AddDialog() {
 	const [open, setOpen] = useState(false);
+	const { recommendSubscriptions } = useAccount();
 
 	const handleOpen = () => setOpen(!open);
+
+	const { status, data } = useQuery({
+		queryKey: [],
+		queryFn: () => recommendSubscriptions(),
+	});
+
+	if (status === 'loading') return <QueryLoading />;
+	if (status === 'error') return <QueryError />;
 
 	return (
 		<>
@@ -33,7 +45,7 @@ export default function AddDialog() {
 					</Typography>
 				</DialogHeader>
 				<DialogBody divider className="grid place-items-center gap-4">
-					New Subscription Stuff Here Once Eliot Gets Off His Ass!
+					{data}
 				</DialogBody>
 				<DialogFooter className="space-x-2">
 					<Button variant="text" onClick={handleOpen}>
