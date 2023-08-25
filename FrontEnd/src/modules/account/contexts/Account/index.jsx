@@ -10,15 +10,46 @@ export default function AccountProvider({ children }) {
 
 	const checkInList = async (id, type) => {
 		try {
-			const response = await axios.get(
+			const { data } = await axios.get(
 				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/in-user-watchlist',
-				{params: { id: id, media_type: type },
-				withCredentials: true },
+				{ params: { id: id, media_type: type }, withCredentials: true },
 			);
-			console.log(response);
-			return false;
+			console.log(data.Status);
+			if (data.Status === 'false') return false;
+			return true;
 		} catch (error) {
-			return false;
+			return true;
+		}
+	};
+
+	const deleteSubscription = async (subscription) => {
+		try {
+			await axios.post(
+				'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/cancel/',
+				subscription,
+				{ withCredentials: true },
+			);
+			toast.success('Subscription Will Be Canceled', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
+		} catch (error) {
+			toast.error('Error canceling subscription, please try again later', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 	};
 
@@ -37,7 +68,6 @@ export default function AccountProvider({ children }) {
 			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/view/',
 			{ withCredentials: true },
 		);
-		console.log(response);
 		return response.data;
 	};
 
@@ -86,7 +116,7 @@ export default function AccountProvider({ children }) {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-				theme: 'colored',
+				theme: 'light',
 			});
 		} catch (error) {
 			toast.error('Remove from watchlist failed, please try again later', {
@@ -97,7 +127,7 @@ export default function AccountProvider({ children }) {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-				theme: 'colored',
+				theme: 'light',
 			});
 		}
 	};
@@ -117,7 +147,7 @@ export default function AccountProvider({ children }) {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-				theme: 'colored',
+				theme: 'light',
 			});
 		} catch (error) {
 			toast.error('Add to watchlist failed, please try again later', {
@@ -128,7 +158,7 @@ export default function AccountProvider({ children }) {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-				theme: 'colored',
+				theme: 'light',
 			});
 		}
 	};
@@ -138,6 +168,7 @@ export default function AccountProvider({ children }) {
 			value={{
 				fetchUpcoming,
 				fetchSubscriptions,
+				deleteSubscription,
 				fetchBudget,
 				fetchList,
 				removeFromList,

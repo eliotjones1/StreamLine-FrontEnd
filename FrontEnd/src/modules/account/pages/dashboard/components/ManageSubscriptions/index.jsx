@@ -18,17 +18,6 @@ import { useAccount } from 'src/modules/account/hooks';
 
 const TABLE_HEAD = ['Service', 'Version', 'Cost', 'Next Payment', ''];
 
-/*
-const TABLE_ROWS = [
-	{
-		name: 'Netflix',
-		version: 'Standard',
-		cost: 10.49,
-		paymentDate: '04-20-18',
-		img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-	},
-];*/
-
 export default function SortableTable() {
 	const { fetchSubscriptions } = useAccount();
 	const [sortColumn, setSortColumn] = useState(null);
@@ -141,83 +130,74 @@ export default function SortableTable() {
 						</tr>
 					</thead>
 					<tbody>
-						{sortedRows.map(
-							(
-								{
-									subscription_image_path,
-									subscription_name,
-									subscription_price,
-									subscription_version,
-									end_date,
-								},
-								index,
-							) => {
-								const isLast = index === sortedRows.length - 1;
-								const classes = isLast
-									? 'p-4'
-									: 'p-4 border-b border-blue-gray-50';
+						{sortedRows.map((subscription, index) => {
+							const isLast = index === sortedRows.length - 1;
+							const classes = isLast
+								? 'p-4'
+								: 'p-4 border-b border-blue-gray-50';
 
-								return (
-									<tr key={index}>
-										<td className={classes}>
-											<div className="flex items-center gap-3">
-												<Avatar
-													src={subscription_image_path}
-													alt={subscription_name}
-													size="md"
-													className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-												/>
-												<Typography
-													variant="small"
-													color="blue-gray"
-													className="font-bold"
-												>
-													{subscription_name}
-												</Typography>
-											</div>
-										</td>
-										<td className={classes}>
-											<div className="flex flex-col">
-												<Typography
-													variant="small"
-													color="blue-gray"
-													className="font-normal"
-												>
-													{subscription_version}
-												</Typography>
-											</div>
-										</td>
-										<td className={classes}>
-											<div className="flex flex-col">
-												<Typography
-													variant="small"
-													color="blue-gray"
-													className="font-normal"
-												>
-													${subscription_price}
-												</Typography>
-											</div>
-										</td>
-										<td className={classes}>
+							return (
+								<tr key={index}>
+									<td className={classes}>
+										<div className="flex items-center gap-3">
+											<Avatar
+												src={subscription.subscription_image_path}
+												alt={subscription.subscription_name}
+												size="md"
+												className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
+											/>
+											<Typography
+												variant="small"
+												color="blue-gray"
+												className="font-bold"
+											>
+												{subscription.subscription_name}
+											</Typography>
+										</div>
+									</td>
+									<td className={classes}>
+										<div className="flex flex-col">
 											<Typography
 												variant="small"
 												color="blue-gray"
 												className="font-normal"
 											>
-												{new Intl.DateTimeFormat('en-US', {
-													year: 'numeric',
-													month: 'long',
-													day: 'numeric',
-												}).format(new Date(end_date.replace(/-/g, '/')))}
+												{subscription.subscription_version}
 											</Typography>
-										</td>
-										<td className={classes}>
-											<DeleteDialog name={subscription_name} date={end_date} />
-										</td>
-									</tr>
-								);
-							},
-						)}
+										</div>
+									</td>
+									<td className={classes}>
+										<div className="flex flex-col">
+											<Typography
+												variant="small"
+												color="blue-gray"
+												className="font-normal"
+											>
+												${subscription.subscription_price}
+											</Typography>
+										</div>
+									</td>
+									<td className={classes}>
+										<Typography
+											variant="small"
+											color="blue-gray"
+											className="font-normal"
+										>
+											{new Intl.DateTimeFormat('en-US', {
+												year: 'numeric',
+												month: 'long',
+												day: 'numeric',
+											}).format(
+												new Date(subscription.end_date.replace(/-/g, '/')),
+											)}
+										</Typography>
+									</td>
+									<td className={classes}>
+										<DeleteDialog subscription={subscription} />
+									</td>
+								</tr>
+							);
+						})}
 					</tbody>
 				</table>
 			</CardBody>

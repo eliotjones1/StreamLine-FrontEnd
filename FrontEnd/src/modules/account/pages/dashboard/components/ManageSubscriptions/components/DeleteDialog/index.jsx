@@ -14,11 +14,19 @@ import {
 	TrashIcon,
 	ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
+import { useAccount } from 'src/modules/account/hooks';
 
-export default function DeleteDialog({ name, date }) {
+export default function DeleteDialog({ subscription }) {
+	console.log(subscription);
 	const [open, setOpen] = useState(false);
+	const { deleteSubscription } = useAccount();
 
 	const handleOpen = () => setOpen(!open);
+
+	const cancel = () => {
+		setOpen(!open);
+		deleteSubscription(subscription);
+	};
 
 	return (
 		<>
@@ -40,15 +48,25 @@ export default function DeleteDialog({ name, date }) {
 					</Typography>
 					<Typography className="text-center font-normal">
 						This action is permanent and can not be undone. Your access to{' '}
-						<span className="font-bold text-slate-900">{name}</span> will be
-						revoked on <span className="font-bold text-slate-900">{date}</span>.
+						<span className="font-bold text-slate-900">
+							{subscription.subscription_name}
+						</span>{' '}
+						will be revoked on{' '}
+						<span className="font-bold text-slate-900">
+							{new Intl.DateTimeFormat('en-US', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric',
+							}).format(new Date(subscription.end_date.replace(/-/g, '/')))}
+						</span>
+						.
 					</Typography>
 				</DialogBody>
 				<DialogFooter className="space-x-2">
 					<Button variant="text" onClick={handleOpen}>
 						Close
 					</Button>
-					<Button variant="gradient" color="red" onClick={handleOpen}>
+					<Button variant="gradient" color="red" onClick={cancel}>
 						Cancel Subscription
 					</Button>
 				</DialogFooter>
@@ -58,6 +76,8 @@ export default function DeleteDialog({ name, date }) {
 }
 
 DeleteDialog.propTypes = {
-	name: PropTypes.string.isRequired, // 'name' prop is required and should be a string
-	date: PropTypes.string.isRequired, // 'date' prop is required and should be a string
+	subscription: PropTypes.shape({
+		subscription_name: PropTypes.string.isRequired,
+		end_date: PropTypes.string.isRequired,
+	}),
 };
