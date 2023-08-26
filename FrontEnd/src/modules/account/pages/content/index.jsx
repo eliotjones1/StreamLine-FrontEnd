@@ -1,9 +1,15 @@
-import { Featured } from './components';
+import { Featured, MediaMain } from './components';
+import { Header, Footer } from 'src/modules/common/components';
 
 export default function VirtualCableBox() {
 	return (
-		<>
-			<Featured />
-		</>
+		<div className="flex flex-col min-h-screen overflow-hidden">
+			<Header flipColors={true} />
+			<main className="grow">
+				<Featured />
+				<MediaMain />
+			</main>
+			<Footer />
+		</div>
 	);
 }

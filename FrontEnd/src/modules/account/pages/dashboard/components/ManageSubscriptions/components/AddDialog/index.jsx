@@ -5,27 +5,32 @@ import {
 	DialogHeader,
 	DialogBody,
 	DialogFooter,
+	Input,
 	Tooltip,
 	Typography,
 } from '@material-tailwind/react';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { RecommendationAccordian } from './components';
+import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useAccount } from 'src/modules/account/hooks';
 import { useQuery } from '@tanstack/react-query';
-import { QueryError, QueryLoading } from 'src/modules/common/components';
+import { QueryLoading } from 'src/modules/common/components';
 
 export default function AddDialog() {
 	const [open, setOpen] = useState(false);
-	const { recommendSubscriptions } = useAccount();
+	const [query, setQuery] = useState('');
+	const { recommendSubscriptions, searchSubscriptions } = useAccount();
 
 	const handleOpen = () => setOpen(!open);
 
 	const { status, data } = useQuery({
-		queryKey: [],
-		queryFn: () => recommendSubscriptions(),
+		queryKey: ['account', 'Subscription Recommendations', query],
+		keepPreviousData: true,
+		queryFn: () =>
+			query !== '' ? searchSubscriptions(query) : recommendSubscriptions(),
 	});
 
 	if (status === 'loading') return <QueryLoading />;
-	if (status === 'error') return <QueryError />;
+	if (status === 'error') return <></>;
 
 	return (
 		<>
@@ -44,8 +49,19 @@ export default function AddDialog() {
 						Add New Subscriptions
 					</Typography>
 				</DialogHeader>
-				<DialogBody divider className="grid place-items-center gap-4">
-					{data}
+				<DialogBody
+					divider
+					className="grid place-items-center gap-4 max-h-[75vh] overflow-auto"
+				>
+					<Input
+						name="search"
+						color="blue"
+						label="Search"
+						value={query}
+						onChange={(event) => setQuery(event.target.value)}
+						icon={<MagnifyingGlassIcon className="h-4" />}
+					/>
+					<RecommendationAccordian recommendations={data} close={handleOpen} />
 				</DialogBody>
 				<DialogFooter className="space-x-2">
 					<Button variant="text" onClick={handleOpen}>

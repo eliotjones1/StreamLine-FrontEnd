@@ -3,6 +3,65 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const defaultToast = {
+	position: 'top-right',
+	autoClose: 3000,
+	hideProgressBar: false,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: 'light',
+};
+
+const accordionData = [
+	{
+		subscription_image_path:
+			'https://1000logos.net/wp-content/uploads/2017/05/Netflix_logo_PNG4.png',
+		subscription_name: 'Netflix',
+		versions: [
+			{
+				name: 'Standard',
+				cost: '8.99',
+			},
+		],
+	},
+	{
+		subscription_image_path:
+			'https://1000logos.net/wp-content/uploads/2020/12/Hulu-Logo-PNG.png',
+		subscription_name: 'Hulu',
+		versions: [
+			{
+				name: 'Standard',
+				cost: '8.99',
+			},
+			{
+				name: 'With Ads',
+				cost: '6.99',
+			},
+		],
+	},
+	{
+		subscription_image_path:
+			'https://1000logos.net/wp-content/uploads/2022/02/HBO-Max-Logo-PNG6.png',
+		subscription_name: 'HBO Max',
+		versions: [
+			{
+				name: 'Premium',
+				cost: '10.99',
+			},
+			{
+				name: 'Standard',
+				cost: '8.99',
+			},
+			{
+				name: 'With Ads',
+				cost: '6.99',
+			},
+		],
+	},
+];
+
 export const AccountContext = createContext();
 
 export default function AccountProvider({ children }) {
@@ -37,27 +96,12 @@ export default function AccountProvider({ children }) {
 				{ id: id, media_type: type },
 				{ withCredentials: true },
 			);
-			toast.success('Added to Watchlist', {
-				position: 'top-right',
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
+			toast.success('Added to Watchlist', defaultToast);
 		} catch (error) {
-			toast.error('Add to watchlist failed, please try again later', {
-				position: 'top-right',
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
+			toast.error(
+				'Add to watchlist failed, please try again later',
+				defaultToast,
+			);
 		}
 	};
 
@@ -68,27 +112,12 @@ export default function AccountProvider({ children }) {
 				{ id: id, media_type: type },
 				{ withCredentials: true },
 			);
-			toast.success('Removed from Watchlist', {
-				position: 'top-right',
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
+			toast.success('Removed from Watchlist', defaultToast);
 		} catch (error) {
-			toast.error('Remove from watchlist failed, please try again later', {
-				position: 'top-right',
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
+			toast.error(
+				'Remove from watchlist failed, please try again later',
+				defaultToast,
+			);
 		}
 	};
 
@@ -116,13 +145,41 @@ export default function AccountProvider({ children }) {
 		return data;
 	};
 
+	const searchSubscriptions = async (query) => {
+		/*
+		const { data } = await axios.get(
+			`https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/recommendations/${query}`,
+			{ withCredentials: true },
+		);
+		*/
+		return [accordionData[2], accordionData[1]];
+		//return data;
+	};
+
 	const recommendSubscriptions = async () => {
-		const response = await axios.get(
+		const { data } = await axios.get(
 			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/recommendations/',
 			{ withCredentials: true },
 		);
-		console.log(response);
-		return 'New Subscription Stuff Here Once Eliot Gets Off His Ass!';
+		console.log(data);
+		return accordionData;
+		//return data;
+	};
+
+	const addSubscription = async (subscription) => {
+		try {
+			await axios.post(
+				'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/add/',
+				subscription,
+				{ withCredentials: true },
+			);
+			toast.success('Subscription Will Be Added', defaultToast);
+		} catch (error) {
+			toast.error(
+				'Error adding subscription, please try again later',
+				defaultToast,
+			);
+		}
 	};
 
 	const deleteSubscription = async (subscription) => {
@@ -132,27 +189,12 @@ export default function AccountProvider({ children }) {
 				subscription,
 				{ withCredentials: true },
 			);
-			toast.success('Subscription Will Be Canceled', {
-				position: 'top-right',
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
+			toast.success('Subscription Will Be Canceled', defaultToast);
 		} catch (error) {
-			toast.error('Error canceling subscription, please try again later', {
-				position: 'top-right',
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
+			toast.error(
+				'Error canceling subscription, please try again later',
+				defaultToast,
+			);
 		}
 	};
 
@@ -186,7 +228,9 @@ export default function AccountProvider({ children }) {
 				removeFromList,
 				checkInList,
 				fetchSubscriptions,
+				searchSubscriptions,
 				recommendSubscriptions,
+				addSubscription,
 				deleteSubscription,
 				fetchUpcoming,
 				fetchBudget,

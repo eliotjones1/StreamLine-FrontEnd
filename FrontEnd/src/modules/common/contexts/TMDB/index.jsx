@@ -11,7 +11,6 @@ export default function TMDBProvider({ children }) {
 		const { data } = await axios.get(
 			`https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=US`,
 		);
-		console.log(data);
 		return data.results;
 	};
 
@@ -19,7 +18,6 @@ export default function TMDBProvider({ children }) {
 		const { data } = await axios.get(
 			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/newly-released/',
 		);
-		console.log(data);
 		return data;
 	};
 

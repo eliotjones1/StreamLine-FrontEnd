@@ -22,7 +22,7 @@
 
 	/* Text */
 	.text-link {
-		@apply text-sky-600 hover:text-sky-900 dark:hover:text-gray-200 transition duration-150 ease-in-out;
+		@apply text-sky-600 hover:text-sky-900 dark:hover:text-gray-200 hover:cursor-pointer transition duration-150 ease-in-out;
 	}
 
 	/* Images */

@@ -16,7 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import { QueryError, QueryLoading } from 'src/modules/common/components';
 import { useAccount } from 'src/modules/account/hooks';
 
-const TABLE_HEAD = ['Service', 'Version', 'Cost', 'Next Payment', ''];
+const TABLE_HEAD = ['Service', 'Version', 'Cost', 'Status', ''];
 
 export default function SortableTable() {
 	const { fetchSubscriptions } = useAccount();
