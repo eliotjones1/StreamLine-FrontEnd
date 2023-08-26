@@ -168,11 +168,12 @@ export default function AccountProvider({ children }) {
 
 	const addSubscription = async (subscription) => {
 		try {
+			/*
 			await axios.post(
-				'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/add/',
+				'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/create/',
 				subscription,
 				{ withCredentials: true },
-			);
+			);*/
 			toast.success('Subscription Will Be Added', defaultToast);
 		} catch (error) {
 			toast.error(
