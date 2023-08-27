@@ -9,5 +9,4 @@ export { default as PageRight2Illustration } from './PageRight2Illustration';
 export { default as BtnAndArwBtn } from './BtnAndArwBtn';
 export { default as ProtectedRoutes } from './ProtectedRoutes';
 export { default as ContentSlider } from './ContentSlider';
-export { default as QueryError } from './QueryError';
-export { default as QueryLoading } from './QueryLoading';
+export { default as PageTitle } from './PageTitle';

@@ -10,7 +10,7 @@ import {
 import { Pagination, TableBody, TableHeader } from './components';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { QueryError, QueryLoading } from 'src/modules/common/components';
+import { QueryError, QueryLoading } from 'src/modules/error/components';
 
 const TABLE_HEAD = ['Transaction', 'Amount', 'Date', 'Status', 'Account'];
 

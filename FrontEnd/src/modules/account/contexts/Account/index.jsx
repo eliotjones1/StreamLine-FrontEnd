@@ -14,54 +14,6 @@ const defaultToast = {
 	theme: 'light',
 };
 
-const accordionData = [
-	{
-		subscription_image_path:
-			'https://1000logos.net/wp-content/uploads/2017/05/Netflix_logo_PNG4.png',
-		subscription_name: 'Netflix',
-		versions: [
-			{
-				name: 'Standard',
-				cost: '8.99',
-			},
-		],
-	},
-	{
-		subscription_image_path:
-			'https://1000logos.net/wp-content/uploads/2020/12/Hulu-Logo-PNG.png',
-		subscription_name: 'Hulu',
-		versions: [
-			{
-				name: 'Standard',
-				cost: '8.99',
-			},
-			{
-				name: 'With Ads',
-				cost: '6.99',
-			},
-		],
-	},
-	{
-		subscription_image_path:
-			'https://1000logos.net/wp-content/uploads/2022/02/HBO-Max-Logo-PNG6.png',
-		subscription_name: 'HBO Max',
-		versions: [
-			{
-				name: 'Premium',
-				cost: '10.99',
-			},
-			{
-				name: 'Standard',
-				cost: '8.99',
-			},
-			{
-				name: 'With Ads',
-				cost: '6.99',
-			},
-		],
-	},
-];
-
 export const AccountContext = createContext();
 
 export default function AccountProvider({ children }) {
@@ -146,14 +98,11 @@ export default function AccountProvider({ children }) {
 	};
 
 	const searchSubscriptions = async (query) => {
-		/*
 		const { data } = await axios.get(
-			`https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/recommendations/${query}`,
+			`https://streamline-backend-82dbd26e19c5.herokuapp.com/api/search/services/${query}`,
 			{ withCredentials: true },
 		);
-		*/
-		return [accordionData[2], accordionData[1]];
-		//return data;
+		return data;
 	};
 
 	const recommendSubscriptions = async () => {
@@ -161,9 +110,7 @@ export default function AccountProvider({ children }) {
 			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/recommendations/',
 			{ withCredentials: true },
 		);
-		console.log(data);
-		return accordionData;
-		//return data;
+		return data;
 	};
 
 	const addSubscription = async (subscription) => {

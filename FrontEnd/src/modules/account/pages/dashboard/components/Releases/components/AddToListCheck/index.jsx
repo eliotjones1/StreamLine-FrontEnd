@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Tooltip, IconButton } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { QueryError, QueryLoading } from 'src/modules/common/components';
+import { QueryError, QueryLoading } from 'src/modules/error/components';
 
 export default function AddToListCheck({ id, type }) {
 	const queryClient = useQueryClient();

@@ -13,7 +13,7 @@ import {
 } from '@material-tailwind/react';
 import { AddDialog, DeleteDialog } from './components';
 import { useQuery } from '@tanstack/react-query';
-import { QueryError, QueryLoading } from 'src/modules/common/components';
+import { QueryError, QueryLoading } from 'src/modules/error/components';
 import { useAccount } from 'src/modules/account/hooks';
 
 const TABLE_HEAD = ['Service', 'Version', 'Cost', 'Status', ''];

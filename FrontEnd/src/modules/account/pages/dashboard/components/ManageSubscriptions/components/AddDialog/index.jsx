@@ -13,7 +13,7 @@ import { RecommendationAccordian } from './components';
 import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useAccount } from 'src/modules/account/hooks';
 import { useQuery } from '@tanstack/react-query';
-import { QueryLoading } from 'src/modules/common/components';
+import { QueryLoading } from 'src/modules/error/components';
 
 export default function AddDialog() {
 	const [open, setOpen] = useState(false);

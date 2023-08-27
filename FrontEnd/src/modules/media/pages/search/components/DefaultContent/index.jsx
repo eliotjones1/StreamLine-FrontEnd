@@ -1,7 +1,7 @@
 import { useQueries } from '@tanstack/react-query';
 import { useTMDB } from '/src/modules/common/hooks';
 import { ContentSlider } from '/src/modules/common/components';
-import { QueryError, QueryLoading } from 'src/modules/common/components';
+import { QueryError, QueryLoading } from 'src/modules/error/components';
 
 export default function Content() {
 	const { fetchTrending, fetchNewlyReleased } = useTMDB();

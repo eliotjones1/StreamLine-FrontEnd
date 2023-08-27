@@ -5,7 +5,7 @@ import { Typography } from '@material-tailwind/react';
 export default function QueryError() {
 	const nav = useNavigate();
 	return (
-		<div className="flex flex-col h-full w-full bg-slate-50 rounded-lg items-center justify-center p-10">
+		<div className="flex flex-col h-full w-full rounded-lg items-center justify-center p-10">
 			<FaceFrownIcon className="text-slate-800 h-32 w-32" />
 			<Typography className="flex w-3/4 text-center">
 				An internal server error has occured. Our staff is aware of the issue

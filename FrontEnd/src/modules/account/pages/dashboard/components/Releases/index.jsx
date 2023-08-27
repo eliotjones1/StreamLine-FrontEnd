@@ -13,7 +13,7 @@ import { FaceFrownIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'src/modules/account/hooks';
 import { AddToListCheck } from './components';
-import { QueryError, QueryLoading } from 'src/modules/common/components';
+import { QueryError, QueryLoading } from 'src/modules/error/components';
 
 export default function UpcomingReleases() {
 	const nav = useNavigate();

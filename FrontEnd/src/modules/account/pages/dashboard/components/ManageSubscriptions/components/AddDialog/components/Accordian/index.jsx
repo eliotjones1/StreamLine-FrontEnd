@@ -38,13 +38,13 @@ export default function Accordian({ recommendations, close }) {
 					<AccordionHeader onClick={() => handleAccordionToggle(index)}>
 						<div className="flex items-center gap-3">
 							<Avatar
-								src={subscription.subscription_image_path}
-								alt={subscription.subscription_name}
+								src={`https://image.tmdb.org/t/p/original${subscription.Image}`}
+								alt={subscription.Name}
 								size="md"
 								className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
 							/>
 							<Typography variant="h4" color="blue-gray" className="font-bold">
-								{subscription.subscription_name}
+								{subscription.Name}
 							</Typography>
 						</div>
 					</AccordionHeader>
@@ -69,8 +69,8 @@ export default function Accordian({ recommendations, close }) {
 								</tr>
 							</thead>
 							<tbody>
-								{subscription.versions.map((version, index) => {
-									const isLast = index === subscription.versions.length - 1;
+								{subscription.Packages.map((version, index) => {
+									const isLast = index === subscription.Packages.length - 1;
 									const classes = isLast
 										? 'p-4'
 										: 'p-4 border-b border-blue-gray-50';
@@ -83,7 +83,7 @@ export default function Accordian({ recommendations, close }) {
 													color="blue-gray"
 													className="font-normal"
 												>
-													{version.name}
+													{version.Version}
 												</Typography>
 											</td>
 											<td className={classes}>
@@ -92,7 +92,7 @@ export default function Accordian({ recommendations, close }) {
 													color="blue-gray"
 													className="font-normal"
 												>
-													${version.cost}
+													${version.Price}
 												</Typography>
 											</td>
 											<td className={classes}>
@@ -102,7 +102,7 @@ export default function Accordian({ recommendations, close }) {
 													className="text-link font-medium"
 													onClick={(event) =>
 														handleClick(event, {
-															subscription_name: subscription.subscription_name,
+															subscription_name: subscription.Version,
 															subscription_version: version,
 														})
 													}
