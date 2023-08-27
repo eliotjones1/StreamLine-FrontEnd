@@ -125,12 +125,12 @@ export default function Accordian({ recommendations, close }) {
 Accordian.propTypes = {
 	recommendations: PropTypes.arrayOf(
 		PropTypes.shape({
-			subscription_image_path: PropTypes.string.isRequired,
-			subscription_name: PropTypes.string.isRequired,
-			versions: PropTypes.arrayOf(
+			Image: PropTypes.string.isRequired,
+			Name: PropTypes.string.isRequired,
+			Packages: PropTypes.arrayOf(
 				PropTypes.shape({
-					name: PropTypes.string.isRequired,
-					cost: PropTypes.string.isRequired,
+					Version: PropTypes.string.isRequired,
+					Price: PropTypes.number.isRequired,
 				}),
 			).isRequired,
 		}),

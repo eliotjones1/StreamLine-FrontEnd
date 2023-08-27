@@ -79,7 +79,6 @@ export default function AccountProvider({ children }) {
 				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/in-user-watchlist',
 				{ params: { id: id, media_type: type }, withCredentials: true },
 			);
-			console.log(data.Status);
 			if (data.Status === 'false') return false;
 			return true;
 		} catch (error) {
@@ -98,11 +97,12 @@ export default function AccountProvider({ children }) {
 	};
 
 	const searchSubscriptions = async (query) => {
-		const { data } = await axios.get(
-			`https://streamline-backend-82dbd26e19c5.herokuapp.com/api/search/services/${query}`,
+		const response = await axios.get(
+			`https://streamline-backend-82dbd26e19c5.herokuapp.com/api/search/services?search=${query}`,
 			{ withCredentials: true },
 		);
-		return data;
+		console.log(response);
+		return response.data;
 	};
 
 	const recommendSubscriptions = async () => {
