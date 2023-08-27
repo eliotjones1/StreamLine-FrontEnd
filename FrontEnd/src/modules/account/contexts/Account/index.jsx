@@ -97,12 +97,11 @@ export default function AccountProvider({ children }) {
 	};
 
 	const searchSubscriptions = async (query) => {
-		const response = await axios.get(
+		const { data } = await axios.get(
 			`https://streamline-backend-82dbd26e19c5.herokuapp.com/api/search/services?search=${query}`,
 			{ withCredentials: true },
 		);
-		console.log(response);
-		return response.data;
+		return data;
 	};
 
 	const recommendSubscriptions = async () => {
