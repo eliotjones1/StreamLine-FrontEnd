@@ -7,6 +7,7 @@ import {
 import {
 	Card,
 	CardHeader,
+	Chip,
 	Typography,
 	CardBody,
 	Avatar,
@@ -34,7 +35,7 @@ export default function SortableTable() {
 
 	const { status, data } = useQuery({
 		queryKey: ['account', 'subscriptions'],
-		staleTime: Infinity,
+		staleTime: 24 * 60 * 60 * 1000, // 1 Day in Milliseconds
 		queryFn: () => fetchSubscriptions(),
 	});
 
@@ -179,19 +180,37 @@ export default function SortableTable() {
 										</div>
 									</td>
 									<td className={classes}>
-										<Typography
-											variant="small"
-											color="blue-gray"
-											className="font-normal"
-										>
-											{new Intl.DateTimeFormat('en-US', {
-												year: 'numeric',
-												month: 'long',
-												day: 'numeric',
-											}).format(
-												new Date(subscription.end_date.replace(/-/g, '/')),
+										<div className="flex flex-col w-full items-center justify-center">
+											<div className="w-max">
+												<Chip
+													size="sm"
+													variant="ghost"
+													value={subscription.subscription_status}
+													color={
+														subscription.subscription_status === 'Active'
+															? 'green'
+															: subscription.subscription_status === 'Pending'
+															? 'amber'
+															: 'red'
+													}
+												/>
+											</div>
+											{subscription.subscription_status === 'Expiring' && (
+												<Typography
+													variant="small"
+													color="blue-gray"
+													className="font-normal"
+												>
+													{new Intl.DateTimeFormat('en-US', {
+														year: 'numeric',
+														month: 'long',
+														day: 'numeric',
+													}).format(
+														new Date(subscription.end_date.replace(/-/g, '/')),
+													)}
+												</Typography>
 											)}
-										</Typography>
+										</div>
 									</td>
 									<td className={classes}>
 										<DeleteDialog subscription={subscription} />
