@@ -23,7 +23,8 @@ export default function AddDialog() {
 	const handleOpen = () => setOpen(!open);
 
 	const { status, data } = useQuery({
-		queryKey: ['account', 'Subscription Recommendations', query],
+		queryKey: ['account', 'subscription recommendations', query],
+		staleTime: Infinity,
 		keepPreviousData: true,
 		queryFn: () =>
 			query !== '' ? searchSubscriptions(query) : recommendSubscriptions(),

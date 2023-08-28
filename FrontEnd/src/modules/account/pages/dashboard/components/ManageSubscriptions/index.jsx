@@ -34,6 +34,7 @@ export default function SortableTable() {
 
 	const { status, data } = useQuery({
 		queryKey: ['account', 'subscriptions'],
+		staleTime: Infinity,
 		queryFn: () => fetchSubscriptions(),
 	});
 

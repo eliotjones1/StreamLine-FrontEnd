@@ -1,4 +1,5 @@
 export { default as News } from './news';
+export { default as NewsPost } from './news-posts';
 export { default as Pricing } from './pricing';
 export { default as Landing } from './landing';
 export { default as About } from './about';

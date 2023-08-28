@@ -2,6 +2,7 @@ import { createContext } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useQueryClient } from '@tanstack/react-query';
 
 const defaultToast = {
 	position: 'top-right',
@@ -17,6 +18,7 @@ const defaultToast = {
 export const AccountContext = createContext();
 
 export default function AccountProvider({ children }) {
+	const queryClient = useQueryClient();
 	const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
 
 	/*  List  */
@@ -48,6 +50,7 @@ export default function AccountProvider({ children }) {
 				{ id: id, media_type: type },
 				{ withCredentials: true },
 			);
+			queryClient.invalidateQueries(['account', 'inList?', { id, type }]);
 			toast.success('Added to Watchlist', defaultToast);
 		} catch (error) {
 			toast.error(
@@ -64,6 +67,7 @@ export default function AccountProvider({ children }) {
 				{ id: id, media_type: type },
 				{ withCredentials: true },
 			);
+			queryClient.invalidateQueries(['account', 'inList?', { id, type }]);
 			toast.success('Removed from Watchlist', defaultToast);
 		} catch (error) {
 			toast.error(
@@ -114,12 +118,17 @@ export default function AccountProvider({ children }) {
 
 	const addSubscription = async (subscription) => {
 		try {
-			/*
 			await axios.post(
 				'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/create/',
 				subscription,
 				{ withCredentials: true },
-			);*/
+			);
+			queryClient.invalidateQueries(['account', 'subscriptions']);
+			queryClient.invalidateQueries([
+				'account',
+				'subscription recommendations',
+				'',
+			]);
 			toast.success('Subscription Will Be Added', defaultToast);
 		} catch (error) {
 			toast.error(
@@ -136,6 +145,12 @@ export default function AccountProvider({ children }) {
 				subscription,
 				{ withCredentials: true },
 			);
+			queryClient.invalidateQueries(['account', 'subscriptions']);
+			queryClient.invalidateQueries([
+				'account',
+				'subscription recommendations',
+				'',
+			]);
 			toast.success('Subscription Will Be Canceled', defaultToast);
 		} catch (error) {
 			toast.error(

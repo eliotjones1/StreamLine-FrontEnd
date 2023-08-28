@@ -17,7 +17,6 @@ import {
 import { useAccount } from 'src/modules/account/hooks';
 
 export default function DeleteDialog({ subscription }) {
-	console.log(subscription);
 	const [open, setOpen] = useState(false);
 	const { deleteSubscription } = useAccount();
 

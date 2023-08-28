@@ -1,5 +1,6 @@
-import { Founders, Story, TextSection } from './components';
+import { Founders, Story } from './components';
 import { TwoColumnGrid } from '/src/modules/common/templates';
+import { TextSection } from 'src/modules/business/components';
 import { Header, Footer, CTA, PageTitle } from '/src/modules/common/components';
 
 export default function About() {

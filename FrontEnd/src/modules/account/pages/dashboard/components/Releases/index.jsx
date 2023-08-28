@@ -21,6 +21,7 @@ export default function UpcomingReleases() {
 
 	const { status, data } = useQuery({
 		queryKey: ['account', 'upcoming releases'],
+		staleTime: new Date().setUTCHours(23, 59, 59, 999) - new Date(), // Until Next Day
 		queryFn: () => fetchUpcoming(),
 	});
 

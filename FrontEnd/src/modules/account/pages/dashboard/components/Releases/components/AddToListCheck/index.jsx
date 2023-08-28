@@ -2,15 +2,15 @@ import { useAccount } from 'src/modules/account/hooks';
 import PropTypes from 'prop-types';
 import { Tooltip, IconButton } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 
 export default function AddToListCheck({ id, type }) {
-	const queryClient = useQueryClient();
 	const { checkInList, addToUserList, removeFromList } = useAccount();
 
 	const { status, data } = useQuery({
 		queryKey: ['account', 'inList?', { id, type }],
+		staleTime: new Date().setUTCHours(23, 59, 59, 999) - new Date(), // Until Next Day
 		queryFn: () => checkInList(id, type),
 	});
 
@@ -20,7 +20,6 @@ export default function AddToListCheck({ id, type }) {
 		} else {
 			await addToUserList(id, type);
 		}
-		queryClient.invalidateQueries(['account', 'inList?', { id, type }]);
 	};
 
 	if (status === 'loading') return <QueryLoading />;

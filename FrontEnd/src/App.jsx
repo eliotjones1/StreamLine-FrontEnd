@@ -9,6 +9,7 @@ import {
 	MediaSearch,
 	Error404,
 	News,
+	NewsPost,
 	Pricing,
 	ResetPassword,
 	SecureReset,
@@ -19,7 +20,6 @@ import {
 	UserDash,
 	VirtualCableBox,
 } from './modules';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
 	const location = useLocation();
@@ -44,6 +44,7 @@ export default function App() {
 			<Route path="/media" element={<MediaSearch />} />
 			<Route path="/reset-password" element={<ResetPassword />} />
 			<Route path="/news" element={<News />} />
+			<Route path="/news/:id" element={<NewsPost />} />
 
 			{/* Protected Routes */}
 			<Route path="/secure-reset" element={<SecureReset />} />
