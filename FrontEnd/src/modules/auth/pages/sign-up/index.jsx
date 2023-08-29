@@ -14,12 +14,16 @@ export default function SignUp() {
 		if (event.target.password.value !== event.target.confirmPassword.value) {
 			alert('Passwords do not match!');
 		} else {
-			signUp({
-				email: event.target.email.value,
-				password: event.target.password.value,
-				first_name: event.target.firstName.value,
-				last_name: event.target.lastName.value,
-			});
+			try {
+				signUp({
+					email: event.target.email.value,
+					password: event.target.password.value,
+					first_name: event.target.firstName.value,
+					last_name: event.target.lastName.value,
+				});
+			} catch (error) {
+				setError(true);
+			}
 		}
 	};
 

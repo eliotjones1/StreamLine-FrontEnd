@@ -39,28 +39,6 @@ export default function SortableTable() {
 		queryFn: () => fetchSubscriptions(),
 	});
 
-	const sortedRows =
-		data === undefined
-			? []
-			: [...data].sort((a, b) => {
-					if (sortColumn !== null) {
-						const columnKey = Object.keys(a)[sortColumn];
-						const aValue = a[columnKey];
-						const bValue = b[columnKey];
-
-						if (typeof aValue === 'string' && typeof bValue === 'string') {
-							return sortOrder === 'asc'
-								? aValue.localeCompare(bValue)
-								: bValue.localeCompare(aValue);
-						}
-
-						if (typeof aValue === 'number' && typeof bValue === 'number') {
-							return sortOrder === 'asc' ? bValue - aValue : aValue - bValue;
-						}
-					}
-					return 0;
-			  });
-
 	if (status === 'loading') return <QueryLoading />;
 	if (status === 'error') return <QueryError />;
 
@@ -132,8 +110,8 @@ export default function SortableTable() {
 						</tr>
 					</thead>
 					<tbody>
-						{sortedRows.map((subscription, index) => {
-							const isLast = index === sortedRows.length - 1;
+						{data.map((subscription, index) => {
+							const isLast = index === data.length - 1;
 							const classes = isLast
 								? 'p-4'
 								: 'p-4 border-b border-blue-gray-50';

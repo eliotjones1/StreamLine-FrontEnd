@@ -6,19 +6,6 @@ import {
 } from '/src/modules/common/components';
 import { PricingCard } from './components';
 
-const BasicFeatures = [
-	'Monthly Subscription Change Alerts',
-	'Personalized Optimization Bundles',
-	'Warning on Upcoming Payments',
-	'Monthly Newsletter',
-];
-
-const PremiumFeatures = [
-	'Automated Subscription Enrollment',
-	'Automated Subscription Cancellation',
-	'All Basic Membership Features',
-];
-
 export default function Pricing() {
 	return (
 		<div className="flex flex-col min-h-screen overflow-hidden">
@@ -31,7 +18,11 @@ export default function Pricing() {
 					description={
 						'Our Premium Membership automates essential features and benefits designed to enhance your streaming experience. Enjoy access to a range of core services and valuable resources effortlessly.'
 					}
-					features={PremiumFeatures}
+					features={[
+						'Automated Subscription Enrollment',
+						'Automated Subscription Cancellation',
+						'All Basic Membership Features',
+					]}
 					price="$30.00"
 					link="https://buy.stripe.com/test_5kA3dSb1C05s23K4gi"
 				/>
@@ -40,7 +31,12 @@ export default function Pricing() {
 					description={
 						'Our Basic Membership offers essential features and benefits designed to enhance your streaming experience. Enjoy access to a range of core services and valuable resources.'
 					}
-					features={BasicFeatures}
+					features={[
+						'Monthly Subscription Change Alerts',
+						'Personalized Optimization Bundles',
+						'Warning on Upcoming Payments',
+						'Monthly Newsletter',
+					]}
 					price="$10.00"
 					link="https://buy.stripe.com/test_9AQ4hW9Xy2dAbEk6op"
 				/>

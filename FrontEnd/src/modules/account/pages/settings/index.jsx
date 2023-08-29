@@ -1,114 +1,42 @@
-import { useEffect, useState } from 'react';
-import { UserCircleIcon } from '@heroicons/react/24/solid';
-import axios from 'axios';
-import { Header, PageTopIllustration } from '/src/modules/common/components';
-import { useAuth } from '/src/modules/common/hooks';
+import {
+	Header,
+	Footer,
+	PageTopIllustration,
+} from '/src/modules/common/components';
+import { useState } from 'react';
+import { useAccount } from 'src/modules/account/hooks';
+import { useQuery } from '@tanstack/react-query';
+import { QueryError, QueryLoading } from 'src/modules/error/components';
 
 export default function EditAccount() {
-	const [profileData, setProfileData] = useState({
-		user: '',
-		Email: '',
-		First_Name: '',
-		Last_Name: '',
-		Street_Address: '',
-		City: '',
-		State_Province: '',
-		Country: '',
-		Postal_Code: '',
-		Newsletter: false,
-		Promotions: false,
-		Push_Notifications: '',
-	});
 	const [showConfirmation, setShowConfirmation] = useState(false);
-	const { logout } = useAuth();
+	const { deleteAccount, fetchAccountInfo, updateAccount } = useAccount();
 
 	function handleSubmit(event) {
-		console.log('submitting');
 		event.preventDefault();
-		const curData = JSON.stringify(profileData);
-		axios
-			.post('http://127.0.0.1:8000/api/user/settings/update/', curData, {
-				withCredentials: true,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			})
-			.then((response) => {
-				console.log(response.data);
-				setProfileData({
-					user: response.data.settings.user,
-					Email: response.data.settings.Email,
-					First_Name: response.data.settings.First_Name,
-					Last_Name: response.data.settings.Last_Name,
-					Street_Address: response.data.settings.Street_Address,
-					City: response.data.settings.City,
-					State_Province: response.data.settings.State_Province,
-					Country: response.data.settings.Country,
-					Postal_Code: response.data.settings.Postal_Code,
-					Newsletter: response.data.settings.Newsletter,
-					Promotions: response.data.settings.Promotions,
-					Push_Notifications: response.data.settings.Push_Notifications,
-				});
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+		updateAccount({
+			Email: event.target.email.value,
+			First_Name: event.target.firstName.value,
+			Last_Name: event.target.lastName.value,
+			Street_Address: event.target.streetAddress.value,
+			City: event.target.city.value,
+			State_Province: event.target.state.value,
+			Country: event.target.country.value,
+			Postal_Code: event.target.postalCode.value,
+			Newsletter: event.target.newsletter.checked,
+			Promotions: event.target.promotions.checked,
+			Push_Notifications: event.target.pushNotifications.value,
+		});
 	}
 
-	function loadData() {
-		axios
-			.get(
-				'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/get-user-settings/',
-				{ withCredentials: true },
-			)
-			.then((response) => {
-				setProfileData({
-					user: response.data.user,
-					Email: response.data.Email,
-					First_Name: response.data.First_Name,
-					Last_Name: response.data.Last_Name,
-					Street_Address: response.data.Street_Address,
-					City: response.data.City,
-					State_Province: response.data.State_Province,
-					Country: response.data.Country,
-					Postal_Code: response.data.Postal_Code,
-					Newsletter: response.data.Newsletter,
-					Promotions: response.data.Promotions,
-					Push_Notifications: response.data.Push_Notifications,
-				});
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}
-	const handleFormValueChange = (event) => {
-		let { name, value } = event.target;
-		if (value === true && profileData[name] === true) value = false;
-		setProfileData((prevData) => ({ ...prevData, [name]: value }));
-	};
+	const { status, data } = useQuery({
+		queryKey: ['account', 'information'],
+		staleTime: Infinity,
+		queryFn: () => fetchAccountInfo(),
+	});
 
-	const handleButtonValueChange = (event) => {
-		const { name, checked } = event.target;
-		const value = checked;
-		setProfileData((prevData) => ({ ...prevData, [name]: value }));
-	};
-
-	function handleConfirmDelete() {
-		axios
-			.post('http://127.0.0.1:8000/api/user/settings/delete/', [], {
-				withCredentials: true,
-			})
-			.then(() => {
-				logout();
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}
-
-	useEffect(() => {
-		loadData();
-	}, []);
+	if (status === 'loading') return <QueryLoading />;
+	if (status === 'error') return <QueryError />;
 
 	return (
 		<div className="flex flex-col min-h-screen overflow-hidden">
@@ -125,26 +53,6 @@ export default function EditAccount() {
 								</p>
 
 								<div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-									<div className="col-span-full">
-										<label
-											htmlFor="photo"
-											className="block text-sm font-medium leading-6"
-										>
-											Photo
-										</label>
-										<div className="mt-2 flex items-center gap-x-3">
-											<UserCircleIcon
-												className="h-12 w-12 text-slate-700 dark:text-white"
-												aria-hidden="true"
-											/>
-											<button
-												type="button"
-												className="rounded-md bg-sky-600 text-white px-2.5 py-1.5 text-sm font-semibold shadow-sm hover:bg-sky-500"
-											>
-												Change
-											</button>
-										</div>
-									</div>
 									<div className="sm:col-span-4">
 										<label
 											htmlFor="email"
@@ -154,10 +62,9 @@ export default function EditAccount() {
 										</label>
 										<div className="mt-2">
 											<input
-												name="Email"
+												name="email"
 												type="email"
-												value={profileData.Email}
-												onChange={handleFormValueChange}
+												defaultValue={data.Email}
 												autoComplete="email"
 												className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
 											/>
@@ -184,11 +91,10 @@ export default function EditAccount() {
 										</label>
 										<div className="mt-2">
 											<input
-												name="First_Name"
+												name="firstName"
 												type="text"
+												defaultValue={data.First_Name}
 												autoComplete="given-name"
-												value={profileData.First_Name}
-												onChange={handleFormValueChange}
 												className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
 											/>
 										</div>
@@ -204,9 +110,8 @@ export default function EditAccount() {
 										<div className="mt-2">
 											<input
 												type="text"
-												name="Last_Name"
-												value={profileData.Last_Name}
-												onChange={handleFormValueChange}
+												name="lastName"
+												defaultValue={data.Last_Name}
 												autoComplete="family-name"
 												className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
 											/>
@@ -222,9 +127,8 @@ export default function EditAccount() {
 										</label>
 										<div className="mt-2">
 											<select
-												name="Country"
-												value={profileData.Country}
-												onChange={handleFormValueChange}
+												name="country"
+												defaultValue={data.Country}
 												autoComplete="country-name"
 												className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
 											>
@@ -243,9 +147,8 @@ export default function EditAccount() {
 										<div className="mt-2">
 											<input
 												type="text"
-												name="Street_Address"
-												value={profileData.Street_Address}
-												onChange={handleFormValueChange}
+												name="streetAddress"
+												defaultValue={data.Street_Address}
 												autoComplete="street-address"
 												className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
 											/>
@@ -262,9 +165,8 @@ export default function EditAccount() {
 										<div className="mt-2">
 											<input
 												type="text"
-												name="City"
-												value={profileData.City}
-												onChange={handleFormValueChange}
+												name="city"
+												defaultValue={data.City}
 												autoComplete="address-level2"
 												className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
 											/>
@@ -281,9 +183,8 @@ export default function EditAccount() {
 										<div className="mt-2">
 											<input
 												type="text"
-												name="State_Province"
-												value={profileData.State_Province}
-												onChange={handleFormValueChange}
+												name="state"
+												defaultValue={data.State_Province}
 												autoComplete="address-level1"
 												className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
 											/>
@@ -300,9 +201,8 @@ export default function EditAccount() {
 										<div className="mt-2">
 											<input
 												type="text"
-												name="Postal_Code"
-												value={profileData.Postal_Code}
-												onChange={handleFormValueChange}
+												name="postalCode"
+												defaultValue={data.Postal_Code}
 												autoComplete="postal-code"
 												className="w-full flex-auto rounded-md border-0 bg-slate-900/5 dark:bg-white/5 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
 											/>
@@ -329,10 +229,9 @@ export default function EditAccount() {
 											<div className="relative flex gap-x-3">
 												<div className="flex h-6 items-center">
 													<input
-														name="Newsletter"
+														name="newsletter"
 														type="checkbox"
-														checked={profileData.Newsletter === true}
-														onChange={handleButtonValueChange}
+														defaultChecked={data.Newsletter}
 														className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
 													/>
 												</div>
@@ -348,10 +247,9 @@ export default function EditAccount() {
 											<div className="relative flex gap-x-3">
 												<div className="flex h-6 items-center">
 													<input
-														name="Promotions"
+														name="promotions"
 														type="checkbox"
-														checked={profileData.Promotions === true}
-														onChange={handleButtonValueChange}
+														defaultChecked={data.Promotions}
 														className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
 													/>
 												</div>
@@ -376,13 +274,12 @@ export default function EditAccount() {
 										<div className="mt-6 space-y-6">
 											<div className="flex items-center gap-x-3">
 												<input
-													name="Push_Notifications"
+													name="pushNotifications"
 													value="Everything"
 													type="radio"
-													checked={
-														profileData.Push_Notifications === 'Everything'
+													defaultChecked={
+														data.Push_Notifications === 'Everything'
 													}
-													onChange={handleFormValueChange}
 													className="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600"
 												/>
 												<label
@@ -394,13 +291,12 @@ export default function EditAccount() {
 											</div>
 											<div className="flex items-center gap-x-3">
 												<input
-													name="Push_Notifications"
+													name="pushNotifications"
 													value="SameAsEmail"
-													checked={
-														profileData.Push_Notifications === 'SameAsEmail'
-													}
-													onChange={handleFormValueChange}
 													type="radio"
+													defaultChecked={
+														data.Push_Notifications === 'SameAsEmail'
+													}
 													className="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600"
 												/>
 												<label
@@ -412,11 +308,10 @@ export default function EditAccount() {
 											</div>
 											<div className="flex items-center gap-x-3">
 												<input
-													name="Push_Notifications"
+													name="pushNotifications"
 													value="None"
 													type="radio"
-													checked={profileData.Push_Notifications === 'None'}
-													onChange={handleFormValueChange}
+													defaultChecked={data.Push_Notifications === 'None'}
 													className="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600"
 												/>
 												<label
@@ -454,11 +349,7 @@ export default function EditAccount() {
 						</div>
 
 						<div className="mt-6 flex items-center justify-end gap-x-6">
-							<button
-								type="button"
-								onClick={loadData}
-								className="text-sm font-semibold leading-6"
-							>
+							<button type="button" className="text-sm font-semibold leading-6">
 								Cancel
 							</button>
 							<button
@@ -480,7 +371,7 @@ export default function EditAccount() {
 							<div className="flex justify-end mt-4">
 								<button
 									className="px-4 py-2 bg-red-500 text-white rounded mr-2"
-									onClick={handleConfirmDelete}
+									onClick={() => deleteAccount()}
 								>
 									Yes
 								</button>
@@ -495,6 +386,7 @@ export default function EditAccount() {
 					</div>
 				)}
 			</main>
+			<Footer />
 		</div>
 	);
 }

@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
 import { Typography } from '@material-tailwind/react';
 
-export default function PageTitle({ title, invertColors = false }) {
+export default function PageTitle({
+	title,
+	subTitle = undefined,
+	invertColors = false,
+}) {
 	const words = title.split(' ');
 
 	return (
@@ -10,7 +14,7 @@ export default function PageTitle({ title, invertColors = false }) {
 				invertColors ? 'text-white' : 'text-slate-800'
 			}`}
 		>
-			<Typography variant="h1" className="pb-8">
+			<Typography variant="h1">
 				{words.map((word, index) => {
 					const isStreamline = /streamline/i.test(word);
 					return (
@@ -20,11 +24,17 @@ export default function PageTitle({ title, invertColors = false }) {
 					);
 				})}
 			</Typography>
+			{subTitle && (
+				<p className="mt-2 text-lg leading-8 text-gray-600 dark:text-white">
+					{subTitle}
+				</p>
+			)}
 		</div>
 	);
 }
 
 PageTitle.propTypes = {
 	title: PropTypes.string.isRequired,
+	subTitle: PropTypes.string,
 	invertColors: PropTypes.bool,
 };

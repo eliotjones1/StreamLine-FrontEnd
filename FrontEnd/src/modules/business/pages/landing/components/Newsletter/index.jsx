@@ -1,20 +1,12 @@
-import axios from 'axios';
 import { Input } from '@material-tailwind/react';
+import { useBusiness } from 'src/modules/business/hooks';
 
 export default function Newsletter() {
+	const { addToNewsletter } = useBusiness();
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		if (event.target.email.value !== '') {
-			axios
-				.post(
-					'http://127.0.0.1:8000/api/recommendations/saveEmail/',
-					{ email: event.target.email.value },
-					{ withCredentials: true },
-				)
-				.catch((error) => {
-					console.error(error);
-				});
-		}
+		addToNewsletter();
 	};
 
 	return (
@@ -37,6 +29,7 @@ export default function Newsletter() {
 							label="Enter Your Email"
 							className="form-input"
 							color="blue"
+							required
 						/>
 						<button type="submit" className="colored-sky-btn">
 							Subscribe

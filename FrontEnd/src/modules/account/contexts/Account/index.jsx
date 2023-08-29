@@ -1,8 +1,9 @@
-import { createContext } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { createContext } from 'react';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '/src/modules/common/hooks';
 
 const defaultToast = {
 	position: 'top-right',
@@ -19,6 +20,7 @@ export const AccountContext = createContext();
 
 export default function AccountProvider({ children }) {
 	const queryClient = useQueryClient();
+	const { logout } = useAuth();
 	const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
 
 	/*  List  */
@@ -160,6 +162,8 @@ export default function AccountProvider({ children }) {
 		}
 	};
 
+	/*  Possible Interests  */
+
 	const fetchUpcoming = async () => {
 		const { data } = await axios.get(
 			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/get-upcoming/',
@@ -182,6 +186,49 @@ export default function AccountProvider({ children }) {
 		return data.budget;
 	};
 
+	/*  Account Information  */
+
+	const fetchAccountInfo = async () => {
+		const { data } = await axios.get(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/get-user-settings/',
+			{ withCredentials: true },
+		);
+		return data;
+	};
+
+	const updateAccount = async (newInfo) => {
+		try {
+			await axios.post(
+				'http://127.0.0.1:8000/api/user/settings/update/',
+				newInfo,
+				{ withCredentials: true },
+			);
+			queryClient.invalidateQueries(['account', 'information']);
+			toast.success('Account Updated', defaultToast);
+		} catch (error) {
+			toast.error(
+				'Error updating account, please try again later',
+				defaultToast,
+			);
+		}
+	};
+
+	const deleteAccount = async () => {
+		try {
+			await axios.post('http://127.0.0.1:8000/api/user/settings/delete/', [], {
+				withCredentials: true,
+			});
+			logout();
+			queryClient.invalidateQueries(['account', 'information']);
+			toast.success('Account Deleted', defaultToast);
+		} catch (error) {
+			toast.error(
+				'Error deleting account, please try again later',
+				defaultToast,
+			);
+		}
+	};
+
 	return (
 		<AccountContext.Provider
 			value={{
@@ -196,6 +243,9 @@ export default function AccountProvider({ children }) {
 				deleteSubscription,
 				fetchUpcoming,
 				fetchBudget,
+				deleteAccount,
+				fetchAccountInfo,
+				updateAccount,
 			}}
 		>
 			{children}

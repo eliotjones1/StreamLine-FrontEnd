@@ -8,6 +8,7 @@ import { Header, Footer } from 'src/modules/common/components';
 import { useAuth, useTMDB } from 'src/modules/common/hooks';
 import { TrailerIFrame, CastSlider, MediaInfo } from './components';
 import { useAccount } from 'src/modules/account/hooks';
+import { ReleaseDate } from 'src/modules/media/components';
 
 export default function ContentData() {
 	const { fetchContentData } = useTMDB();
@@ -103,30 +104,11 @@ export default function ContentData() {
 							</div>
 
 							<div className="flex items-center space-x-1 mb-4">
-								{content.data.release_date && (
-									<p className="font-thin text-sm">
-										(
-										{new Date(content.data.release_date).toLocaleString(
-											'en-US',
-											{
-												year: 'numeric',
-											},
-										)}
-										)
-									</p>
-								)}
-								{content.data.first_air_date && (
-									<p className="font-thin text-sm">
-										(
-										{new Date(content.data.first_air_date).toLocaleString(
-											'en-US',
-											{
-												year: 'numeric',
-											},
-										)}
-										)
-									</p>
-								)}
+								<ReleaseDate
+									date={
+										content.data.release_date || content.data.first_air_date
+									}
+								/>
 								<svg
 									width="2"
 									height="2"

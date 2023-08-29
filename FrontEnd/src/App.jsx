@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
-// import { ProtectedRoutes } from './modules/common/components';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import {
 	About,
 	AccountSettings,
 	Landing,
 	MediaData,
-	MediaSearch,
 	Error404,
 	News,
 	NewsPost,
@@ -14,6 +12,7 @@ import {
 	ResetPassword,
 	SecureReset,
 	Login,
+	SearchMedia,
 	SignUp,
 	Support,
 	SupportedServices,
@@ -41,7 +40,7 @@ export default function App() {
 			<Route path="/signup" element={<SignUp />} />
 			<Route path="/support" element={<Support />} />
 			<Route path="/services-search" element={<SupportedServices />} />
-			<Route path="/media" element={<MediaSearch />} />
+			<Route path="/media" element={<SearchMedia />} />
 			<Route path="/reset-password" element={<ResetPassword />} />
 			<Route path="/news" element={<News />} />
 			<Route path="/news/:id" element={<NewsPost />} />

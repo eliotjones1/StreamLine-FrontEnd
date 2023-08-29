@@ -1,19 +1,21 @@
 import { useQueries } from '@tanstack/react-query';
-import { useTMDB } from '/src/modules/common/hooks';
+import { useMedia } from '/src/modules/media/hooks';
 import { ContentSlider } from '/src/modules/common/components';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 
 export default function Content() {
-	const { fetchTrending, fetchNewlyReleased } = useTMDB();
+	const { fetchTrending, fetchNewlyReleased } = useMedia();
 
 	const [trending, newlyReleased] = useQueries({
 		queries: [
 			{
 				queryKey: ['trending'],
+				staleTime: Infinity,
 				queryFn: () => fetchTrending(),
 			},
 			{
 				queryKey: ['newly_released'],
+				staleTime: Infinity,
 				queryFn: () => fetchNewlyReleased(),
 			},
 		],

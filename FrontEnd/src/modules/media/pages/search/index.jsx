@@ -1,26 +1,25 @@
-import { Header, Footer, PageTitle } from '/src/modules/common/components';
-import { SearchBar, SearchContent, DefaultContent } from './components';
-import { useMedia } from '/src/modules/media/hooks';
+import { Header, Footer } from '/src/modules/common/components';
+import { SearchContent, DefaultContent } from './components';
+import { SearchBar } from 'src/modules/media/components';
+import { useLocation } from 'react-router-dom';
 
-export default function MediaSearch() {
-	const { showDefault } = useMedia();
+export default function SearchMedia() {
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const searchQuery = queryParams.get('search');
 
 	return (
-		<section>
+		<div>
 			<Header flipColors={true} />
 			<main className="grow">
-				<div className="mx-auto w-full pb-10">
-					<div className="relative isolate bg-slate-900 dark:bg-slate-50 px-6 shadow-2xl pb-8">
-						<PageTitle
-							title="StreamLine Content Discovery"
-							invertColors={true}
-						/>
-						<SearchBar />
-					</div>
-				</div>
-				{showDefault ? <DefaultContent /> : <SearchContent />}
+				<SearchBar />
+				{searchQuery ? (
+					<SearchContent searchQuery={searchQuery} />
+				) : (
+					<DefaultContent />
+				)}
 			</main>
 			<Footer />
-		</section>
+		</div>
 	);
 }

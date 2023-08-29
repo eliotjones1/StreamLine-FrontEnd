@@ -8,17 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 import { useBusiness } from 'src/modules/business/hooks';
-import { Avatar, Typography } from '@material-tailwind/react';
-
-const temp = {
-	title: 'Test',
-	date: '12-08-01',
-	author: {
-		name: 'Ryan Dunn',
-		headshot:
-			'https://imgs.search.brave.com/vo851IPvxyUSifoIQSVCzfa991UxY0kgMvXf7yiSHZM/rs:fit:860:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAxLzg0LzA4Lzky/LzM2MF9GXzE4NDA4/OTIwNF9GWUlZNkZo/WWh6V0lqbWt3SDN4/WkphNm9yTk1Wbk9n/dC5qcGc',
-	},
-};
+import { Typography } from '@material-tailwind/react';
 
 export default function NewsPost() {
 	const { id } = useParams();

@@ -7,20 +7,6 @@ export const TMDBContext = createContext();
 export default function TMDBProvider({ children }) {
 	const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
 
-	const fetchTrending = async () => {
-		const { data } = await axios.get(
-			`https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=US`,
-		);
-		return data.results;
-	};
-
-	const fetchNewlyReleased = async () => {
-		const { data } = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/newly-released/',
-		);
-		return data;
-	};
-
 	const fetchStaffPicks = async () => {
 		const { data } = await axios.get(
 			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/staff-picks/',
@@ -59,9 +45,7 @@ export default function TMDBProvider({ children }) {
 		<TMDBContext.Provider
 			value={{
 				fetchContentData,
-				fetchTrending,
 				fetchStaffPicks,
-				fetchNewlyReleased,
 			}}
 		>
 			{children}

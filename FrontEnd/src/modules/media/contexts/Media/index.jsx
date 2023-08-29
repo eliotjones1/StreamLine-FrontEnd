@@ -1,28 +1,34 @@
-import { createContext, useState } from 'react';
+import { createContext } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
 export const MediaContext = createContext();
 
 export default function MediaProvider({ children }) {
-	const [showDefault, setShowDefault] = useState(true);
-	const [content, setContent] = useState([]);
-	const [lastSearch, setLastSearch] = useState('');
+	const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
+
+	const fetchTrending = async () => {
+		const { data } = await axios.get(
+			`https://api.themoviedb.org/3/trending/all/week?api_key=${APIKEY}&language=en-US&region=US`,
+		);
+		return data.results;
+	};
+
+	const fetchNewlyReleased = async () => {
+		const { data } = await axios.get(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/newly-released/',
+		);
+		return data;
+	};
 
 	const fetchSearch = async (query) => {
-		const response = await axios.get(
+		const { data } = await axios.get(
 			`https://streamline-backend-82dbd26e19c5.herokuapp.com/api/search/all?search=${query}`,
 			{
 				withCredentials: true,
 			},
 		);
-		console.log(response);
-		setContent(response.data);
-		setLastSearch(query);
-		setShowDefault(false);
-	};
-
-	const returnToMain = () => {
-		setShowDefault(true);
+		return data;
 	};
 
 	const getGenreById = (id) => {
@@ -62,16 +68,17 @@ export default function MediaProvider({ children }) {
 	return (
 		<MediaContext.Provider
 			value={{
-				lastSearch,
-				setLastSearch,
-				content,
-				showDefault,
-				returnToMain,
 				getGenreById,
 				fetchSearch,
+				fetchTrending,
+				fetchNewlyReleased,
 			}}
 		>
 			{children}
 		</MediaContext.Provider>
 	);
 }
+
+MediaProvider.propTypes = {
+	children: PropTypes.node.isRequired,
+};

@@ -85,6 +85,14 @@ export default function LoginProvider({ children }) {
 		nav('/signin');
 	};
 
+	const confirmedReset = async (authData) => {
+		await axios.post(
+			'http://127.0.0.1:8000/api/password_reset/confirm/',
+			authData,
+		);
+		nav('/signin');
+	};
+
 	return (
 		<LoginContext.Provider
 			value={{
@@ -94,6 +102,7 @@ export default function LoginProvider({ children }) {
 				logout,
 				resetPassword,
 				signUp,
+				confirmedReset,
 			}}
 		>
 			{children}

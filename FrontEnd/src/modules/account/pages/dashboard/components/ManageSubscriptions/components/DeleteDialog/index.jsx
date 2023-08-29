@@ -22,7 +22,7 @@ export default function DeleteDialog({ subscription }) {
 
 	const handleOpen = () => setOpen(!open);
 
-	const cancel = () => {
+	const handleCancel = () => {
 		setOpen(!open);
 		deleteSubscription(subscription);
 	};
@@ -65,7 +65,7 @@ export default function DeleteDialog({ subscription }) {
 					<Button variant="text" onClick={handleOpen}>
 						Close
 					</Button>
-					<Button variant="gradient" color="red" onClick={cancel}>
+					<Button variant="gradient" color="red" onClick={handleCancel}>
 						Cancel Subscription
 					</Button>
 				</DialogFooter>

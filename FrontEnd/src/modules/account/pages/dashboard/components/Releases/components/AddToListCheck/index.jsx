@@ -8,12 +8,6 @@ import { QueryError, QueryLoading } from 'src/modules/error/components';
 export default function AddToListCheck({ id, type }) {
 	const { checkInList, addToUserList, removeFromList } = useAccount();
 
-	const { status, data } = useQuery({
-		queryKey: ['account', 'inList?', { id, type }],
-		staleTime: new Date().setUTCHours(23, 59, 59, 999) - new Date(), // Until Next Day
-		queryFn: () => checkInList(id, type),
-	});
-
 	const handleClick = async () => {
 		if (data) {
 			await removeFromList(id, type);
@@ -21,6 +15,12 @@ export default function AddToListCheck({ id, type }) {
 			await addToUserList(id, type);
 		}
 	};
+
+	const { status, data } = useQuery({
+		queryKey: ['account', 'inList?', { id, type }],
+		staleTime: new Date().setUTCHours(23, 59, 59, 999) - new Date(), // Until Next Day
+		queryFn: () => checkInList(id, type),
+	});
 
 	if (status === 'loading') return <QueryLoading />;
 	if (status === 'error') return <QueryError />;
