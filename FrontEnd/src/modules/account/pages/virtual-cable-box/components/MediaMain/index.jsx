@@ -1,11 +1,10 @@
 import { useQueries } from '@tanstack/react-query';
-import { useTMDB } from 'src/modules/common/hooks';
-import { useAccount } from 'src/modules/account/hooks';
+import { useMedia, useAccount } from 'src/modules/common/hooks';
 import { ContentSlider } from './components';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 
 export default function Content() {
-	const { fetchTrending, fetchNewlyReleased } = useTMDB();
+	const { fetchTrending, fetchNewlyReleased } = useMedia();
 	const { fetchUpcoming } = useAccount();
 
 	const [trending, newlyReleased, upcoming] = useQueries({

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { QueryError, QueryLoading } from 'src/modules/error/';
+import { QueryError, QueryLoading } from 'src/modules/error/components';
 import PropTypes from 'prop-types';
 import { useMedia } from '/src/modules/media/hooks';
 import {
