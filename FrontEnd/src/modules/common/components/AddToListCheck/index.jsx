@@ -1,11 +1,13 @@
 import { useAccount } from 'src/modules/account/hooks';
 import PropTypes from 'prop-types';
+import { useAuth } from 'src/modules/common/hooks';
 import { Tooltip, IconButton } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 
-export default function AddToListCheck({ id, type }) {
+export default function AddToListCheck({ id, type, tooltipPlacement = 'top' }) {
+	const { isLoggedIn } = useAuth();
 	const { checkInList, addToUserList, removeFromList } = useAccount();
 
 	const handleClick = async () => {
@@ -27,7 +29,14 @@ export default function AddToListCheck({ id, type }) {
 
 	return (
 		<Tooltip
-			content={data ? 'Remove from Watchlist' : 'Add to Watchlist'}
+			placement={tooltipPlacement}
+			content={
+				isLoggedIn
+					? data
+						? 'Remove from Watchlist'
+						: 'Add to Watchlist'
+					: 'Login to access watchlist'
+			}
 			className="bg-sky-600"
 		>
 			<IconButton
@@ -45,4 +54,5 @@ export default function AddToListCheck({ id, type }) {
 AddToListCheck.propTypes = {
 	id: PropTypes.number.isRequired,
 	type: PropTypes.string.isRequired,
+	tooltipPlacement: PropTypes.string,
 };

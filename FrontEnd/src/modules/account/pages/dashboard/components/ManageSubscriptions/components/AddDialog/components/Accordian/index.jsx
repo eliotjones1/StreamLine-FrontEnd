@@ -7,7 +7,7 @@ import {
 	Avatar,
 	Typography,
 } from '@material-tailwind/react';
-import { useAccount } from 'src/modules/account/hooks';
+import { useAccount } from 'src/modules/common/hooks';
 
 const TABLE_HEAD = ['Version', 'Cost', ''];
 

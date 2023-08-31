@@ -14,7 +14,7 @@ import {
 	TrashIcon,
 	ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
-import { useAccount } from 'src/modules/account/hooks';
+import { useAccount } from 'src/modules/common/hooks';
 
 export default function DeleteDialog({ subscription }) {
 	const [open, setOpen] = useState(false);

@@ -7,6 +7,6 @@ export { default as ContentNameAndDate } from './ContentName&Date';
 export { default as PageTopIllustration } from './PageTopIllustration';
 export { default as PageRight2Illustration } from './PageRight2Illustration';
 export { default as BtnAndArwBtn } from './BtnAndArwBtn';
-export { default as ProtectedRoutes } from './ProtectedRoutes';
 export { default as ContentSlider } from './ContentSlider';
 export { default as PageTitle } from './PageTitle';
+export { default as AddToListCheck } from './AddToListCheck';

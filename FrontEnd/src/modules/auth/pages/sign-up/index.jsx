@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '/src/modules/common/hooks';
-import { Header } from '/src/modules/common/components';
+import { useAuth } from 'src/modules/auth/hooks';
+import { Header } from 'src/modules/common/components';
 import { Input } from '@material-tailwind/react';
 
 export default function SignUp() {

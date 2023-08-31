@@ -11,7 +11,7 @@ import {
 } from '@material-tailwind/react';
 import { RecommendationAccordian } from './components';
 import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useAccount } from 'src/modules/account/hooks';
+import { useAccount } from 'src/modules/common/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { QueryLoading } from 'src/modules/error/components';
 

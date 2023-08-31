@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { ContentCard } from '/src/modules/common/components';
-import { Genres, Rating } from './components';
+import { Rating } from './components';
+import { Genres } from 'src/modules/media/components';
 import { ReleaseDate } from 'src/modules/media/components';
 
 export default function SearchResults({ results = [] }) {
@@ -34,7 +35,7 @@ export default function SearchResults({ results = [] }) {
 								</h2>
 								<div className="mt-2 flex-rows flex-wrap text-sm leading-6 font-medium">
 									<Rating rating={content.vote_average} />
-									<Genres idList={content.genre_ids} />
+									<Genres genres={content.genre_ids} />
 									<ReleaseDate
 										date={content.release_date || content.first_air_date}
 									/>
