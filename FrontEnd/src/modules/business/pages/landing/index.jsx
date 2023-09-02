@@ -29,7 +29,7 @@ export default function LandingPage() {
 				<FeaturesZigzag />
 				<TwoColumnGrid>
 					<Newsletter />
-					<CTA arrowBtnText={'Learn More'} newNavURL={'/about-us'} />
+					<CTA arrowBtnText={'Learn More'} newNavURL={'/about'} />
 				</TwoColumnGrid>
 			</main>
 			<Footer />
