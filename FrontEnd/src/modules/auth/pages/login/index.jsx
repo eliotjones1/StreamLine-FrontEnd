@@ -26,98 +26,96 @@ export default function Login() {
 		<div className="flex flex-col min-h-screen overflow-hidden">
 			<Header />
 			<main className="grow">
-				<section className="relative">
-					<div className="max-w-6xl mx-auto px-4 sm:px-6">
-						<div className="pt-32 pb-12 md:pt-40 md:pb-20">
-							<Card
-								className="max-w-sm mx-auto "
-								color="transparent"
-								shadow={false}
+				<div className="max-w-6xl mx-auto px-4 sm:px-6">
+					<div className="pt-32 pb-12 md:pt-40 md:pb-20">
+						<Card
+							className="max-w-sm mx-auto "
+							color="transparent"
+							shadow={false}
+						>
+							<Typography
+								className="text-center text-sky-600 mb-4"
+								variant="h1"
+								color="blue"
 							>
-								<Typography
-									className="text-center text-sky-600 mb-4"
-									variant="h1"
-									color="blue"
-								>
+								Sign In
+							</Typography>
+							<Typography
+								className="text-center text-slate-800 mb-4"
+								variant="h5"
+								color="blue"
+							>
+								Welcome back! StreamLine subscriptions your now.
+							</Typography>
+							<form onSubmit={signIn} to="/">
+								<div className="flex flex-wrap -mx-3 mb-4">
+									<div className="w-full px-3">
+										<Input
+											className="form-input"
+											type="email"
+											name="email"
+											color="blue"
+											size="lg"
+											label="Email"
+											error={error}
+											required
+										/>
+									</div>
+								</div>
+								<div className="flex flex-wrap -mx-3 mb-4">
+									<div className="w-full px-3">
+										<Input
+											className="form-input"
+											color="blue"
+											type="password"
+											name="password"
+											size="lg"
+											label="Password"
+											error={error}
+											required
+										/>
+									</div>
+								</div>
+								<div className="flex flex-wrap -mx-3 mb-4">
+									<div className="w-full px-3">
+										<div className="flex justify-between">
+											<Checkbox
+												color="blue"
+												name="keepSignedIn"
+												label={
+													<Typography className="font-medium">
+														Keep me signed in
+													</Typography>
+												}
+											/>
+											<button
+												type="button"
+												onClick={() => nav('/reset-password')}
+												className="text-link"
+											>
+												Forgot Password?
+											</button>
+										</div>
+									</div>
+								</div>
+								<button type="submit" className="colored-sky-btn w-full">
 									Sign In
-								</Typography>
-								<Typography
-									className="text-center text-slate-800 mb-4"
-									variant="h5"
-									color="blue"
-								>
-									Welcome back! StreamLine subscriptions your now.
-								</Typography>
-								<form onSubmit={signIn} to="/">
-									<div className="flex flex-wrap -mx-3 mb-4">
-										<div className="w-full px-3">
-											<Input
-												className="form-input"
-												type="email"
-												name="email"
-												color="blue"
-												size="lg"
-												label="Email"
-												error={error}
-												required
-											/>
-										</div>
-									</div>
-									<div className="flex flex-wrap -mx-3 mb-4">
-										<div className="w-full px-3">
-											<Input
-												className="form-input"
-												color="blue"
-												type="password"
-												name="password"
-												size="lg"
-												label="Password"
-												error={error}
-												required
-											/>
-										</div>
-									</div>
-									<div className="flex flex-wrap -mx-3 mb-4">
-										<div className="w-full px-3">
-											<div className="flex justify-between">
-												<Checkbox
-													color="blue"
-													name="keepSignedIn"
-													label={
-														<Typography className="font-medium">
-															Keep me signed in
-														</Typography>
-													}
-												/>
-												<button
-													type="button"
-													onClick={() => nav('/reset-password')}
-													className="text-link"
-												>
-													Forgot Password?
-												</button>
-											</div>
-										</div>
-									</div>
-									<button type="submit" className="colored-sky-btn w-full">
-										Sign In
-									</button>
-								</form>
-							</Card>
-							<div className="text-gray-600 dark:text-gray-400 text-center mt-6">
-								Don&apos;t have an account?{' '}
-								<button
-									type="button"
-									onClick={() => nav('/signup')}
-									className="text-link"
-								>
-									{' '}
-									Sign up
 								</button>
-							</div>
+							</form>
+						</Card>
+						<div className="text-gray-600 dark:text-gray-400 text-center mt-6">
+							Don&apos;t have an account?{' '}
+							<button
+								type="button"
+								onClick={() => nav('/signup')}
+								className="text-link"
+							>
+								{' '}
+								Sign up
+							</button>
 						</div>
 					</div>
-				</section>
+				</div>
 			</main>
 		</div>
 	);

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/modules/auth/hooks';
 import { Header } from 'src/modules/common/components';
-import { Input } from '@material-tailwind/react';
+import { Card, Typography, Input } from '@material-tailwind/react';
 
 export default function SignUp() {
 	const { signUp } = useAuth();
@@ -30,86 +30,81 @@ export default function SignUp() {
 	return (
 		<div className="flex flex-col min-h-screen overflow-hidden">
 			<Header />
-
 			<main className="grow">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6">
 					<div className="pt-32 pb-12 md:pt-40 md:pb-20">
-						<div className="max-w-3xl mx-auto text-center pb-6 md:pb-10">
-							<h1 className="h1">
+						<Card
+							className="max-w-sm mx-auto "
+							color="transparent"
+							shadow={false}
+						>
+							<Typography
+								className="text-center text-sky-600 mb-4"
+								variant="h1"
+								color="blue"
+							>
+								Sign Up
+							</Typography>
+							<Typography
+								className="text-center text-slate-800 mb-4"
+								variant="h5"
+								color="blue"
+							>
 								Welcome! We exist to make streaming easier.
-							</h1>
-						</div>
-
-						<div className="max-w-sm mx-auto">
-							<form onSubmit={confirmPasswordMatch}>
-								<div className="flex flex-wrap -mx-3 mb-4">
-									<div className="flex flex-row w-full space-x-2">
-										<div className="flex flex-col">
-											<Input
-												className="form-input"
-												type="text"
-												name="firstName"
-												color="blue"
-												size="lg"
-												label="First Name"
-												error={error}
-												required
-											/>
-										</div>
-										<div className="flex flex-col">
-											<Input
-												className="form-input"
-												type="text"
-												name="lastName"
-												color="blue"
-												size="lg"
-												label="Last Name"
-												error={error}
-												required
-											/>
-										</div>
-									</div>
-								</div>
-								<div className="flex flex-wrap w-full mb-4">
+							</Typography>
+							<form className="space-y-2" onSubmit={confirmPasswordMatch}>
+								<div className="flex">
 									<Input
 										className="form-input"
-										type="email"
-										name="email"
+										type="text"
+										name="firstName"
 										color="blue"
 										size="lg"
-										label="Email"
+										label="First Name"
+										error={error}
+										required
+									/>
+									<Input
+										className="form-input"
+										type="text"
+										name="lastName"
+										color="blue"
+										size="lg"
+										label="Last Name"
 										error={error}
 										required
 									/>
 								</div>
-								<div className="flex flex-wrap -mx-3 mb-4">
-									<div className="w-full px-3">
-										<Input
-											className="form-input"
-											color="blue"
-											type="password"
-											name="password"
-											size="lg"
-											label="Password"
-											error={error}
-											required
-										/>
-									</div>
-								</div>
-								<div className="flex flex-wrap -mx-3 mb-4">
-									<div className="w-full px-3">
-										<Input
-											className="form-input"
-											color="blue"
-											type="password"
-											name="confirmPassword"
-											size="lg"
-											label="Confirm Password"
-											error={error}
-											required
-										/>
-									</div>
-								</div>
+								<Input
+									className="form-input"
+									type="email"
+									name="email"
+									color="blue"
+									size="lg"
+									label="Email"
+									error={error}
+									required
+								/>
+								<Input
+									className="form-input"
+									color="blue"
+									type="password"
+									name="password"
+									size="lg"
+									label="Password"
+									error={error}
+									required
+								/>
+								<Input
+									className="form-input"
+									color="blue"
+									type="password"
+									name="confirmPassword"
+									size="lg"
+									label="Confirm Password"
+									error={error}
+									required
+								/>
 								<div className="text-sm text-slate-700 dark:text-gray-500 text-center">
 									I agree to be contacted by StreamLine about this offer as per
 									the StreamLine{' '}
@@ -129,12 +124,17 @@ export default function SignUp() {
 									</div>
 								</div>
 							</form>
-							<div className="text-slate-600 dark:text-gray-400 text-center mt-6">
-								Already using StreamLine?{' '}
-								<button onClick={() => nav('/signin')} className="text-link">
-									Sign In
-								</button>
-							</div>
+						</Card>
+						<div className="text-gray-600 text-center mt-6">
+							Don&apos;t have an account?{' '}
+							<button
+								type="button"
+								onClick={() => nav('/signup')}
+								className="text-link"
+							>
+								{' '}
+								Sign up
+							</button>
 						</div>
 					</div>
 				</div>

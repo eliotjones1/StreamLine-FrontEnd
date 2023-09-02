@@ -23,28 +23,28 @@ export default function ImageGrid() {
 			<div className="transform">
 				<div className="grid grid-cols-3 gap-x-6 lg:gap-x-8">
 					<div className="grid justify-items-center flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-						{data.slice(0, 2).map((image, index) => (
+						{data.slice(0, 2).map(({ type, id }, index) => (
 							<ImageContainer
 								key={index}
-								src={image.src}
-								alt={image.alt}
+								type={type}
+								id={id}
 								classNameMods={index === 0 ? 'items-end' : 'items-start'}
 							/>
 						))}
 					</div>
 
 					<div className="grid justify-items-center flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-						{data.slice(2, 5).map((image, index) => (
-							<ImageContainer key={index} src={image.src} alt={image.alt} />
+						{data.slice(2, 5).map(({ type, id }, index) => (
+							<ImageContainer key={index} type={type} id={id} />
 						))}
 					</div>
 
 					<div className="grid justify-items-center flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-						{data.slice(5, 7).map((image, index) => (
+						{data.slice(5, 7).map(({ type, id }, index) => (
 							<ImageContainer
 								key={index}
-								src={image.src}
-								alt={image.alt}
+								type={type}
+								id={id}
 								classNameMods={index === 0 ? 'items-end' : 'items-start'}
 							/>
 						))}
