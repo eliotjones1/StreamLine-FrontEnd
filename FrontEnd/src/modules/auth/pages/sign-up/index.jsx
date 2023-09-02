@@ -52,29 +52,27 @@ export default function SignUp() {
 							>
 								Welcome! We exist to make streaming easier.
 							</Typography>
-							<form className="space-y-2" onSubmit={confirmPasswordMatch}>
-								<div className="flex">
-									<Input
-										className="form-input"
-										type="text"
-										name="firstName"
-										color="blue"
-										size="lg"
-										label="First Name"
-										error={error}
-										required
-									/>
-									<Input
-										className="form-input"
-										type="text"
-										name="lastName"
-										color="blue"
-										size="lg"
-										label="Last Name"
-										error={error}
-										required
-									/>
-								</div>
+							<form className="space-y-4" onSubmit={confirmPasswordMatch}>
+								<Input
+									className="form-input"
+									type="text"
+									name="firstName"
+									color="blue"
+									size="lg"
+									label="First Name"
+									error={error}
+									required
+								/>
+								<Input
+									className="form-input"
+									type="text"
+									name="lastName"
+									color="blue"
+									size="lg"
+									label="Last Name"
+									error={error}
+									required
+								/>
 								<Input
 									className="form-input"
 									type="email"
@@ -105,35 +103,20 @@ export default function SignUp() {
 									error={error}
 									required
 								/>
-								<div className="text-sm text-slate-700 dark:text-gray-500 text-center">
-									I agree to be contacted by StreamLine about this offer as per
-									the StreamLine{' '}
-									<a
-										to="#"
-										className="underline cursor-pointer text-slate-600 dark:text-gray-400 dark:hover:text-gray-200 hover:text-slate-200 hover:no-underline transition duration-150 ease-in-out"
-									>
-										Privacy Policy
-									</a>
-									.
-								</div>
-								<div className="flex flex-wrap -mx-3 mt-6">
-									<div className="w-full px-3">
-										<button type="submit" className="colored-sky-btn w-full">
-											Sign up
-										</button>
-									</div>
-								</div>
+								<button type="submit" className="colored-sky-btn w-full">
+									Sign up
+								</button>
 							</form>
 						</Card>
 						<div className="text-gray-600 text-center mt-6">
-							Don&apos;t have an account?{' '}
+							Already have an account?{' '}
 							<button
 								type="button"
-								onClick={() => nav('/signup')}
+								onClick={() => nav('/signin')}
 								className="text-link"
 							>
 								{' '}
-								Sign up
+								Sign In
 							</button>
 						</div>
 					</div>
