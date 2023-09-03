@@ -1,2 +1,2 @@
-export { default as DeleteDialog } from './DeleteDialog';
 export { default as AddDialog } from './AddDialog';
+export { default as ActionsDialog } from './ActionsDialog';

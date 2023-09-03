@@ -66,24 +66,22 @@ const TABLE_ROWS = [
 		expiry: '06/2026',
 	},
 ];
+import { useAccount } from 'src/modules/common/hooks';
 
 export default function TransactionsTable() {
 	const [page, setPage] = useState(1);
+	const { fetchHistory } = useAccount();
 
 	const { status, data } = useQuery({
 		queryKey: ['account', 'payment history', page],
 		keepPreviousData: true,
-		queryFn: () => {
-			return {
-				pageData: TABLE_ROWS,
-				numPages: 10,
-				curPage: page,
-			};
-		},
+		queryFn: () => fetchHistory(),
 	});
 
 	if (status === 'loading') return <QueryLoading />;
 	if (status === 'error') return <QueryError />;
+
+	console.log(data);
 
 	return (
 		<Card className="h-full w-full bg-slate-50">

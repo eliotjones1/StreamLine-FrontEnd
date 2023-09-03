@@ -39,7 +39,7 @@ export default function App() {
 			<Route path="/signin" element={<Login />} />
 			<Route path="/signup" element={<SignUp />} />
 			<Route path="/support" element={<Support />} />
-			<Route path="/services-search" element={<SupportedServices />} />
+			<Route path="/supported-services" element={<SupportedServices />} />
 			<Route path="/media" element={<SearchMedia />} />
 			<Route path="/reset-password" element={<ResetPassword />} />
 			<Route path="/news" element={<News />} />

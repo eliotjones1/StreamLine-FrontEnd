@@ -17,7 +17,7 @@ export default function UserDash() {
 					<Releases />
 					<ManageSubscriptions />
 				</div>
-				<PaymentTable />
+				{/*<PaymentTable />*/}
 			</main>
 			<Footer />
 		</div>

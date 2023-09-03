@@ -174,7 +174,17 @@ export default function AccountProvider({ children }) {
 		return data;
 	};
 
-	/*  Budget  */
+	/*  Finances  */
+
+	const fetchHistory = async () => {
+		const { data } = await axios.get(
+			'https://streamline-backend-82dbd26e19c5.herokuapp.com/webhooks/user-payments',
+			{
+				withCredentials: true,
+			},
+		);
+		return data;
+	};
 
 	const fetchBudget = async () => {
 		const { data } = await axios.get(
@@ -242,6 +252,7 @@ export default function AccountProvider({ children }) {
 				addSubscription,
 				deleteSubscription,
 				fetchUpcoming,
+				fetchHistory,
 				fetchBudget,
 				deleteAccount,
 				fetchAccountInfo,
