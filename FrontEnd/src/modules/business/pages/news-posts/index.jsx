@@ -28,8 +28,13 @@ export default function NewsPost() {
 			<Header />
 			<PageTopIllustration />
 			<main className="grow max-w-3xl mx-auto pt-20 text-slate-800">
-				<img className="pb-4" src={data.image_url} alt={''} />
-				<Typography variant="h1">{data.title}</Typography>
+				<img
+					className="w-full max-h-[28rem] object-cover"
+					src={data.image_url}
+				/>
+				<Typography variant="h1" className="pt-4">
+					{data.title}
+				</Typography>
 				<div className="mb-4 pb-4 border-b border-slate-300">
 					<div className="flex items-center gap-4">
 						<Typography variant="h6">By: {data.author}</Typography>

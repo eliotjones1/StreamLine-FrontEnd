@@ -45,7 +45,8 @@ export default function LogoClouds() {
 			</div>
 			<div className="flex flex-col items-center w-full pt-10">
 				<div
-					onClick={() => nav('/services-search')}
+					aria-label="Supported Services"
+					onClick={() => nav('/supported-services')}
 					className="z-30 relative cursor-pointer isolate flex items-center rounded-full gap-x-6 overflow-hidden bg-slate-900/5 dark:bg-white/5 px-6 py-2.5 sm:px-3.5 sm:before:flex-1 leading-6 ring-1 bg-slate-900/5 dark:bg-white/5 p-2 ring-white/10 hover:ring-gray-900/20"
 				>
 					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">

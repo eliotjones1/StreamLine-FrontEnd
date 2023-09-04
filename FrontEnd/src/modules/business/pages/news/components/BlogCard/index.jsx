@@ -13,7 +13,7 @@ export default function BlogCard({ post }) {
 
 	return (
 		<Card
-			className="max-w-[24rem] overflow-hidden cursor-pointer"
+			className="max-w-[24rem] h-[28rem] overflow-hidden cursor-pointer"
 			onClick={() => nav(`/news/${post.id}`)}
 		>
 			<CardHeader
@@ -22,14 +22,18 @@ export default function BlogCard({ post }) {
 				color="transparent"
 				className="m-0 rounded-none"
 			>
-				<img src={post.image_url} alt={post.title} />
+				<img
+					className="max-h-[14rem] w-full object-cover"
+					src={post.image_url}
+					alt={post.title}
+				/>
 			</CardHeader>
 			<CardBody>
-				<Typography variant="h4" color="blue-gray">
+				<Typography className="truncate" variant="h4" color="blue-gray">
 					{post.title}
 				</Typography>
 				<Typography variant="lead" color="gray" className="mt-3 font-normal">
-					{post.content}
+					<div className="w-full line-clamp-2">{post.content}</div>
 				</Typography>
 			</CardBody>
 			<CardFooter className="flex items-center justify-between">

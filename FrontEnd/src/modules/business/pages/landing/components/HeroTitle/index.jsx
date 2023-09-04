@@ -10,7 +10,8 @@ export default function HeroTitle() {
 				<div className="relative rounded-full px-3 py-1 text-sm leading-6 ring-1 bg-slate-900/5 dark:bg-white/5 p-2 ring-1 ring-white/10 hover:ring-gray-900/20">
 					Announcing our deployment.{' '}
 					<button
-						onClick={() => nav('/news')}
+						aria-label="Read More"
+						onClick={() => nav('/news/2')}
 						className="font-semibold text-sky-600"
 					>
 						<span className="absolute inset-0" aria-hidden="true" />

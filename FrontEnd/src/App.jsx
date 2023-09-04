@@ -32,7 +32,7 @@ export default function App() {
 	return (
 		<Routes>
 			{/* Public Routes */}
-			<Route path="/" element={<Landing />} />
+			<Route exact path="/" element={<Landing />} />
 			<Route path="/media/:type/:id" element={<MediaData />} />
 			<Route path="/about" element={<About />} />
 			<Route path="/pricing" element={<Pricing />} />

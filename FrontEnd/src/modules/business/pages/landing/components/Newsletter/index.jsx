@@ -23,6 +23,7 @@ export default function Newsletter() {
 					</p>
 					<div className="mt-6 flex max-w-md gap-x-4">
 						<Input
+							aria-label="Email"
 							type="email"
 							name="email"
 							autoComplete="email"
@@ -31,7 +32,11 @@ export default function Newsletter() {
 							color="blue"
 							required
 						/>
-						<button type="submit" className="colored-sky-btn">
+						<button
+							aria-label="Subscribe"
+							type="submit"
+							className="colored-sky-btn"
+						>
 							Subscribe
 						</button>
 					</div>

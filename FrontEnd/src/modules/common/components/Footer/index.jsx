@@ -26,12 +26,13 @@ export default function Footer() {
 								{/* Logo */}
 								<button
 									className="inline-block"
-									aria-label="Cruip"
+									aria-label="Home"
 									onClick={() => nav('/')}
 								>
 									<img
 										className="w-8 h-8 fill-current text-blue-200"
 										src="/src/assets/images/StreamLine_Transparent_Logo.png"
+										alt="Home"
 									/>
 								</button>
 							</div>
@@ -55,6 +56,7 @@ export default function Footer() {
 								<ul className="grid gap-y-2">
 									<li className="mb-1">
 										<button
+											aria-label="Media"
 											onClick={() => nav('/media')}
 											className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out"
 										>
@@ -63,6 +65,7 @@ export default function Footer() {
 									</li>
 									<li className="mb-1">
 										<button
+											aria-label="Supported Services"
 											onClick={() => nav('/supported-services')}
 											className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out"
 										>
@@ -72,6 +75,7 @@ export default function Footer() {
 									{isLoggedIn && (
 										<li className="mb-1">
 											<button
+												aria-label="Virtual Cable Box"
 												onClick={() => nav('/virtual-cable-box')}
 												className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out"
 											>
@@ -103,6 +107,7 @@ export default function Footer() {
 								<ul className="grid gap-y-2">
 									<li className="mb-1">
 										<button
+											aria-label="About Us"
 											onClick={() => nav('/about')}
 											className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out"
 										>
@@ -111,6 +116,7 @@ export default function Footer() {
 									</li>
 									<li className="mb-1">
 										<button
+											aria-label="Pricing"
 											onClick={() => nav('/pricing')}
 											className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out"
 										>
@@ -119,6 +125,7 @@ export default function Footer() {
 									</li>
 									<li className="mb-1">
 										<button
+											aria-label="News"
 											onClick={() => nav('/news')}
 											className="hover:text-slate-900 dark:hover:text-slate-300 transition duration-150 ease-in-out"
 										>

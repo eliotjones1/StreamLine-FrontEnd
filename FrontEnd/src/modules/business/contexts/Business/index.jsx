@@ -43,8 +43,17 @@ export default function BusinessProvider({ children }) {
 
 	const fetchTop7Streaming = async (top7 = []) => {
 		try {
-			const { data } = await axios.get('#');
-			return data;
+			return [
+				{ type: 'movie', id: '555299' },
+				{ type: 'tv', id: '66732' },
+				{ type: 'tv', id: '97546' },
+				{ type: 'tv', id: '1399' },
+				{ type: 'tv', id: '84773' },
+				{ type: 'tv', id: '1416' },
+				{ type: 'tv', id: '93405' },
+			];
+			//const { data } = await axios.get('#');
+			//return data;
 		} catch (error) {
 			return [
 				{ type: 'movie', id: '555299' },

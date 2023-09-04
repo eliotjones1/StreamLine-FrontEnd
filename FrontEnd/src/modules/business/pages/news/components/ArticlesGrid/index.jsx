@@ -28,7 +28,7 @@ export default function ArticlesGrid() {
 					</div>
 				))}
 			</div>
-			<div className="w-full flex justify-center items-center">
+			<div className="pt-10 w-full flex justify-center items-center">
 				<Pagination
 					totalPages={data.totalPages}
 					curPage={page}
