@@ -42,16 +42,8 @@ export default function BusinessProvider({ children }) {
 	/*  Advertising  */
 
 	const fetchTop7Streaming = async (top7 = []) => {
-		try {
-			return [
-				{ type: 'movie', id: '555299' },
-				{ type: 'tv', id: '66732' },
-				{ type: 'tv', id: '97546' },
-				{ type: 'tv', id: '1399' },
-				{ type: 'tv', id: '84773' },
-				{ type: 'tv', id: '1416' },
-				{ type: 'tv', id: '93405' },
-			];
+		{
+			/*try {
 			//const { data } = await axios.get('#');
 			//return data;
 		} catch (error) {
@@ -64,7 +56,17 @@ export default function BusinessProvider({ children }) {
 				{ type: 'tv', id: '1416' },
 				{ type: 'tv', id: '93405' },
 			];
+		} */
 		}
+		return [
+			{ type: 'movie', id: '555299' },
+			{ type: 'tv', id: '66732' },
+			{ type: 'tv', id: '97546' },
+			{ type: 'tv', id: '1399' },
+			{ type: 'tv', id: '84773' },
+			{ type: 'tv', id: '1416' },
+			{ type: 'tv', id: '93405' },
+		];
 	};
 
 	/*  Newsletter  */
