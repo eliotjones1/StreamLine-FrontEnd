@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { MediaContext } from '/src/modules/media/contexts/Media';
+import { MediaContext } from '/src/api/modules/media';
 
 export default function useMedia() {
-  return useContext(MediaContext);
+	return useContext(MediaContext);
 }

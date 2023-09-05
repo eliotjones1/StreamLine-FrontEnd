@@ -1,9 +1,9 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { createContext } from 'react';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '/src/modules/common/hooks';
+import { StreamLineAxios, TMDBAxios } from '../../axios.config';
 
 const defaultToast = {
 	position: 'top-right',
@@ -21,24 +21,18 @@ export const AccountContext = createContext();
 export default function AccountProvider({ children }) {
 	const queryClient = useQueryClient();
 	const { logout } = useAuth();
-	const APIKEY = '95cd5279f17c6593123c72d04e0bedfa';
 
 	/*  List  */
 
 	const fetchList = async () => {
-		const { data } = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/return-user-data/',
-			{
-				withCredentials: true,
-			},
-		);
+		const { data: userData } = StreamLineAxios.get('/api/return-user-data/');
 
-		const promises = data.media.map(async (media) => {
-			let { data } = await axios.get(
-				`https://api.themoviedb.org/3/${media.media_type}/${media.id}?api_key=${APIKEY}`,
+		const promises = userData.media.map(async (media) => {
+			let { data: mediaData } = await TMDBAxios.get(
+				`/${media.media_type}/${media.id}`,
 			);
-			data.media_type = media.media_type;
-			return data;
+			mediaData.media_type = media.media_type;
+			return mediaData;
 		});
 
 		const results = await Promise.all(promises);
@@ -47,11 +41,10 @@ export default function AccountProvider({ children }) {
 
 	const addToUserList = async (id, type) => {
 		try {
-			await axios.post(
-				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/save-media/',
-				{ id: id, media_type: type },
-				{ withCredentials: true },
-			);
+			await StreamLineAxios.post('/api/save-media/', {
+				id: id,
+				media_type: type,
+			});
 			queryClient.invalidateQueries(['account', 'inList?', { id, type }]);
 			toast.success('Added to Watchlist', defaultToast);
 		} catch (error) {
@@ -64,11 +57,10 @@ export default function AccountProvider({ children }) {
 
 	const removeFromList = async (id, type) => {
 		try {
-			await axios.post(
-				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/remove-media/',
-				{ id: id, media_type: type },
-				{ withCredentials: true },
-			);
+			await StreamLineAxios.post('/api/remove-media/', {
+				id: id,
+				media_type: type,
+			});
 			queryClient.invalidateQueries(['account', 'inList?', { id, type }]);
 			toast.success('Removed from Watchlist', defaultToast);
 		} catch (error) {
@@ -81,10 +73,9 @@ export default function AccountProvider({ children }) {
 
 	const checkInList = async (id, type) => {
 		try {
-			const { data } = await axios.get(
-				'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/in-user-watchlist',
-				{ params: { id: id, media_type: type }, withCredentials: true },
-			);
+			const { data } = await StreamLineAxios.post('/api/save-media/', {
+				params: { id: id, media_type: type },
+			});
 			if (data.Status === 'false') return false;
 			return true;
 		} catch (error) {
@@ -95,35 +86,29 @@ export default function AccountProvider({ children }) {
 	/*  Subscriptions  */
 
 	const fetchSubscriptions = async () => {
-		const { data } = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/view/',
-			{ withCredentials: true },
-		);
+		const { data } = StreamLineAxios.get('/settings/user-subscriptions/view/');
 		return data;
 	};
 
 	const searchSubscriptions = async (query) => {
-		const { data } = await axios.get(
-			`https://streamline-backend-82dbd26e19c5.herokuapp.com/api/search/services?search=${query}`,
-			{ withCredentials: true },
+		const { data } = await StreamLineAxios.get(
+			`/api/search/services?search=${query}`,
 		);
 		return data;
 	};
 
 	const recommendSubscriptions = async () => {
-		const { data } = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/recommendations/',
-			{ withCredentials: true },
+		const { data } = await StreamLineAxios.get(
+			'/settings/user-subscriptions/recommendations/',
 		);
 		return data;
 	};
 
 	const addSubscription = async (subscription) => {
 		try {
-			await axios.post(
-				'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/create/',
+			await StreamLineAxios.post(
+				'/settings/user-subscriptions/create/',
 				subscription,
-				{ withCredentials: true },
 			);
 			queryClient.invalidateQueries(['account', 'subscriptions']);
 			queryClient.invalidateQueries([
@@ -142,10 +127,9 @@ export default function AccountProvider({ children }) {
 
 	const deleteSubscription = async (subscription) => {
 		try {
-			await axios.post(
-				'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/user-subscriptions/cancel/',
+			await StreamLineAxios.post(
+				'/settings/user-subscriptions/cancel/',
 				subscription,
-				{ withCredentials: true },
 			);
 			queryClient.invalidateQueries(['account', 'subscriptions']);
 			queryClient.invalidateQueries([
@@ -165,54 +149,32 @@ export default function AccountProvider({ children }) {
 	/*  Possible Interests  */
 
 	const fetchUpcoming = async () => {
-		const { data } = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/get-upcoming/',
-			{
-				withCredentials: true,
-			},
-		);
+		const { data } = await StreamLineAxios.get('/api/get-upcoming/');
 		return data;
 	};
 
 	/*  Finances  */
 
 	const fetchHistory = async () => {
-		const { data } = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/webhooks/user-payments',
-			{
-				withCredentials: true,
-			},
-		);
+		const { data } = await StreamLineAxios.get('/webhooks/user-payments');
 		return data;
 	};
 
 	const fetchBudget = async () => {
-		const { data } = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/api/return-user-data/',
-			{
-				withCredentials: true,
-			},
-		);
+		const { data } = await StreamLineAxios.get('/api/return-user-data/');
 		return data.budget;
 	};
 
 	/*  Account Information  */
 
 	const fetchAccountInfo = async () => {
-		const { data } = await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/get-user-settings/',
-			{ withCredentials: true },
-		);
+		const { data } = await StreamLineAxios.get('/settings/get-user-settings/');
 		return data;
 	};
 
 	const updateAccount = async (newInfo) => {
 		try {
-			await axios.post(
-				'http://127.0.0.1:8000/api/user/settings/update/',
-				newInfo,
-				{ withCredentials: true },
-			);
+			await StreamLineAxios.post('/api/user/settings/update/', newInfo);
 			queryClient.invalidateQueries(['account', 'information']);
 			toast.success('Account Updated', defaultToast);
 		} catch (error) {
@@ -225,9 +187,7 @@ export default function AccountProvider({ children }) {
 
 	const deleteAccount = async () => {
 		try {
-			await axios.post('http://127.0.0.1:8000/api/user/settings/delete/', [], {
-				withCredentials: true,
-			});
+			await StreamLineAxios.post('/api/user/settings/delete/', {});
 			logout();
 			queryClient.invalidateQueries(['account', 'information']);
 			toast.success('Account Deleted', defaultToast);

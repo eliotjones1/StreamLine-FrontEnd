@@ -1,9 +1,7 @@
 import { createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
-export const LoginContext = createContext();
+import { StreamLineAxios } from '../../axios.config';
 
 const authReducer = (state, action) => {
 	switch (action.type) {
@@ -24,6 +22,8 @@ const authReducer = (state, action) => {
 	}
 };
 
+export const LoginContext = createContext();
+
 export default function LoginProvider({ children }) {
 	const nav = useNavigate();
 	const [state, dispatch] = useReducer(authReducer, {
@@ -36,60 +36,38 @@ export default function LoginProvider({ children }) {
 	}, []);
 
 	const checkLoginStatus = async () => {
-		await axios.get(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/settings/is-authenticated/',
-			{ withCredentials: true },
-		);
-		dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
+		try {
+			await StreamLineAxios.get('/settings/is-authenticated/');
+			dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
+		} catch (error) {
+			dispatch({ type: 'LOGOUT' });
+		}
 	};
 
 	const signUp = async (userData) => {
-		await axios.post(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/auth/register/',
-			userData,
-			{
-				withCredentials: true,
-			},
-		);
+		await StreamLineAxios.post('/auth/register/', userData);
 		login(userData);
 	};
 
 	const login = async (userData) => {
-		const { data } = await axios.post(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/auth/login/',
-			userData,
-			{
-				withCredentials: true,
-			},
-		);
-		dispatch({ type: 'LOGIN', payload: { isAdmin: data.is_staff } });
+		await StreamLineAxios.post('/auth/login/', userData);
+		dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
 		nav('/user-dash');
 	};
 
 	const logout = async () => {
-		await axios.post(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/auth/logout/',
-			{},
-			{ withCredentials: true },
-		);
+		await StreamLineAxios.post('/auth/logout/', {});
 		dispatch({ type: 'LOGOUT' });
 		nav('/');
 	};
 
 	const resetPassword = async (email) => {
-		await axios.post(
-			'https://streamline-backend-82dbd26e19c5.herokuapp.com/auth/password_reset/',
-			{ email: email },
-			{ withCredentials: true },
-		);
+		await StreamLineAxios.post('/auth/password_reset/', { email: email });
 		nav('/signin');
 	};
 
 	const confirmedReset = async (authData) => {
-		await axios.post(
-			'http://127.0.0.1:8000/api/password_reset/confirm/',
-			authData,
-		);
+		await StreamLineAxios.post('/auth/password_reset/confirm/', authData);
 		nav('/signin');
 	};
 
