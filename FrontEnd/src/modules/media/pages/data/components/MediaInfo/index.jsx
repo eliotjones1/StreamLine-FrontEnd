@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMedia } from 'src/modules/media/hooks';
-import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 
-export default function MediaInfo({ type, id }) {
+export default function MediaInfo() {
+	const { type, id } = useParams();
 	const { fetchMedia } = useMedia();
 
 	const { status, data } = useQuery({
@@ -103,8 +104,3 @@ export default function MediaInfo({ type, id }) {
 		</>
 	);
 }
-
-MediaInfo.propTypes = {
-	type: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired,
-};

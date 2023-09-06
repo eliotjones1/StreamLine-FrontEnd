@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { createContext } from 'react';
 import { toast } from 'react-toastify';
-import { StreamLineAxios } from '../../axios.config';
+import { StreamLineAxios, fetchStreamLine } from '../../axios.config';
 
 const defaultToast = {
 	position: 'top-right',
@@ -17,28 +17,7 @@ const defaultToast = {
 export const BusinessContext = createContext();
 
 export default function BusinessProvider({ children }) {
-	const fetchServices = async () => {
-		const { data } = await StreamLineAxios.get(`/api/search/services/`);
-		return data;
-	};
-
-	/*  News  */
-	const fetchNews = async (page) => {
-		const { data } = await StreamLineAxios.get(
-			`/newsletter/return-page-posts?page=${page}`,
-		);
-		return data;
-	};
-
-	const fetchNewsPost = async (id) => {
-		const { data } = await StreamLineAxios.get(
-			`/newsletter/return-post?id=${id}`,
-		);
-		return data;
-	};
-
 	/*  Advertising  */
-
 	const fetchTop7Streaming = async (top7 = []) => {
 		{
 			/*try {
@@ -68,7 +47,6 @@ export default function BusinessProvider({ children }) {
 	};
 
 	/*  Newsletter  */
-
 	const addToNewsletter = async (email) => {
 		try {
 			await StreamLineAxios.post('/api/recommendations/saveEmail/', email);
@@ -99,9 +77,11 @@ export default function BusinessProvider({ children }) {
 			value={{
 				addToNewsletter,
 				contactSupport,
-				fetchNews,
-				fetchNewsPost,
-				fetchServices,
+				fetchNews: (page) =>
+					fetchStreamLine(`/newsletter/return-page-posts?page=${page}`),
+				fetchNewsPost: (id) =>
+					fetchStreamLine(`/newsletter/return-post?id=${id}`),
+				fetchServices: () => fetchStreamLine('/api/search/services/'),
 				fetchTop7Streaming,
 			}}
 		>

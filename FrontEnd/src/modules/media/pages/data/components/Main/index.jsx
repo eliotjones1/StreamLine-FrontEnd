@@ -5,10 +5,11 @@ import { ClockIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import { useMedia } from 'src/modules/media/hooks';
 import { AddToListCheck } from 'src/modules/common/components';
-import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 
-export default function Main({ type, id }) {
+export default function Main() {
+	const { type, id } = useParams();
 	const { fetchMedia } = useMedia();
 
 	const { status, data } = useQuery({
@@ -85,8 +86,3 @@ export default function Main({ type, id }) {
 		</div>
 	);
 }
-
-Main.propTypes = {
-	type: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired,
-};

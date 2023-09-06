@@ -9,12 +9,12 @@ export default function Content() {
 	const [trending, newlyReleased] = useQueries({
 		queries: [
 			{
-				queryKey: ['trending'],
+				queryKey: ['media', 'trending'],
 				staleTime: Infinity,
 				queryFn: () => fetchTrending(),
 			},
 			{
-				queryKey: ['newly_released'],
+				queryKey: ['media', 'newly_released'],
 				staleTime: Infinity,
 				queryFn: () => fetchNewlyReleased(),
 			},
@@ -30,7 +30,7 @@ export default function Content() {
 		<div className="max-w-7xl mx-auto relative z-0">
 			<div className="pb-2">
 				<p className="font-bold pb-2 text-2xl">Trending Content</p>
-				<ContentSlider mediaContent={trending.data} />
+				<ContentSlider mediaContent={trending.data.results} />
 			</div>
 			<div className="pb-2">
 				<p className="font-bold pb-2 text-2xl">Newly Released</p>

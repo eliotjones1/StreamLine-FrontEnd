@@ -8,7 +8,7 @@ The only state used across the entire StreamLine web application is the user log
 
 ## StreamLine API
 
-The StreamLine API
+The StreamLine API is divided up into multiple subsections
 
 <img 
   src="/Users/ryandunn/Desktop/Personal/StreamLine/FrontEnd/src/assets/images/StreamLine_Transparent_Logo.png" 

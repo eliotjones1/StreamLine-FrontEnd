@@ -1,11 +1,14 @@
-import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { useMedia } from 'src/modules/media/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 import { TrailerIFrame } from './components';
 
-export default function Trailers({ type, id }) {
+export default function Trailers() {
+	const { type, id } = useParams();
 	const { fetchVideo } = useMedia();
+
+	console.log(type, id);
 
 	const { status, data } = useQuery({
 		queryKey: ['media', type, id, 'videos'],
@@ -20,7 +23,7 @@ export default function Trailers({ type, id }) {
 		<>
 			<h2 className="text-2xl font-bold mb-4">Trailers</h2>
 			<div className="flex overflow-x-auto">
-				{data.video.map((trailer, index) => {
+				{data.results.map((trailer, index) => {
 					if (trailer.type === 'Trailer') {
 						return (
 							<TrailerIFrame
@@ -34,8 +37,3 @@ export default function Trailers({ type, id }) {
 		</>
 	);
 }
-
-Trailers.propTypes = {
-	type: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired,
-};

@@ -1,6 +1,10 @@
 import { createContext } from 'react';
 import PropTypes from 'prop-types';
-import { StreamLineAxios, TMDBAxios } from '../../axios.config';
+import {
+	StreamLineAxios,
+	fetchStreamLine,
+	fetchTMDB,
+} from '../../axios.config';
 
 export const MediaContext = createContext();
 
@@ -13,47 +17,16 @@ export default function MediaProvider({ children }) {
 		return data;
 	};
 
-	const fetchCast = async (type, id) => {
-		const { data } = await TMDBAxios.get(`/${type}/${id}/credits`);
-		return data;
-	};
-
-	const fetchVideo = async (type, id) => {
-		const { data } = await TMDBAxios.get(`/${type}/${id}/videos`);
-		return data.results;
-	};
-
-	const fetchTrending = async () => {
-		const { data } = await TMDBAxios.get(`/trending/all/week?&region=US`);
-		return data.results;
-	};
-
-	const fetchStaffPicks = async () => {
-		const { data } = await StreamLineAxios.get('/api/staff-picks/');
-		return data;
-	};
-
-	const fetchNewlyReleased = async () => {
-		const { data } = await StreamLineAxios.get('/api/newly-released/');
-		return data;
-	};
-
-	const fetchSearch = async (query) => {
-		const { data } = await StreamLineAxios.get(
-			`/api/search/all?search=${query}`,
-		);
-		return data;
-	};
-
 	return (
 		<MediaContext.Provider
 			value={{
-				fetchSearch,
-				fetchVideo,
-				fetchCast,
-				fetchTrending,
-				fetchNewlyReleased,
-				fetchStaffPicks,
+				fetchSearch: (query) =>
+					fetchStreamLine(`/api/search/all?search=${query}`),
+				fetchVideo: (type, id) => fetchTMDB(`/${type}/${id}/videos`),
+				fetchCast: (type, id) => fetchTMDB(`/${type}/${id}/credits`),
+				fetchTrending: () => fetchTMDB(`/trending/all/week?&region=US`),
+				fetchNewlyReleased: () => fetchStreamLine('/api/newly-released/'),
+				fetchStaffPicks: () => fetchStreamLine('/api/staff-picks/'),
 				fetchMedia,
 			}}
 		>

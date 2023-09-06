@@ -13,7 +13,6 @@ export const StreamLineAxios = axios.create({
 	baseURL: STREAMLINE_URL,
 	withCredentials: true,
 });
-
 export const TMDBAxios = axios.create({
 	baseURL: TMDB_URL,
 	params: {
@@ -21,3 +20,13 @@ export const TMDBAxios = axios.create({
 		language: 'en-US',
 	},
 });
+
+// Basic Get Requests
+export const fetchStreamLine = async (url) => {
+	const { data } = await StreamLineAxios.get(url);
+	return data;
+};
+export const fetchTMDB = async (url) => {
+	const { data } = await TMDBAxios.get(url);
+	return data;
+};

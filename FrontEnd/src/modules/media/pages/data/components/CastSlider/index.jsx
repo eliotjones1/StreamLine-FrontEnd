@@ -1,9 +1,10 @@
-import PropTypes from 'prop-types';
 import { useMedia } from 'src/modules/media/hooks';
 import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 
-export default function CastSlider({ type, id }) {
+export default function CastSlider() {
+	const { type, id } = useParams();
 	const { fetchCast } = useMedia();
 
 	const { status, data } = useQuery({
@@ -48,8 +49,3 @@ export default function CastSlider({ type, id }) {
 		</>
 	);
 }
-
-CastSlider.propTypes = {
-	type: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired,
-};
