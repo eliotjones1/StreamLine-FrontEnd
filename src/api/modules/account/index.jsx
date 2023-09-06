@@ -118,7 +118,6 @@ export default function AccountProvider({ children }) {
 				checkInList: (id, type) => searchList(id, type),
 				addToUserList: (id, type) => modifyList(id, type, 'save'),
 				removeFromList: (id, type) => modifyList(id, type, 'remove'),
-
 				fetchSubscriptions: () =>
 					fetchStreamLine('/settings/user-subscriptions/view'),
 				recommendSubscriptions: () =>
@@ -129,10 +128,8 @@ export default function AccountProvider({ children }) {
 					modifySubscriptions(subscription, 'create'),
 				deleteSubscription: (subscription) =>
 					modifySubscriptions(subscription, 'cancel'),
-
 				fetchUpcoming: () => fetchStreamLine('/api/get-upcoming/'),
 				fetchHistory: () => fetchStreamLine('/webhooks/user-payments'),
-
 				fetchAccountInfo: () => fetchStreamLine('/settings/get-user-settings/'),
 				deleteAccount: () => modifyAccount('delete'),
 				updateAccount: (newInfo) => modifyAccount('update', newInfo),
