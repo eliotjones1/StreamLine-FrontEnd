@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { StreamLineAxios } from '../../axios.config';
+import { StreamLineAxios } from 'api/axios.config';
 
 const authReducer = (state, action) => {
 	switch (action.type) {

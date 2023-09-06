@@ -3,11 +3,7 @@ import { createContext } from 'react';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '/src/modules/common/hooks';
-import {
-	StreamLineAxios,
-	TMDBAxios,
-	fetchStreamLine,
-} from '../../axios.config';
+import { StreamLineAxios, TMDBAxios, fetchStreamLine } from 'api/axios.config';
 
 const defaultToast = {
 	position: 'top-right',

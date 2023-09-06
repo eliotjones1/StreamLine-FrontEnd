@@ -1,10 +1,6 @@
 import { createContext } from 'react';
 import PropTypes from 'prop-types';
-import {
-	StreamLineAxios,
-	fetchStreamLine,
-	fetchTMDB,
-} from '../../axios.config';
+import { StreamLineAxios, fetchStreamLine, fetchTMDB } from 'api/axios.config';
 
 export const MediaContext = createContext();
 

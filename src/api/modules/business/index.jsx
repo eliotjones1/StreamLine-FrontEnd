@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { createContext } from 'react';
 import { toast } from 'react-toastify';
-import { StreamLineAxios, fetchStreamLine } from '../../axios.config';
+import { StreamLineAxios, fetchStreamLine } from 'api/axios.config';
 
 const defaultToast = {
 	position: 'top-right',

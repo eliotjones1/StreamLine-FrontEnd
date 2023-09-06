@@ -37,7 +37,6 @@ export default function Content() {
 	)
 		return <QueryError />;
 
-	console.log(upcoming);
 	return (
 		<div className="max-w-7xl mx-auto relative z-0 text-slate-800">
 			<div className="pb-2">
@@ -46,7 +45,7 @@ export default function Content() {
 			</div>
 			<div className="pb-2">
 				<p className="font-bold pb-2 text-2xl">Trending Content</p>
-				<ContentSlider mediaContent={trending.data} />
+				<ContentSlider mediaContent={trending.data.results} />
 			</div>
 			<div className="pb-2">
 				<p className="font-bold pb-2 text-2xl">Newly Released</p>

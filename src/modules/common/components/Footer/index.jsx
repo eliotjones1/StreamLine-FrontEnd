@@ -31,7 +31,7 @@ export default function Footer() {
 								>
 									<img
 										className="w-8 h-8 fill-current text-blue-200"
-										src="/src/assets/images/StreamLine_Transparent_Logo.png"
+										src="src/assets/images/StreamLine_Transparent_Logo.png"
 										alt="Home"
 									/>
 								</button>
