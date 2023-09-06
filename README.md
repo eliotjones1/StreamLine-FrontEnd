@@ -2,20 +2,18 @@
 
 To run StreamLine locally:
 
-Open a split terminal in VSCode, starting in the StreamLine Directory
+Open a terminal in VSCode, starting in the StreamLine Directory
 
-Terminal:
-
-- 'npm install'
+`npm install`
 
 To activate dev version:
 
-- 'npm run dev'
+`npm run dev`
 
 To compress for production:
 
-- 'npm run build'
+`npm run build`
 
 To view production version:
 
-- 'npm run preview'
+`npm run preview`
