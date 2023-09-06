@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { createContext } from 'react';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { StreamLineAxios } from '../../axios.config';
 
 const defaultToast = {
@@ -32,7 +31,9 @@ export default function BusinessProvider({ children }) {
 	};
 
 	const fetchNewsPost = async (id) => {
-		const { data } = await axios.get(`/newsletter/return-post?id=${id}`);
+		const { data } = await StreamLineAxios.get(
+			`/newsletter/return-post?id=${id}`,
+		);
 		return data;
 	};
 

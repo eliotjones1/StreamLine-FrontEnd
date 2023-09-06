@@ -1,6 +1,6 @@
 # Overview
 
-The modules are synonymous with the modules in the source folder. They represent different groups of pages and the context (api calls and state) that said grouping needs to be able to modify (state) or call (api).
+The modules are synonymous with the modules in the source folder. They represent different groups of pages and the context (api calls and state) that said grouping needs to be able to modify (state) or call (api). All toast error handling occurs as well.
 
 ## Modules
 
