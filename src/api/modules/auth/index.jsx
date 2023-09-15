@@ -62,12 +62,12 @@ export default function LoginProvider({ children }) {
 	};
 
 	const resetPassword = async (email) => {
-		await StreamLineAxios.post('/auth/password_reset/', { email: email });
+		await StreamLineAxios.post('/auth/auth/password_reset/', { email: email });
 		nav('/signin');
 	};
 
 	const confirmedReset = async (authData) => {
-		await StreamLineAxios.post('/auth/password_reset/confirm/', authData);
+		await StreamLineAxios.post('/auth/auth/password_reset/confirm/', authData);
 		nav('/signin');
 	};
 
