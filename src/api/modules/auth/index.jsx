@@ -45,18 +45,18 @@ export default function LoginProvider({ children }) {
 	};
 
 	const signUp = async (userData) => {
-		await StreamLineAxios.post('/auth/register/', userData);
+		await StreamLineAxios.post('/auth/auth/register/', userData);
 		login(userData);
 	};
 
 	const login = async (userData) => {
-		await StreamLineAxios.post('/auth/login/', userData);
+		await StreamLineAxios.post('/auth/auth/login/', userData);
 		dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
 		nav('/user-dash');
 	};
 
 	const logout = async () => {
-		await StreamLineAxios.post('/auth/logout/', {});
+		await StreamLineAxios.post('/auth/auth/logout/', {});
 		dispatch({ type: 'LOGOUT' });
 		nav('/');
 	};
