@@ -27,7 +27,7 @@ export default function AccountProvider({ children }) {
 
 	const searchList = async (id, type) => {
 		try {
-			const { data } = await StreamLineAxios.post('/api/in-user-watchlist', {
+			const { data } = await StreamLineAxios.get('/api/in-user-watchlist', {
 				params: { id: id, media_type: type },
 			});
 			if (data.Status === 'false') return false;
