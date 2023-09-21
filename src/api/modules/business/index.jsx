@@ -2,17 +2,7 @@ import PropTypes from 'prop-types';
 import { createContext } from 'react';
 import { toast } from 'react-toastify';
 import { StreamLineAxios, fetchStreamLine } from 'api/axios.config';
-
-const defaultToast = {
-	position: 'top-right',
-	autoClose: 3000,
-	hideProgressBar: false,
-	closeOnClick: true,
-	pauseOnHover: true,
-	draggable: true,
-	progress: undefined,
-	theme: 'light',
-};
+import { defaultToast } from 'api/toast.config';
 
 export const BusinessContext = createContext();
 

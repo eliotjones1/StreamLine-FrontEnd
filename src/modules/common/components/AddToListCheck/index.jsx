@@ -11,11 +11,11 @@ export default function AddToListCheck({ id, type, tooltipPlacement = 'top' }) {
 	const { checkInList, addToUserList, removeFromList } = useAccount();
 
 	const handleClick = async () => {
-		if (data) {
-			await removeFromList(id, type);
-		} else {
-			await addToUserList(id, type);
-		}
+		isLoggedIn
+			? data
+				? await removeFromList(id, type)
+				: await addToUserList(id, type)
+			: null;
 	};
 
 	const { status, data } = useQuery({
@@ -35,7 +35,7 @@ export default function AddToListCheck({ id, type, tooltipPlacement = 'top' }) {
 					? data
 						? 'Remove from Watchlist'
 						: 'Add to Watchlist'
-					: 'Login to access watchlist'
+					: 'Login to access Watchlist'
 			}
 			className="bg-sky-600"
 		>
@@ -45,7 +45,11 @@ export default function AddToListCheck({ id, type, tooltipPlacement = 'top' }) {
 				color="blue-gray"
 				onClick={handleClick}
 			>
-				{data ? <MinusIcon className="h-6" /> : <PlusIcon className="h-6" />}
+				{isLoggedIn && data ? (
+					<MinusIcon className="h-6" />
+				) : (
+					<PlusIcon className="h-6" />
+				)}
 			</IconButton>
 		</Tooltip>
 	);

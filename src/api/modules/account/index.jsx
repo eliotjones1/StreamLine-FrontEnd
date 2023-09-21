@@ -4,17 +4,7 @@ import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '/src/modules/common/hooks';
 import { StreamLineAxios, TMDBAxios, fetchStreamLine } from 'api/axios.config';
-
-const defaultToast = {
-	position: 'top-right',
-	autoClose: 3000,
-	hideProgressBar: false,
-	closeOnClick: true,
-	pauseOnHover: true,
-	draggable: true,
-	progress: undefined,
-	theme: 'light',
-};
+import { defaultToast } from 'api/toast.config';
 
 export const AccountContext = createContext();
 

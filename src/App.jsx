@@ -33,21 +33,23 @@ export default function App() {
 		<Routes>
 			{/* Public Routes */}
 			<Route exact path="/" element={<Landing />} />
-			<Route path="/media/:type/:id" element={<MediaData />} />
 			<Route path="/about" element={<About />} />
-			<Route path="/pricing" element={<Pricing />} />
-			<Route path="/signin" element={<Login />} />
-			<Route path="/signup" element={<SignUp />} />
-			<Route path="/support" element={<Support />} />
-			<Route path="/supported-services" element={<SupportedServices />} />
 			<Route path="/media" element={<SearchMedia />} />
-			<Route path="/reset-password" element={<ResetPassword />} />
+			<Route path="/media/:type/:id" element={<MediaData />} />
 			<Route path="/news" element={<News />} />
 			<Route path="/news/:id" element={<NewsPost />} />
+			<Route path="/pricing" element={<Pricing />} />
+			<Route path="/support" element={<Support />} />
+			<Route path="/supported-services" element={<SupportedServices />} />
 
-			{/* Protected Routes */}
-			<Route path="/secure-reset" element={<SecureReset />} />
+			{/* Protected Routes: Signed In */}
+			<Route path="/reset-password" element={<ResetPassword />} />
+			<Route path="/signin" element={<Login />} />
+			<Route path="/signup" element={<SignUp />} />
+
+			{/* Protected Routes: Signed Out */}
 			<Route path="/account-settings" element={<AccountSettings />} />
+			<Route path="/secure-reset" element={<SecureReset />} />
 			<Route path="/user-dash" element={<UserDash />} />
 			<Route path="/virtual-cable-box" element={<VirtualCableBox />} />
 
