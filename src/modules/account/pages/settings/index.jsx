@@ -7,14 +7,10 @@ import { useState } from 'react';
 import { useAccount } from 'src/modules/account/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
-import { useAuth } from '/src/modules/auth/hooks';
-import { useNavigate } from 'react-router-dom';
+
 export default function EditAccount() {
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const { deleteAccount, fetchAccountInfo, updateAccount } = useAccount();
-	const nav = useNavigate();
-	const { isLoggedIn } = useAuth();
-
 	
 	function handleSubmit(event) {
 		event.preventDefault();
