@@ -12,8 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function UserDash() {
 	const[subscriptionType, setSubscriptionType] = useState(null)
-	const nav = useNavigate();
-	const { isLoggedIn } = useAuth();
+
 	{ /* THIS MOTHERFUCKER MAKES WAYYYYY TOO MANY CALLS TO '/api/get-user-data/' AND IDK WHY */}
 	useEffect(() => {
 		const getSubscriptionStatus = async () => {
@@ -32,11 +31,6 @@ export default function UserDash() {
 		};
 		getSubscriptionStatus();
 
-		if (isLoggedIn) {
-			console.log('good');
-		} else {
-			nav('/signin');
-		}
 		}, []);
 
 
