@@ -12,8 +12,7 @@ export default function TableBody({ tableRows }) {
 				) => {
 					const isLast = index === tableRows.length - 1;
 					const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
-					const image = name === "StreamLine" ? logo : img;
-
+					const image = name === "StreamLine" ? logo : 'https://image.tmdb.org/t/p/original/' + img;
 					return (
 						<tr key={name}>
 							<td className={classes}>
