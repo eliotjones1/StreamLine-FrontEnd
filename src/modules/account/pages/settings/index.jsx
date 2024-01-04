@@ -7,11 +7,15 @@ import { useState } from 'react';
 import { useAccount } from 'src/modules/account/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
-
+import { useAuth } from '/src/modules/auth/hooks';
+import { useNavigate } from 'react-router-dom';
 export default function EditAccount() {
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const { deleteAccount, fetchAccountInfo, updateAccount } = useAccount();
+	const nav = useNavigate();
+	const { isLoggedIn } = useAuth();
 
+	
 	function handleSubmit(event) {
 		event.preventDefault();
 		updateAccount({
@@ -323,6 +327,25 @@ export default function EditAccount() {
 											</div>
 										</div>
 									</fieldset>
+								</div>
+							</div>
+							<div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">
+								<h2 className="text-base font-semibold leading-7">
+									Edit Streamline Subscription Information
+								</h2>
+								<p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-200">
+									Click here to be redirected to Stripe to edit your details.
+								</p>
+
+								<div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+									<div className="flex justify-center mt-8">
+										<a
+											href={'https://billing.stripe.com/p/login/test_00g2aR9YNfbzfGoaEE'}
+											className={`colored-sky-btn w-full mt-10`}
+											>
+											Leave site
+										</a>
+									</div>
 								</div>
 							</div>
 							<div className="border-b border-gray-900/10 dark:border-slate-500 pb-12">

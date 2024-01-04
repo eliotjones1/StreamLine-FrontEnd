@@ -23,7 +23,7 @@ export default function DeleteDialog({ subscription, closeMain }) {
 	const handleCancel = () => {
 		closeMain();
 		setOpen(!open);
-		//deleteSubscription(subscription);
+		deleteSubscription(subscription);
 	};
 
 	return (

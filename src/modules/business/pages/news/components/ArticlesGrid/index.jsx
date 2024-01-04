@@ -15,6 +15,7 @@ export default function ArticlesGrid() {
 		queryFn: () => fetchNews(page),
 	});
 
+	
 	if (status === 'loading') return <QueryLoading />;
 	if (status === 'error') return <QueryError />;
 	if (data.posts.length === 0) return <p>No news at this time.</p>;

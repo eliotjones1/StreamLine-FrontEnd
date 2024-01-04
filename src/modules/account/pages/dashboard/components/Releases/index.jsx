@@ -42,7 +42,7 @@ export default function UpcomingReleases() {
 						</Typography>
 						<Typography color="gray" className="mt-1 font-normal">
 							See information regarding upcoming releases next month across all
-							subscriptions. Add to your list to include in StreamLines bundle
+							subscriptions. Add to your list to include in StreamLine&apos;s bundle
 							optimization algorithm.
 						</Typography>
 					</div>

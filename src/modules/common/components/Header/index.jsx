@@ -28,7 +28,7 @@ const products = [
 	{
 		name: 'Explore Services',
 		description: 'Find services we support and optimize.',
-		href: '/services-search',
+		href: '/supported-services',
 		userOnly: false,
 		icon: MagnifyingGlassIcon,
 	},

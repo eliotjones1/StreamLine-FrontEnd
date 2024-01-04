@@ -17,7 +17,6 @@ export default function ActionsDialog({ subscription }) {
 	const [open, setOpen] = useState(false);
 
 	const handleOpen = () => {
-		console.log('Run');
 		setOpen(!open);
 	};
 

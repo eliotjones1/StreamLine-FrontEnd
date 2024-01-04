@@ -44,7 +44,7 @@ export default function Footer() {
 								Ryan Dunn: rcdunn01@stanford.edu
 							</div>
 							<div className="text-slate-600 dark:text-gray-400 mb-2">
-								Eliot Jones: eliotj1@cs.stanford.edu
+								Eliot Jones: eliot.jones@cs.stanford.edu
 							</div>
 						</div>
 

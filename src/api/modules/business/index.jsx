@@ -26,13 +26,13 @@ export default function BusinessProvider({ children }) {
 		} */
 		}
 		return [
-			{ type: 'movie', id: '555299' },
-			{ type: 'tv', id: '66732' },
-			{ type: 'tv', id: '97546' },
-			{ type: 'tv', id: '1399' },
-			{ type: 'tv', id: '84773' },
-			{ type: 'tv', id: '1416' },
-			{ type: 'tv', id: '93405' },
+			{ type: 'movie', id: '572802' },
+			{ type: 'tv', id: '108978' },
+			{ type: 'movie', id: '726209' },
+			{ type: 'movie', id: '848326' },
+			{ type: 'tv', id: '146176' },
+			{ type: 'tv', id: '93740' },
+			{ type: 'movie', id: '872585' },
 		];
 	};
 
@@ -72,6 +72,7 @@ export default function BusinessProvider({ children }) {
 				fetchNewsPost: (id) =>
 					fetchStreamLine(`/newsletter/return-post?id=${id}`),
 				fetchServices: () => fetchStreamLine('/api/search/services/'),
+				fetchAllServices: () => fetchStreamLine('/api/all-services/'),
 				fetchTop7Streaming,
 			}}
 		>

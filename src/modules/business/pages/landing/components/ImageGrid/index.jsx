@@ -11,7 +11,7 @@ export default function ImageGrid() {
 		staleTime: Infinity,
 		queryFn: () => fetchTop7Streaming(),
 	});
-
+	console.log(data);
 	if (status === 'loading') return <QueryLoading />;
 	if (status === 'error') return <QueryError />;
 

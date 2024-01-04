@@ -18,11 +18,13 @@ import {
 	SupportedServices,
 	UserDash,
 	VirtualCableBox,
+	CreateAccount,
 } from './modules';
-
+import { useAuth } from '/src/modules/auth/hooks';
 export default function App() {
 	const location = useLocation();
-
+	const { isLoggedIn } = useAuth();
+	
 	useEffect(() => {
 		document.querySelector('html').style.scrollBehavior = 'auto';
 		window.scroll({ top: 0 });
@@ -48,10 +50,13 @@ export default function App() {
 			<Route path="/signup" element={<SignUp />} />
 
 			{/* Protected Routes: Signed Out */}
-			<Route path="/account-settings" element={<AccountSettings />} />
+		<Route path="/account-settings" element={<AccountSettings />} />
 			<Route path="/secure-reset" element={<SecureReset />} />
 			<Route path="/user-dash" element={<UserDash />} />
 			<Route path="/virtual-cable-box" element={<VirtualCableBox />} />
+
+			{/* Protected Routes: Account Creation */}
+			<Route path="/create-account" element={<CreateAccount />} />
 
 			{/* 404: Catch Routes Not Found */}
 			<Route path="*" element={<Error404 />} />

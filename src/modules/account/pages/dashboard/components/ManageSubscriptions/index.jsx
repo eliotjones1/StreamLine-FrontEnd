@@ -17,6 +17,7 @@ import { useQuery } from '@tanstack/react-query';
 import { QueryError, QueryLoading } from 'src/modules/error/components';
 import { useAccount } from 'src/modules/account/hooks';
 
+
 const TABLE_HEAD = ['Service', 'Version', 'Cost', 'Status', ''];
 
 export default function SortableTable() {
@@ -38,7 +39,7 @@ export default function SortableTable() {
 		staleTime: 24 * 60 * 60 * 1000, // 1 Day in Milliseconds
 		queryFn: () => fetchSubscriptions(),
 	});
-
+	console.log(data);
 	if (status === 'loading') return <QueryLoading />;
 	if (status === 'error') return <QueryError />;
 
@@ -115,13 +116,13 @@ export default function SortableTable() {
 							const classes = isLast
 								? 'p-4'
 								: 'p-4 border-b border-blue-gray-50';
-
+							const serviceImage = `https://image.tmdb.org/t/p/original/` + subscription.subscription_image_path;
 							return (
 								<tr key={index}>
 									<td className={classes}>
 										<div className="flex items-center gap-3">
 											<Avatar
-												src={subscription.subscription_image_path}
+												src={serviceImage}
 												alt={subscription.subscription_name}
 												size="md"
 												className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"

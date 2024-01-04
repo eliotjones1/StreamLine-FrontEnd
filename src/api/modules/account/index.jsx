@@ -5,13 +5,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '/src/modules/common/hooks';
 import { StreamLineAxios, TMDBAxios, fetchStreamLine } from 'api/axios.config';
 import { defaultToast } from 'api/toast.config';
+import { useNavigate} from 'react-router-dom';
 
 export const AccountContext = createContext();
 
 export default function AccountProvider({ children }) {
 	const queryClient = useQueryClient();
-	const { logout } = useAuth();
-
+	const { logout, deletedAccount } = useAuth();
+	const nav = useNavigate();
 	/*  List  */
 
 	const fetchList = async () => {
@@ -23,6 +24,16 @@ export default function AccountProvider({ children }) {
 		});
 		const results = await Promise.all(promises);
 		return results;
+	};
+
+	const fetchMediaList = async () => {
+		try {
+			const response = await StreamLineAxios.get('/api/return-user-data/');
+			return response.data
+		} catch (error) {
+			console.error('Error fetching media list:', error);
+			// Handle error here
+		}
 	};
 
 	const searchList = async (id, type) => {
@@ -72,28 +83,53 @@ export default function AccountProvider({ children }) {
 				'subscription recommendations',
 				'',
 			]);
-			toast.success(`Subscription will be ${action}ed`, defaultToast);
+			if (action === "create") {
+				toast.success('Subscription will be created', defaultToast);
+			} else {
+				toast.success(`Subscription will be ${action}ed`, defaultToast);
+			}
 		} catch (error) {
-			toast.error(
-				`Error ${action}ing subscription, please try again later`,
-				defaultToast,
-			);
+			if (action === "create") {
+				toast.error(
+					`Error creating subscription, please try again later`,
+					defaultToast,
+					);
+			} else {
+				toast.error(
+					`Error ${action}ing subscription, please try again later`,
+					defaultToast,
+					);
+			}
 		}
 	};
 
 	/*  Account Information  */
 
 	const modifyAccount = async (action, requestData = {}) => {
-		try {
-			await StreamLineAxios.post(`/api/user/settings/${action}/`, requestData);
-			queryClient.invalidateQueries(['account', 'information']);
-			if (action === 'delete') logout();
-			toast.success(`Account ${action}d`, defaultToast);
-		} catch (error) {
-			toast.error(
-				`Error ${action.slice(0, -1)}ing account , please try again later`,
-				defaultToast,
-			);
+		if (action === 'delete') {
+			try {
+				await StreamLineAxios.post('/settings/delete-user-account/', requestData);
+				queryClient.invalidateQueries(['account', 'information']);
+				deletedAccount();
+				toast.success(`Account ${action}d`, defaultToast);
+			} catch (error) {
+				toast.error(
+					`Error ${action.slice(0, -1)}ing account , please try again later`,
+					defaultToast,
+					);
+			}
+		} else {
+			try {
+				await StreamLineAxios.post(`/api/user/settings/${action}/`, requestData);
+				queryClient.invalidateQueries(['account', 'information']);
+				if (action === 'delete') logout();
+				toast.success(`Account ${action}d`, defaultToast);
+			} catch (error) {
+				toast.error(
+					`Error ${action.slice(0, -1)}ing account , please try again later`,
+					defaultToast,
+					);
+			}
 		}
 	};
 
@@ -101,6 +137,7 @@ export default function AccountProvider({ children }) {
 		<AccountContext.Provider
 			value={{
 				fetchList,
+				fetchMediaList,
 				checkInList: (id, type) => searchList(id, type),
 				addToUserList: (id, type) => modifyList(id, type, 'save'),
 				removeFromList: (id, type) => modifyList(id, type, 'remove'),

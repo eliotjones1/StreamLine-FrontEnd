@@ -20,6 +20,7 @@ export default function AddDialog() {
 	const [query, setQuery] = useState('');
 	const { recommendSubscriptions, searchSubscriptions } = useAccount();
 
+
 	const handleOpen = () => setOpen(!open);
 
 	const { status, data } = useQuery({
@@ -29,7 +30,7 @@ export default function AddDialog() {
 		queryFn: () =>
 			query !== '' ? searchSubscriptions(query) : recommendSubscriptions(),
 	});
-
+	console.log(data);
 	if (status === 'loading') return <QueryLoading />;
 	if (status === 'error') return <></>;
 

@@ -39,6 +39,7 @@ export default function Pricing() {
 					]}
 					price="$10.00"
 					link="https://buy.stripe.com/test_9AQ4hW9Xy2dAbEk6op"
+					isAvailable={true}
 				/>
 			</main>
 			<Footer />

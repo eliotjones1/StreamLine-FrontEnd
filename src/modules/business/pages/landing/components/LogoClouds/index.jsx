@@ -18,8 +18,8 @@ const logos = [
 		alt: 'Amazon Prime Video',
 	},
 	{
-		src: 'https://1000logos.net/wp-content/uploads/2022/02/HBO-Max-Logo.png',
-		alt: 'HBO Max',
+		src: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Max_logo.svg',
+		alt: 'Max',
 	},
 ];
 

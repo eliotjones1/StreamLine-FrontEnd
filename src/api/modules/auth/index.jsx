@@ -51,8 +51,15 @@ export default function LoginProvider({ children }) {
 
 	const login = async (userData) => {
 		await StreamLineAxios.post('/auth/auth/login/', userData);
-		dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
-		nav('/user-dash');
+		await StreamLineAxios.get('/settings/tosCompliance').then( function (response){
+			if(response.data === 'not ok') {
+				dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
+				nav('/create-account')
+			} else {
+				dispatch({ type: 'LOGIN', payload: { isAdmin: false } });
+				nav('/user-dash');
+			}
+		});
 	};
 
 	const logout = async () => {
@@ -60,6 +67,11 @@ export default function LoginProvider({ children }) {
 		dispatch({ type: 'LOGOUT' });
 		nav('/');
 	};
+
+	const deletedAccount = async () => {
+		dispatch({ type: 'LOGOUT' });
+		nav('/');
+	}
 
 	const resetPassword = async (email) => {
 		await StreamLineAxios.post('/auth/auth/password_reset/', { email: email });
@@ -78,6 +90,7 @@ export default function LoginProvider({ children }) {
 				isAdmin: state.isAdmin,
 				login,
 				logout,
+				deletedAccount,
 				resetPassword,
 				signUp,
 				confirmedReset,

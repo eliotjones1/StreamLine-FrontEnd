@@ -1,5 +1,6 @@
 import { Avatar, Chip, Typography } from '@material-tailwind/react';
 import PropTypes from 'prop-types';
+import logo from 'src/assets/images/StreamLine_Transparent_Logo.png';
 
 export default function TableBody({ tableRows }) {
 	return (
@@ -11,13 +12,14 @@ export default function TableBody({ tableRows }) {
 				) => {
 					const isLast = index === tableRows.length - 1;
 					const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
+					const image = name === "StreamLine" ? logo : img;
 
 					return (
 						<tr key={name}>
 							<td className={classes}>
 								<div className="flex items-center gap-3">
 									<Avatar
-										src={img}
+										src={image}
 										alt={name}
 										size="md"
 										className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"

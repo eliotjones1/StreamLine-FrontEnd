@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
 	Accordion,
@@ -9,14 +9,26 @@ import {
 } from '@material-tailwind/react';
 import { useAccount } from 'src/modules/common/hooks';
 
-const TABLE_HEAD = ['Version', 'Cost', ''];
+const TABLE_HEAD = ['Version', 'Cost', 'End Date', ''];
 
 export default function Accordian({ recommendations, close }) {
 	const { addSubscription } = useAccount();
 	const [openAccordions, setOpenAccordions] = useState(
 		recommendations.map(() => true),
 	);
+	const [endDate, setEndDate] = useState(getDefaultDate);
+	useEffect(() => {
+		console.log("Updated enddate: ", endDate);
+		}, [endDate]);
+	function getDefaultDate() {
+		const currentDate = new Date();
+		currentDate.setDate(currentDate.getDate() + 30);
+		return currentDate.toISOString().split('T')[0]; // Format YYYY-MM-DD
+	}
 
+	const handleDateChange = (event) => {
+		setEndDate(event.target.value);
+	};
 	const handleClick = (event, subscription) => {
 		event.preventDefault();
 		addSubscription(subscription);
@@ -74,43 +86,55 @@ export default function Accordian({ recommendations, close }) {
 									const classes = isLast
 										? 'p-4'
 										: 'p-4 border-b border-blue-gray-50';
-
+									console.log(version);
 									return (
-										<tr key={index}>
-											<td className={classes}>
-												<Typography
-													variant="small"
-													color="blue-gray"
-													className="font-normal"
-												>
-													{version.Version}
-												</Typography>
-											</td>
-											<td className={classes}>
-												<Typography
-													variant="small"
-													color="blue-gray"
-													className="font-normal"
-												>
-													${version.Price}
-												</Typography>
-											</td>
-											<td className={classes}>
-												<Typography
-													as="a"
-													variant="small"
-													className="text-link font-medium"
-													onClick={(event) =>
-														handleClick(event, {
-															subscription_name: subscription.Version,
-															subscription_version: version,
-														})
-													}
-												>
-													Subscribe
-												</Typography>
-											</td>
-										</tr>
+											<tr key={index}>
+										  <td className={classes}>
+										    <Typography
+										      variant="small"
+										      color="blue-gray"
+										      className="font-normal"
+										    >
+										      {version.Version}
+										    </Typography>
+										  </td>
+										  <td className={classes}>
+										    <Typography
+										      variant="small"
+										      color="blue-gray"
+										      className="font-normal"
+										    >
+										      ${version.Price}
+										    </Typography>
+										  </td>
+										  <td className={classes}>
+										    <input
+										      type="date"
+										      defaultValue={endDate}
+										      onChange={handleDateChange
+										      }
+										      className="form-input w-full"
+										    />
+										  </td>
+										  <td className={classes}>
+										    <Typography
+										      as="a"
+										      variant="small"
+										      className="text-link font-medium"
+										      onClick={(event) =>
+										        handleClick(event, {
+										          'Name': subscription.Name,
+										          'Price': version.Price,
+										          'Version': version.Version,
+										          'End_Date': endDate,
+										        })
+											  }
+										    >
+										      Subscribe
+											</Typography>
+										  </td>
+											</tr>
+
 									);
 								})}
 							</tbody>
