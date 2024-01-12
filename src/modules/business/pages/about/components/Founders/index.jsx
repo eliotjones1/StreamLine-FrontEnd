@@ -2,8 +2,8 @@ import { TwoColumnGrid } from '/src/modules/common/templates';
 import { SocialLinksList } from '/src/modules/common/components';
 import { BasicMediaCard } from './components';
 import { TextSection } from 'src/modules/business/components';
-import RyanFull from '/src/assets/images/Ryan_Full.jpg.jpg';
-import EliotFull from '/src/assets/images/Eliot_Full.jpeg.jpg';
+import RyanFull from '/src/assets/images/Ryan_Full.jpg';
+import EliotFull from '/src/assets/images/Eliot_Full.jpeg';
 const founders = [
 	{
 		name: 'Ryan Dunn',
