@@ -2,13 +2,14 @@ import { TwoColumnGrid } from '/src/modules/common/templates';
 import { SocialLinksList } from '/src/modules/common/components';
 import { BasicMediaCard } from './components';
 import { TextSection } from 'src/modules/business/components';
-
+import RyanFull from '/src/assets/images/Ryan_Full.jpg.jpg';
+import EliotFull from '/src/assets/images/Eliot_Full.jpeg.jpg';
 const founders = [
 	{
 		name: 'Ryan Dunn',
 		role: 'Co-Founder / Role Undetermined',
 		location: 'Charlotte, North Carolina',
-		imageUrl: '/src/assets/images/Ryan_Full.jpg',
+		imageUrl: RyanFull,
 		favContent: [
 			{ type: 'movie', id: '11' },
 			{ type: 'tv', id: '84773' },
@@ -24,7 +25,7 @@ const founders = [
 		name: 'Eliot Jones',
 		role: 'Co-Founder / Role Undetermined',
 		location: 'New Britain, Connecticut',
-		imageUrl: '/src/assets/images/Eliot_Full.jpeg',
+		imageUrl: EliotFull,
 		favContent: [
 			{ type: 'movie', id: '286217' },
 			{ type: 'tv', id: '71912' },

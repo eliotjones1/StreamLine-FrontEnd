@@ -1,6 +1,7 @@
 import ryanHeadshot from '/src/assets/images/Ryan_Headshot.jpg';
 import PropTypes from 'prop-types';
 
+
 export default function Quote({ quoteText = '' }) {
 	return (
 		<section className="relative isolate overflow-hidden bg-white p-6">
